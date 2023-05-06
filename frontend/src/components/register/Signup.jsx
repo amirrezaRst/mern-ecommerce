@@ -5,20 +5,19 @@ const Signup = () => {
     return (
         <React.Fragment>
 
-            <main className='container mb-5 mt-4'>
+            <main className='container mb-5 mt-2'>
 
                 <div className="container-fluid">
                     <div className="row">
 
-                        <div className="col-lg-5 d-flex justify-content-center px-0 py-5">
-                            <div className="py-2">
-                                <img src="/./assets/img/register-vector7.avif" className='' alt="zay shop" />
-
-                            </div>
+                        <div className="col-lg-5 d-flex justify-content-center align-items-center">
+                            <img src="/./assets/img/register-vector7.avif" className='' alt="zay shop" />
                         </div>
 
                         <div className="col-lg-7">
-                            <form>
+                        <span className='mb-5' style={{fontSize:"2.5rem",fontWeight:"400"}}>Sign Up</span>
+
+                            <form className='mt-4'>
 
                                 <label htmlFor="name-filed">Full Name</label>
                                 <input type="text" placeholder='Full Name' id='name-filed' className="form-control mb-3" required />
