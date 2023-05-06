@@ -5,39 +5,48 @@ const Signup = () => {
     return (
         <React.Fragment>
 
-            <main className='container my-5'>
+            <main className='container mb-5 mt-4'>
 
                 <div className="container-fluid">
                     <div className="row">
 
-                        <div className="col-lg-5 d-flex justify-content-center bg-danger px-0">
-                            <img src="/./assets/img/register-vector7.avif" className='' alt="" />
+                        <div className="col-lg-5 d-flex justify-content-center px-0 py-5">
+                            <div className="py-2">
+                                <img src="/./assets/img/register-vector7.avif" className='' alt="zay shop" />
+
+                            </div>
                         </div>
 
                         <div className="col-lg-7">
                             <form>
 
                                 <label htmlFor="name-filed">Full Name</label>
-                                <input type="text" placeholder='Full Name' id='name-filed' className="form-control" />
-                                
-                                <label htmlFor="name-filed">Full Name</label>
-                                <input type="text" placeholder='Full Name' id='name-filed' className="form-control" />
-                                
-                                <label htmlFor="name-filed">Full Name</label>
-                                <input type="text" placeholder='Full Name' id='name-filed' className="form-control" />
+                                <input type="text" placeholder='Full Name' id='name-filed' className="form-control mb-3" required />
+
+                                <label htmlFor="email-filed">Email</label>
+                                <input type="email" placeholder='Email' id='email-filed' className="form-control mb-3" required />
+
+                                <label htmlFor="password-filed">Password</label>
+                                <input type="password" placeholder='****' id='password-filed' className="form-control mb-3" required />
+
+                                <label htmlFor="confirm-filed">Confirm Password</label>
+                                <input type="password" placeholder='****' id='name-filed' className="form-control mb-3" required />
+
+                                <div className="">
+                                    <label for="actual-btn" className='text-dark'>Avatar</label>
+                                    {/* <input type="file" id="actual-btn" hidden onChange={e => setAvatarField(e.target.files[0])} /> */}
+                                    <input type="file" id="actual-btn" hidden />
+                                    {/* <label for="actual-btn" className='w-100' id='register-avatar'>Choose File</label> */}
+                                    {/* <label for="actual-btn" className='w-100' id='register-avatar'>{avatarField ? avatarField.name : "Choose File"}</label> */}
+                                    <label for="actual-btn" className='w-100' id='register-avatar'>choose file</label>
+                                    {/* <span className={avatarClass}>Please select a profile picture</span> */}
+                                    {/* <span>Please select a profile picture</span> */}
+                                </div>
+                                <div class="text-end mt-2">
+                                    <button type="button" class="btn btn-success btn-lg px-3">Sign Up</button>
+                                </div>
 
                             </form>
-                            {/* <div>
-                                <div class="mb-3">
-                                    <label htmlFor="name-field">Full Name</label>
-                                    <input type="text" class="form-control mt-1" id="name-field" placeholder="Full Name" />
-                                </div>
-                                <div class="row">
-                                    <div class="col text-end mt-2">
-                                        <button type="submit" class="btn btn-success btn-lg px-3">Let’s Talk</button>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
 
                     </div>

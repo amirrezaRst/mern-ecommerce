@@ -10,6 +10,16 @@ Custom Css
 }
 
 
-.shop-top-menu{
+.shop-top-menu {
     user-select: none;
+}
+
+#register-avatar {
+    background-color: transparent;
+    border: 1px solid #949494 !important;
+    color: #777;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
 }
