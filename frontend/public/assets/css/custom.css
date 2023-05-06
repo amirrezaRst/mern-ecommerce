@@ -1,0 +1,15 @@
+/*
+Custom Css
+*/
+
+
+.form-control:focus {
+    outline: none;
+    border: 1px solid #59AB6E;
+    box-shadow: none !important;
+}
+
+
+.shop-top-menu{
+    user-select: none;
+}

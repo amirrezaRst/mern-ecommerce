@@ -1,2 +1,5 @@
 backend/node_modules
 frontend/node_modules
+
+frontend/public/assets/bootstrap-4.6.1-dist
+/public/assets/fontawesome-pro-6.1.1-web
