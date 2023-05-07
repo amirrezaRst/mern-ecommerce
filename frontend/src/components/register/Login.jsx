@@ -1,7 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 
 
 const Login = () => {
+
+    const params = useLocation();
+
+    const result = () => {
+        console.log(params);
+    }
+
     return (
         <React.Fragment>
 
@@ -15,7 +23,7 @@ const Login = () => {
                         </div>
 
                         <div className="col-lg-7">
-                            <span className='mb-5' style={{fontSize:"2.5rem",fontWeight:"400"}}>Log In</span>
+                            <span className='mb-5' style={{ fontSize: "2.5rem", fontWeight: "400" }}>Log In</span>
                             <form className='mt-4'>
 
                                 <label htmlFor="name-filed">Full Name</label>
@@ -27,8 +35,9 @@ const Login = () => {
                                 <label htmlFor="password-filed">Password</label>
                                 <input type="password" placeholder='Password' id='password-filed' className="form-control mb-3" required />
 
-                                <div class="text-end mt-2">
+                                <div class="text-end mt-3">
                                     <button type="button" class="btn btn-success btn-lg px-3">Log In</button>
+                                    <button type="button" class="btn btn-success btn-lg px-3 ml-3" onClick={result}>Result</button>
                                 </div>
 
                             </form>

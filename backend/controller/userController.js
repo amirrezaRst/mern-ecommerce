@@ -65,7 +65,7 @@ exports.register = async (req, res) => {
             res.status(422).send(err);
         } else {
             const isFullUser = await userModel.findOne({ email: req.body.email });
-            if (isFullUser) return res.status(422).json({ text: "user has already registered" })
+            if (isFullUser) return res.status(433).json({ text: "user has already registered" })
 
             if (req.file) {
                 const fileName = `${shortid.generate()}_${req.file.originalname}`;
