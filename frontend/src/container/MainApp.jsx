@@ -16,12 +16,13 @@ import ShopCart from '../components/shopPage/ShopCart';
 import SingleProductPage from "../components/SingleProductPage";
 import Signup from '../components/register/Signup';
 import Login from '../components/register/Login';
+import ContextApi from '../services/ContextApi';
 
 
 const MainApp = () => {
 
     //! Auth States
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState({});
     const [userLogin, setUserLogin] = useState(false);
 
     const [products, setProducts] = useState([]);
@@ -45,8 +46,9 @@ const MainApp = () => {
         const userId = localStorage.getItem("userId");
 
         await axios.get(`${config.domain}/api/user/singleUser/${userId}`).then(res => {
+            console.log(res.data.user);
             setUserData(res.data.user);
-            setUserLogin(true)
+            setUserLogin(true);
         }).catch(err => {
             toast.error(`A problem occurred on the server side, please try again`, {
                 position: "bottom-right",
@@ -59,28 +61,35 @@ const MainApp = () => {
 
     useEffect(() => {
         getProductApi();
-        if(localStorage.getItem("userId")) userApi();
+        if (localStorage.getItem("userId")) userApi();
     }, [])
 
 
     return (
 
-        <MainLayout>
+        <MainLayout userStatus={userLogin}>
 
-            <Routes>
-                <Route path="/" exact element={<Home products={products} />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/shop" element={<Shop products={products} />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/product/*" element={<SingleProductPage products={products} />} />
-                <Route path="/shop-cart" element={<ShopCart />} />
-                <Route path="/favorite-product" element={<FavoriteProduct />} />
+            <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
+                <Routes>
+                    <Route path="/" exact element={<Home products={products} />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/shop" element={<Shop products={products} />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/product/*" element={<SingleProductPage products={products} />} />
+                    {/* <Route path="/shop-cart" element={userLogin === true ? <ShopCart /> : <Login />} />
+                    <Route path="/favorite-product" element={userLogin === true ? <FavoriteProduct /> : <Login />} /> */}
+                    <Route path="/shop-cart" element={<ShopCart />} />
+                    <Route path="/favorite-product" element={<FavoriteProduct />} />
 
-            </Routes>
-            <ToastContainer />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<Login />} />
+
+                </Routes>
+                <ToastContainer />
+
+
+            </ContextApi.Provider>
 
         </MainLayout>
 

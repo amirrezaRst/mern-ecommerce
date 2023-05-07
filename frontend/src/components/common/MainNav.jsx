@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { NavLink, Link } from "react-router-dom";
 
-const MainNav = () => {
+
+const MainNav = ({ userStatus }) => {
+
+
+    const result = () => {
+        console.log(userStatus);
+    }
+
     return (
         <nav class="navbar navbar-expand-lg navbar-light shadow">
             <div class="container d-flex justify-content-between align-items-center">
 
                 <Link class="navbar-brand text-success logo h1 align-self-center" to="/">
                     Zay
-                    {/* Shopstar */}
                 </Link>
 
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +48,7 @@ const MainNav = () => {
                                 </div>
                             </div>
                         </div>
+                        <button className="btn btn-success mr-3" onClick={result}>Result</button>
                         <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                             <i class="fa fa-fw fa-search text-dark mr-2"></i>
                         </a>

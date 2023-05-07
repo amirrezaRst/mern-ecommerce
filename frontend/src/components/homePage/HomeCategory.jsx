@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import category1 from "../../img/category_img_01.jpg";
 import category2 from "../../img/category_img_02.jpg";
 import category3 from "../../img/category_img_03.jpg";
 
+import ContextApi from '../../services/ContextApi';
 
 const HomeCategory = () => {
+
+    const context = useContext(ContextApi);
+
+    const result = () => {
+        console.log(context);
+    }
+
     return (
 
         <section class="container py-5">
@@ -14,6 +22,7 @@ const HomeCategory = () => {
                 <div class="col-lg-6 m-auto">
                     {/* <h1 class="h1">Categories of The Month</h1> */}
                     <h1 class="h1">Categories</h1>
+                    <button className="btn btn-success" onClick={result}>Result</button>
                     <p>
                         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
                         deserunt mollit anim id est laborum.
