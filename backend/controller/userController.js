@@ -116,9 +116,9 @@ exports.login = async (req, res) => {
     if (loginValidation(req.body).error) return res.status(422).json({ text: loginValidation(req.body).error.message });
 
     const user = await userModel.findOne({ email: req.body.email });
-    if (!user) return res.status(422).json({ text: "user not found" });
+    if (!user) return res.status(433).json({ text: "user not found" });
     const verifyPassword = bcrypt.compareSync(req.body.password, user.password);
-    if (!verifyPassword) return res.status(422).json({ text: "email or password not correct!" });
+    if (!verifyPassword) return res.status(433).json({ text: "email or password not correct!" });
 
     const tokenData = {
         id: user._id,

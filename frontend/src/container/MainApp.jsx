@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import axios from "axios";
 import config from "../services/config.json";
+import { ToastContainer } from "react-toastify";
+import { toast } from 'react-toastify';
 
 import About from '../components/aboutPage/About';
 import Contact from '../components/contactPage/Contact';
@@ -30,12 +32,34 @@ const MainApp = () => {
             console.log("products fetched");
             setProducts(res.data.products);
         }).catch(err => {
+            toast.error(`A problem occurred on the server side, please try again`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+    }
+
+    const userApi = async () => {
+        const userId = localStorage.getItem("userId");
+
+        await axios.get(`${config.domain}/api/user/singleUser/${userId}`).then(res => {
+            setUserData(res.data.user);
+            setUserLogin(true)
+        }).catch(err => {
+            toast.error(`A problem occurred on the server side, please try again`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
             console.log(err);
         })
     }
 
     useEffect(() => {
         getProductApi();
+        if(localStorage.getItem("userId")) userApi();
     }, [])
 
 
@@ -54,7 +78,9 @@ const MainApp = () => {
 
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+
             </Routes>
+            <ToastContainer />
 
         </MainLayout>
 

@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 import config from "../../services/config.json";
-import { useNavigate } from "react-router-dom";
+
 
 const Signup = () => {
 
@@ -32,8 +35,6 @@ const Signup = () => {
 
     const registerApi = async () => {
 
-
-
         if (nameData == undefined || nameData == "") {
             nameRef.current.focus();
             return setNameClass("form-control mb-3 form-invalid")
@@ -53,10 +54,6 @@ const Signup = () => {
             setPasswordClass("form-control mb-3 form-valid")
             return setConfirmClass("form-control form-invalid")
         }
-        // else if (avatarData == undefined || avatarData == "") {
-        //     setConfirmClass("form-control mb-3 form-valid")
-        //     return setAvatarClass("text-danger");
-        // }
         else if (passwordData != confirmData) {
             setConfirmClass("form-control mb-3 form-valid")
             setAvatarClass("d-none");
@@ -66,12 +63,6 @@ const Signup = () => {
             setConfirmClass("form-control mb-3 form-valid")
             setValidClass("d-none");
         }
-
-        // // console.log(nameData);
-        // // console.log(emailData);
-        // // console.log(passwordData);
-        // // console.log(confirmData);
-        // // console.log(avatarData);
 
         const formData = new FormData()
         formData.append("fullName", nameData);
@@ -91,16 +82,27 @@ const Signup = () => {
                 confirmButtonColor: "#59AB6E",
                 confirmButtonText: "Ok"
             })
-            navigation("/login", { email: emailData, password: passwordData });
+            navigation("/login", {
+                state: {
+                    email: emailData,
+                    password: passwordData
+                }
+            });
         }).catch(err => {
             if (err.message == "Request failed with status code 433") {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Warning',
-                    html: '<p className="text-danger">A user has already registered with this email</p>',
-                    confirmButtonColor: "#ff9e4f",
-                    confirmButtonText: "Ok"
+                // Swal.fire({
+                //     icon: 'warning',
+                //     title: 'Warning',
+                //     html: '<p className="text-danger">A user has already registered with this email</p>',
+                //     confirmButtonColor: "#ff9e4f",
+                //     confirmButtonText: "Ok"
+                // })
+                toast.warning(`A user has already registered with this email`, {
+                    position: "bottom-right",
+                    theme: "light",
+                    closeOnClick: true
                 })
+                setEmailClass("form-control mb-3 form-invalid")
                 return emailRef.current.focus();
             }
 
@@ -154,7 +156,8 @@ const Signup = () => {
                                     <span className={avatarClass} style={{ fontSize: "1rem" }}>Please select a profile picture</span>
                                     {/* <span>Please select a profile picture</span> */}
                                 </div>
-                                <div class="text-end mt-3">
+                                <p className='mt-2 mb-2'>Do you have an account? <Link to="/login" className='ml-2 font-weight-bold' style={{ color: "#1e7e34" }}>Login</Link></p>
+                                <div class="text-end">
                                     <button type="button" class="btn btn-success btn-lg px-3" onClick={registerApi}>Sign Up</button>
                                 </div>
 
