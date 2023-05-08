@@ -67,7 +67,7 @@ const MainApp = () => {
 
     return (
 
-        <MainLayout userStatus={userLogin}>
+        <MainLayout userStatus={userLogin} userData={userData}>
 
             <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
@@ -77,10 +77,8 @@ const MainApp = () => {
                     <Route path="/shop" element={<Shop products={products} />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/product/*" element={<SingleProductPage products={products} />} />
-                    {/* <Route path="/shop-cart" element={userLogin === true ? <ShopCart /> : <Login />} />
-                    <Route path="/favorite-product" element={userLogin === true ? <FavoriteProduct /> : <Login />} /> */}
-                    <Route path="/shop-cart" element={<ShopCart />} />
-                    <Route path="/favorite-product" element={<FavoriteProduct />} />
+                    <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
+                    <Route path="/favorite-product" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
 
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />

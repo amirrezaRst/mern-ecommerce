@@ -6,8 +6,10 @@ exports.addValidation = (data) => {
     const schema = joi.object({
         name: joi.string().required(),
         count: joi.number().required(),
+        color:joi.string().required(),
+        size:joi.string().required(),
         price: joi.number().required(),
-        pic: joi.string().required(),
+        picture: joi.string().required(),
         productId:joi.string().required(),
         discount: joi.number().default(0),
     })

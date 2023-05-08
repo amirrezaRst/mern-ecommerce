@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { NavLink, Link } from "react-router-dom";
 
 
-const MainNav = ({ userStatus }) => {
+const MainNav = ({ userStatus,userData }) => {
 
 
     const result = () => {
-        console.log(userStatus);
+        console.log(userData.cart.length);
     }
 
     return (
@@ -52,14 +52,27 @@ const MainNav = ({ userStatus }) => {
                         <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                             <i class="fa fa-fw fa-search text-dark mr-2"></i>
                         </a>
-                        <Link class="nav-icon position-relative text-decoration-none mr-4" to="/shop-cart">
-                            <i class="fa fa-fw fa-cart-arrow-down text-dark"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
-                        </Link>
-                        <Link class="nav-icon position-relative text-decoration-none" to="/favorite-product">
-                            <i class="fa fa-fw fa-heart text-dark"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
-                        </Link>
+                        {userStatus == true ?
+                            <div className="">
+                                <Link class="nav-icon position-relative text-decoration-none" to="/favorite-product">
+                                    <i class="fa fa-fw fa-user text-dark"></i>
+                                </Link>
+                                <Link class="nav-icon position-relative text-decoration-none mr-4" to="/shop-cart">
+                                    <i class="fa fa-fw fa-cart-arrow-down text-dark"></i>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.cart?userData.cart.length:null}</span>
+                                </Link>
+                                <Link class="nav-icon position-relative text-decoration-none mr-4" to="/favorite-product">
+                                    <i class="fa fa-fw fa-heart text-dark"></i>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.favorite?userData.favorite.length:null}</span>
+                                </Link>
+                            </div> :
+                            // <div className="font-weight-bold" style={{color:"#1e7e34"}}>
+                            // <div className="font-weight-bold" style={{color:"#1a9b34"}}>
+                            <div className="font-weight-bold" style={{ color: "#50b268" }}>
+                                <Link to="/login" className='mr-3 font-weight-bold' style={{ color: "#50b268", textDecoration: "none" }}>Login</Link>
+                                <Link to="/signup" className='font-weight-bold' style={{ color: "#50b268", textDecoration: "none" }}>Signup</Link>
+                            </div>
+                        }
                     </div>
                 </div>
 
