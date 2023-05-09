@@ -4,10 +4,13 @@ const joi = require('joi');
 exports.createValidation = (data) => {
     const schema = joi.object({
         name: joi.string().required().trim(),
-        color: joi.array().valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan").required(),
+        // color: joi.array().valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan","gold").required(),
+        color: joi.array()
+        // .valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan","gold")
+        .required(),
         size: joi.array()
-            .valid("S", "M", "L", "X", "XL", "XXL", "XXXL", "38", "40", "42", "45", "110", "115", "120", "125", "130", "135", "140", "145", "150",
-                "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "666", "single")
+            // .valid("S", "M", "L", "X", "XL", "XXL", "XXXL", "38", "40", "42", "45", "110", "115", "120", "125", "130", "135", "140", "145", "150",
+            //     "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "666", "single")
             .required(),
         // watch size => 38, 40, 42, 45
         // dress & jacket size => S, M, L, X, XL, XXL, XXXL

@@ -12,11 +12,25 @@ const SingleProductPage = ({ products }) => {
 
     const [productSize, setProductSize] = useState();
     const [productCount, setProductCount] = useState(1);
-
+    const [relatedProduct, setRelatedProduct] = useState();
 
     useEffect(() => {
         getProductApi();
     }, [])
+
+    useEffect(() => {
+        var filterProducts = products.filter(item => {
+            if (product) {
+                return item.category == product.category && item._id != product._id
+            }
+        })
+        setRelatedProduct(filterProducts);
+    }, [products])
+
+    useEffect(() => { 
+        console.log("change location");
+    }, [window.location.pathname])
+
 
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
@@ -24,6 +38,9 @@ const SingleProductPage = ({ products }) => {
             setProduct(res.data.product)
             if (res.data.product.picture[0] && image == undefined) {
                 setImage(res.data.product.picture[0]);
+            }
+            if (res.data.product.size[0] == "single") {
+                setProductSize("single")
             }
         }).catch(err => {
             console.log(err);
@@ -38,7 +55,7 @@ const SingleProductPage = ({ products }) => {
 
     //! Product Handler
     const changeSize = (size) => {
-        setProductSize(size)
+        setProductSize(size);
     }
 
     const plusCount = () => {
@@ -49,7 +66,7 @@ const SingleProductPage = ({ products }) => {
     }
 
     const result = () => {
-        console.log(productSize)
+        console.log(window.location.pathname);
     }
 
     return (
@@ -75,7 +92,7 @@ const SingleProductPage = ({ products }) => {
                                                 product.picture.map(item =>
                                                     <div class="col-4 mb-3">
                                                         <div>
-                                                            <img class="card-img img-fluid" src={`${config.domain}/${item}`} alt={product ? product.name : null} onClick={() => changeImage(item)} />
+                                                            <img class="card-img img-fluid product-thumbnail" src={`${config.domain}/${item}`} alt={product ? product.name : null} onClick={() => changeImage(item)} />
                                                         </div>
                                                     </div>
                                                 ) : null
@@ -92,7 +109,6 @@ const SingleProductPage = ({ products }) => {
                             <div class="card">
                                 <div class="card-body">
                                     <h1 class="h2" onClick={result}>{product ? product.name : null}</h1>
-                                    <p class="h3 py-2">${product ? product.price : null}</p>
                                     <p class="py-2">
 
                                         {product && product.score == 0 ? <div className='d-inline'>
@@ -181,19 +197,21 @@ const SingleProductPage = ({ products }) => {
                                     </ul>
 
                                     <h6>Specification:</h6>
-                                    <ul class="list-unstyled pb-3">
+                                    <ul class="list-unstyled">
                                         {product && product.Specification != null ? product.Specification : "_"}
                                     </ul>
 
+                                    {product && product.available == true ? <h4 class="pb-2 mb-4 font-weight-bold" style={{ color: "#169632" }}>${product ? product.price : null}</h4> : null}
+
+
                                     <form>
-                                        {/* <input type="hidden" name="product-title" value="Activewear" /> */}
                                         <div class="row">
                                             <div class="col-auto">
                                                 <ul class="list-inline pb-3">
-                                                    <li class="list-inline-item">Size :{/* <input type="hidden" name="product-size" id="product-size" value="S" /> */}</li>
+                                                    <li class="list-inline-item">Size :</li>
                                                     {product && product.size[0] != "single" ?
                                                         product.size.map(size => <li class="list-inline-item"><span class={productSize != size ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize(size)}>{size}</span></li>) :
-                                                        <li class="list-inline-item"><span class="btn btn-success btn-size" onClick={() => changeSize("single")}>One Size</span></li>
+                                                        <li class="list-inline-item"><span class={productSize != "single" ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize("single")}>One Size</span></li>
                                                     }
                                                 </ul>
                                             </div>
@@ -209,8 +227,11 @@ const SingleProductPage = ({ products }) => {
                                             </div>
                                         </div>
                                         <div class="row pb-3">
-                                            <div class="col d-grid">
-                                                <button type="button" class="btn btn-success btn-lg">Add To Cart</button>
+                                            <div class="col d-flex justify-content-between align-items-center">
+                                                {product && product.available == true ?
+                                                    <button type="button" class="btn btn-success btn-lg">Add To Cart</button> :
+                                                    <h4 className='mr-3 mt-2 text-danger'>Not Available</h4>
+                                                }
                                             </div>
                                         </div>
                                     </form>
@@ -230,7 +251,9 @@ const SingleProductPage = ({ products }) => {
 
                 <div className="row">
 
-                    <SingleRelatedCart />
+                    {products ? products.filter(item => item.category == "watch").category : null}
+
+                    {relatedProduct ? relatedProduct.map(item => <SingleRelatedCart id={item._id} name={item.name} picture={item.picture} price={item.price} color={item.color} size={item.size} />) : null}
 
                 </div>
 
