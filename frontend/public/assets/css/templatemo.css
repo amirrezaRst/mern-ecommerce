@@ -93,6 +93,7 @@ body, ul, li, p, a, label, input, div {
 .product-wap .product-color-dot.color-dot-cyan { background:#00fbff;}
 .product-wap .product-color-dot.color-dot-gray { background:rgb(146, 146, 146);}
 .product-wap .product-color-dot.color-dot-purple { background:rgb(119, 0, 119);}
+.product-wap .product-color-dot.color-dot-gold { background:#FFD700;}
 .card.product-wap .card .product-overlay {
   background: rgba(0,0,0,.2);
   visibility: hidden;

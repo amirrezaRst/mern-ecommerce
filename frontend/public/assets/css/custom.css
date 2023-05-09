@@ -33,3 +33,13 @@ Custom Css
     border: 1px solid rgb(208, 0, 0);
     /* color: rgb(208, 0, 0) !important; */
 }
+
+
+.product-thumbnail{
+    transition: all .3s;
+}
+
+.product-thumbnail:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
