@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { NavLink, Link } from "react-router-dom";
 
 
-const MainNav = ({ userStatus,userData }) => {
+const MainNav = ({ userStatus, userData }) => {
 
 
     const result = () => {
@@ -59,15 +59,13 @@ const MainNav = ({ userStatus,userData }) => {
                                 </Link>
                                 <Link class="nav-icon position-relative text-decoration-none mr-4" to="/shop-cart">
                                     <i class="fa fa-fw fa-cart-arrow-down text-dark"></i>
-                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.cart?userData.cart.length:null}</span>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.cart ? userData.cart.length : null}</span>
                                 </Link>
                                 <Link class="nav-icon position-relative text-decoration-none mr-4" to="/favorite-product">
                                     <i class="fa fa-fw fa-heart text-dark"></i>
-                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.favorite?userData.favorite.length:null}</span>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.favorite ? userData.favorite.length : null}</span>
                                 </Link>
                             </div> :
-                            // <div className="font-weight-bold" style={{color:"#1e7e34"}}>
-                            // <div className="font-weight-bold" style={{color:"#1a9b34"}}>
                             <div className="font-weight-bold" style={{ color: "#50b268" }}>
                                 <Link to="/login" className='mr-3 font-weight-bold' style={{ color: "#50b268", textDecoration: "none" }}>Login</Link>
                                 <Link to="/signup" className='font-weight-bold' style={{ color: "#50b268", textDecoration: "none" }}>Signup</Link>
