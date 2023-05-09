@@ -5,12 +5,12 @@ import SearchNav from '../common/SearchNav';
 import TopNav from '../common/TopNav';
 
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, userStatus, userData }) => {
     return (
         <React.Fragment>
 
             {/* <TopNav /> */}
-            <MainNav />
+            <MainNav userStatus={userStatus} userData={userData} />
             <SearchNav />
 
             {children}

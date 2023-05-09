@@ -28,9 +28,15 @@ const SingleProductPage = ({ products }) => {
     }, [products])
 
     useEffect(() => { 
-        console.log("change location");
-    }, [window.location.pathname])
-
+        // console.log("change location");
+        alert("test")
+    }, [window.location.pathname.split("/")[2]])
+    // useEffect(() => {
+    //     if (window.location.pathname.split("/")[1] == "about") {
+    //         setUserData(undefined);
+    //         getUserApi();
+    //     }
+    // }, [window.location.pathname.split("/")[2]])
 
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
@@ -66,7 +72,7 @@ const SingleProductPage = ({ products }) => {
     }
 
     const result = () => {
-        console.log(window.location.pathname);
+        console.log(window.location.pathname.split("/")[2]);
     }
 
     return (

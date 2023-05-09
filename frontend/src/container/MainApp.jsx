@@ -59,13 +59,13 @@ const MainApp = () => {
 
     useEffect(() => {
         getProductApi();
-        if(localStorage.getItem("userId")) userApi();
+        if (localStorage.getItem("userId")) userApi();
     }, [])
 
 
     return (
 
-        <MainLayout>
+        <MainLayout userStatus={userLogin} userData={userData}>
 
             <Routes>
                 <Route path="/" exact element={<Home products={products} />} />
