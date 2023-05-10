@@ -6,8 +6,8 @@ exports.createValidation = (data) => {
         name: joi.string().required().trim(),
         // color: joi.array().valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan","gold").required(),
         color: joi.array()
-        // .valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan","gold")
-        .required(),
+            // .valid("white", "black", "red", "blue", "green", "yellow", "gray", "purple", "orange", "cyan","gold")
+            .required(),
         size: joi.array()
             // .valid("S", "M", "L", "X", "XL", "XXL", "XXXL", "38", "40", "42", "45", "110", "115", "120", "125", "130", "135", "140", "145", "150",
             //     "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "666", "single")
@@ -20,6 +20,7 @@ exports.createValidation = (data) => {
         description: joi.string().required().trim(),
         brand: joi.string().required(),
         category: joi.string().required(),
+        gender: joi.string().valid("men", "women", "multiple").required(),
         picture: joi.array(),
         available: joi.boolean().default(true),
         Specification: joi.string().default(null)

@@ -46,7 +46,7 @@ const MainApp = () => {
         const userId = localStorage.getItem("userId");
 
         await axios.get(`${config.domain}/api/user/singleUser/${userId}`).then(res => {
-            console.log(res.data.user);
+            // console.log(res.data.user);
             setUserData(res.data.user);
             setUserLogin(true);
         }).catch(err => {

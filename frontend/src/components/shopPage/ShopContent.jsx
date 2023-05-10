@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import SingleShopContent from '../SingleShopCart';
@@ -12,9 +12,69 @@ const ShopContent = ({ products }) => {
     const [categoryGender, setCategoryGender] = useState("all");
 
 
+    const [filterProduct, setFilterProduct] = useState();
+
+
+    const handleFilter = (genderProp, productProp) => {
+        console.log("running handle filter function");
+        if (!genderProp && !productProp) {
+            console.log("without props");
+            const newFilter = products.filter(item => {
+                if (categoryGender == "all" && categoryProduct == "all") {
+                    console.log("gender and product == ALL");
+                    return products;
+                }
+                else if (categoryGender == "all") {
+                    console.log("gender == ALL");
+                    return item.category == categoryProduct;
+                }
+                else if (categoryProduct == "all") {
+                    console.log("product == ALL");
+                    return item.gender == categoryGender;
+                }
+                else {
+                    console.log("gender and product != ALL");
+                    return item.category == categoryProduct && item.gender == categoryGender
+                }
+            })
+            setFilterProduct(newFilter);
+        }
+        else if (genderProp && !productProp) {
+            console.log("gender props");
+            if (genderProp == "all") return setFilterProduct(products);
+            const genderFilter = products.filter(item => {
+                return item.gender == genderProp
+            })
+            setFilterProduct(genderFilter);
+        }
+        else if (!genderProp && productProp) {
+            console.log("product props");
+            if (productProp == "all") return setFilterProduct(products);
+            const productFilter = products.filter(item => {
+                return item.category == productProp
+            })
+            setFilterProduct(productFilter);
+        }
+        else if (genderProp && productProp) {
+            console.log("gender & product props");
+            if (genderProp == "all") setFilterProduct(products);
+            else if (productProp == "all") return setFilterProduct(products);
+            const allFilter = products.filter(item => {
+                return item.gender == genderProp && item.category == productProp
+            })
+            setFilterProduct(allFilter);
+        }
+    }
+
+    useEffect(() => {
+        handleFilter();
+        // console.log("useEffect test");
+    }, [products])
+
     //! gender handler
     const changeGender = (gen) => {
         setCategoryGender(gen);
+        handleFilter(gen, undefined)
     }
     const handleGender = (gen) => {
         if (categoryGender == gen) {
@@ -49,6 +109,7 @@ const ShopContent = ({ products }) => {
     //! product handler
     const changeProduct = (pro) => {
         setCategoryProduct(pro);
+        handleFilter(undefined, pro);
     }
     const handleProduct = (pro) => {
         if (categoryProduct == pro) {
@@ -59,7 +120,13 @@ const ShopContent = ({ products }) => {
 
 
     const result = () => {
-        console.log(products[0]);
+        // const filter = products.filter(item => {
+        //     return item.gender == "men"
+        // })
+        // console.log(filter);
+        console.log(filterProduct);
+        console.log(`gender : ${categoryGender}`);
+        console.log(`product : ${categoryProduct} `);
     }
 
     return (
@@ -154,8 +221,8 @@ const ShopContent = ({ products }) => {
 
                     <div class="row">
 
-                        {/* <SingleShopContent /> */}
-                        {products.map(item => <SingleShopContent id={item._id   } name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)}
+                        {/* {products.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)} */}
+                        {filterProduct.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)}
 
                     </div>
 

@@ -58,7 +58,7 @@ const SingleProductPage = ({ products }) => {
 
 
 
-    
+
 
 
     //! Product Handler
@@ -290,7 +290,7 @@ const SingleProductPage = ({ products }) => {
                 <div className="row">
 
                     {/* {relatedProduct ? relatedProduct.map(item => <SingleRelatedCart id={item._id} name={item.name} picture={item.picture} price={item.price} color={item.color} size={item.size} />) : null} */}
-                    {relatedProduct ? relatedProduct.map(item =>
+                    {relatedProduct && relatedProduct.length < 0 ? relatedProduct.map(item =>
                         <div id="carousel-related-product" className='col-4'>
                             <div class="p-2 pb-3">
                                 <div class="product-wap card rounded-0">
@@ -319,10 +319,9 @@ const SingleProductPage = ({ products }) => {
                                 </div>
                             </div>
                         </div>
-                    ) : null}
+                    ) : <h5 className='mx-auto my-4 text-black-50'>There is no related product</h5>}
 
                 </div>
-
             </section>
 
 
