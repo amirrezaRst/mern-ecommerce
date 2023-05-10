@@ -4,6 +4,7 @@ import axios from "axios";
 import config from "../services/config.json";
 
 import SingleRelatedCart from './SingleRelatedCart';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SingleProductPage = ({ products }) => {
 
@@ -14,6 +15,8 @@ const SingleProductPage = ({ products }) => {
     const [productCount, setProductCount] = useState(1);
     const [relatedProduct, setRelatedProduct] = useState();
 
+    const navigation = useNavigate();
+    // to={`/product/${item._id}`}
     useEffect(() => {
         getProductApi();
     }, [])
@@ -27,10 +30,10 @@ const SingleProductPage = ({ products }) => {
         setRelatedProduct(filterProducts);
     }, [products])
 
-    useEffect(() => { 
-        // console.log("change location");
-        alert("test")
-    }, [window.location.pathname.split("/")[2]])
+    // useEffect(() => {
+    //     // console.log("change location");
+    //     alert("test")
+    // }, [window.location.pathname.split("/")[2]])
     // useEffect(() => {
     //     if (window.location.pathname.split("/")[1] == "about") {
     //         setUserData(undefined);
@@ -41,7 +44,7 @@ const SingleProductPage = ({ products }) => {
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
             console.log("single product fetched");
-            setProduct(res.data.product)
+            setProduct(res.data.product);
             if (res.data.product.picture[0] && image == undefined) {
                 setImage(res.data.product.picture[0]);
             }
@@ -53,13 +56,15 @@ const SingleProductPage = ({ products }) => {
         })
     }
 
-    const changeImage = (id) => {
-        setImage(id);
-    }
 
+
+    
 
 
     //! Product Handler
+    const changeImage = (id) => {
+        setImage(id);
+    }
     const changeSize = (size) => {
         setProductSize(size);
     }
@@ -71,8 +76,35 @@ const SingleProductPage = ({ products }) => {
         if (productCount > 1) setProductCount(productCount - 1)
     }
 
+
+    //! Page Handler
+    const changeProduct = async (id) => {
+        navigation(`/product/${id}`)
+        setProduct(undefined);
+        await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
+            console.log("single product fetched2");
+            setProduct(res.data.product);
+            setImage(res.data.product.picture[0]);
+            if (res.data.product.size[0] == "single") {
+                setProductSize("single")
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+        var filterProducts = products.filter(item => {
+            if (product) {
+                return item.category == product.category && item._id != id
+            }
+        })
+        setRelatedProduct(filterProducts);
+        window.scrollTo({
+            top: 20,
+            behavior: "smooth"
+        })
+    }
+
     const result = () => {
-        console.log(window.location.pathname.split("/")[2]);
+        console.log(product);
     }
 
     return (
@@ -257,9 +289,37 @@ const SingleProductPage = ({ products }) => {
 
                 <div className="row">
 
-                    {products ? products.filter(item => item.category == "watch").category : null}
-
-                    {relatedProduct ? relatedProduct.map(item => <SingleRelatedCart id={item._id} name={item.name} picture={item.picture} price={item.price} color={item.color} size={item.size} />) : null}
+                    {/* {relatedProduct ? relatedProduct.map(item => <SingleRelatedCart id={item._id} name={item.name} picture={item.picture} price={item.price} color={item.color} size={item.size} />) : null} */}
+                    {relatedProduct ? relatedProduct.map(item =>
+                        <div id="carousel-related-product" className='col-4'>
+                            <div class="p-2 pb-3">
+                                <div class="product-wap card rounded-0">
+                                    <div class="card">
+                                        <img class="card-img img-fluid" src={item.picture[0] ? `${config.domain}/${item.picture[0]}` : null} />
+                                        <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
+                                            <ul class="list-unstyled">
+                                                <li><button class="btn btn-success text-white"><i class="fas fa-heart"></i></button></li>
+                                                <li><div class="btn btn-success text-white mt-2" onClick={() => changeProduct(item._id)}><i class="far fa-eye"></i></div></li>
+                                                <li><button class="btn btn-success text-white mt-2"><i class="fas fa-cart-plus"></i></button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div onClick={() => changeProduct(item._id)} class="card-body" style={{ textDecoration: "none" }}>
+                                        <a href="shop-single.html" class="h3 text-decoration-none text-capitalize">{item.name}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-1">
+                                            <li className='' style={{ color: "#898989" }}>{item.size[0] && item.size[0] != "single" ? item.size.map(size => <span>{size}/</span>) : "_"}</li>
+                                            <li class="pt-2">
+                                                {item.color[0] ? item.color.map(ProductColor =>
+                                                    <span class={`product-color-dot color-dot-${ProductColor} float-left rounded-circle ml-1`}></span>) : null
+                                                }
+                                            </li>
+                                        </ul>
+                                        <p class="mb-0" style={{ color: "#208e38", fontWeight: "bold" }}>${item.price}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
 
                 </div>
 
