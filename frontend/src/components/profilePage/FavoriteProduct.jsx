@@ -1,5 +1,5 @@
 import React from 'react';
-import SingleShopCart from './SingleShopCart';
+import SingleShopCart from '../SingleShopCart';
 
 
 const FavoriteProduct = ({ userData }) => {

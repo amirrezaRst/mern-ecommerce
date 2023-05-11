@@ -222,7 +222,7 @@ const ShopContent = ({ products }) => {
                     <div class="row">
 
                         {/* {products.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)} */}
-                        {filterProduct.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)}
+                        {filterProduct ? filterProduct.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />):null}
 
                     </div>
 

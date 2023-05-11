@@ -4,6 +4,7 @@ const joi = require('joi');
 exports.registerValidation = (data) => {
     const schema = joi.object({
         fullName: joi.string().required().trim(),
+        phone: joi.string().required(),
         email: joi.string().required().trim(),
         password: joi.string().required().trim(),
         profile: joi.string(),

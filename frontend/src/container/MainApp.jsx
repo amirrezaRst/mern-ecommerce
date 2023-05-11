@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 
 import { Route, Routes } from 'react-router';
 import axios from "axios";
@@ -8,14 +8,19 @@ import { toast } from 'react-toastify';
 
 import About from '../components/aboutPage/About';
 import Contact from '../components/contactPage/Contact';
-import FavoriteProduct from '../components/FavoriteProduct';
 import Home from '../components/homePage/Home';
-import MainLayout from '../components/layout/MainLayout';
 import Shop from '../components/shopPage/Shop';
+
 import ShopCart from '../components/shopPage/ShopCart';
 import SingleProductPage from "../components/SingleProductPage";
+
 import Signup from '../components/register/Signup';
 import Login from '../components/register/Login';
+
+import FavoriteProduct from '../components/profilePage/FavoriteProduct';
+import Profile from "../components/profilePage/Profile";
+
+import MainLayout from '../components/layout/MainLayout';
 import ContextApi from '../services/ContextApi';
 
 
@@ -77,12 +82,14 @@ const MainApp = () => {
                     <Route path="/shop" element={<Shop products={products} />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/product/*" element={<SingleProductPage products={products} />} />
-                    <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
-                    <Route path="/favorite-product" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
 
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />
 
+                    <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
+
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
                 </Routes>
                 <ToastContainer />
 

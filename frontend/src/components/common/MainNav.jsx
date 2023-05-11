@@ -54,17 +54,17 @@ const MainNav = ({ userStatus, userData }) => {
                         </a>
                         {userStatus == true ?
                             <div className="">
-                                <Link class="nav-icon position-relative text-decoration-none" to="/favorite-product">
+                                <Link class="nav-icon position-relative text-decoration-none" to="/profile">
                                     <i class="fa fa-fw fa-user text-dark"></i>
                                 </Link>
-                                <Link class="nav-icon position-relative text-decoration-none mr-4" to="/shop-cart">
+                                <Link class="nav-icon position-relative text-decoration-none" to="/shop-cart">
                                     <i class="fa fa-fw fa-cart-arrow-down text-dark"></i>
                                     <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.cart ? userData.cart.length : null}</span>
                                 </Link>
-                                <Link class="nav-icon position-relative text-decoration-none mr-4" to="/favorite-product">
+                                {/* <Link class="nav-icon position-relative text-decoration-none mr-4" to="/favorite-product">
                                     <i class="fa fa-fw fa-heart text-dark"></i>
                                     <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData.favorite ? userData.favorite.length : null}</span>
-                                </Link>
+                                </Link> */}
                             </div> :
                             <div className="font-weight-bold" style={{ color: "#50b268" }}>
                                 <Link to="/login" className='mr-3 font-weight-bold' style={{ color: "#50b268", textDecoration: "none" }}>Login</Link>

@@ -11,6 +11,7 @@ const Signup = () => {
 
     //! Data States
     const [nameData, setNameData] = useState();
+    const [phoneData, setPhoneData] = useState();
     const [emailData, setEmailData] = useState();
     const [passwordData, setPasswordData] = useState();
     const [confirmData, setConfirmData] = useState();
@@ -18,12 +19,14 @@ const Signup = () => {
 
     //! Data Ref
     const nameRef = useRef();
+    const phoneRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmRef = useRef();
 
     //! Data Style
     const [nameClass, setNameClass] = useState(`form-control mb-3`);
+    const [phoneClass, setPhoneClass] = useState(`form-control mb-3`);
     const [emailClass, setEmailClass] = useState(`form-control mb-3`);
     const [passwordClass, setPasswordClass] = useState(`form-control mb-3`);
     const [confirmClass, setConfirmClass] = useState(`form-control`);
@@ -39,9 +42,14 @@ const Signup = () => {
             nameRef.current.focus();
             return setNameClass("form-control mb-3 form-invalid")
         }
+        else if (phoneData == undefined || phoneData == "") {
+            phoneRef.current.focus();
+            setNameClass("form-control mb-3 form-valid")
+            return setPhoneClass("form-control mb-3 form-invalid")
+        }
         else if (emailData == undefined || emailData == "") {
             emailRef.current.focus();
-            setNameClass("form-control mb-3 form-valid")
+            setPhoneClass("form-control mb-3 form-valid")
             return setEmailClass("form-control mb-3 form-invalid")
         }
         else if (passwordData == undefined || passwordData == "") {
@@ -90,13 +98,6 @@ const Signup = () => {
             });
         }).catch(err => {
             if (err.message == "Request failed with status code 433") {
-                // Swal.fire({
-                //     icon: 'warning',
-                //     title: 'Warning',
-                //     html: '<p className="text-danger">A user has already registered with this email</p>',
-                //     confirmButtonColor: "#ff9e4f",
-                //     confirmButtonText: "Ok"
-                // })
                 toast.warning(`A user has already registered with this email`, {
                     position: "bottom-right",
                     theme: "light",
@@ -136,6 +137,9 @@ const Signup = () => {
 
                                 <label htmlFor="name-filed">Full Name</label>
                                 <input type="text" ref={nameRef} placeholder='Full Name' id='name-filed' className={nameClass} value={nameData} onChange={e => setNameData(e.target.value)} />
+
+                                <label htmlFor="phone-filed">Phone</label>
+                                <input type="text" ref={phoneRef} placeholder='Phone' id='phone-filed' className={phoneClass} value={phoneData} onChange={e => setPhoneData(e.target.value)} />
 
                                 <label htmlFor="email-filed">Email</label>
                                 <input type="email" ref={emailRef} placeholder='Email' id='email-filed' className={emailClass} value={emailData} onChange={e => setEmailData(e.target.value)} />

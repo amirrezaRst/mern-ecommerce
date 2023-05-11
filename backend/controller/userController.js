@@ -30,14 +30,6 @@ exports.singleUser = async (req, res) => {
 
 //! Post Request
 exports.register = async (req, res) => {
-    // if (registerValidation(req.body).error) return res.status(422).send(registerValidation(req.body).error.message);
-
-    // const newUser = new userModel({
-    //     fullName: req.body.fullName,
-    //     email: req.body.email,
-    //     password: req.body.password,
-    // })
-
     const fileFilter = (req, file, cb) => {
         if (file.mimetype == "image/jpeg") {
             cb(null, true);
@@ -84,6 +76,7 @@ exports.register = async (req, res) => {
 
                 const newUser = new userModel({
                     fullName: req.body.fullName,
+                    phone: req.body.phone,
                     email: req.body.email,
                     password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
                 })
@@ -98,6 +91,7 @@ exports.register = async (req, res) => {
                 if (registerValidation(req.body).error) return res.status(422).send(registerValidation(req.body).error.message);
                 const newUser = new userModel({
                     fullName: req.body.fullName,
+                    phone: req.body.phone,
                     email: req.body.email,
                     password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
                 })
