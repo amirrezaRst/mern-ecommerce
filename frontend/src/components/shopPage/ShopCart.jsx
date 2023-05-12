@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import SingleShopCart from '../SingleShopCart';
@@ -7,10 +7,18 @@ import ContextApi from '../../services/ContextApi';
 
 const ShopCart = ({ userData }) => {
 
-    const result = () => {
-        
+    const [totalPrice, setTotalPrice] = useState(0);
 
+    const result = () => {
+        console.log(userData.cart);
+        const total = userData.cart.reduce(function (a, b) { return a + b.price; }, 0)
+        console.log(total);
     }
+    useEffect(() => {
+        console.log("change data");
+        const total = userData.cart.reduce(function (a, b) { return a + (b.price * b.count) }, 0)
+        setTotalPrice(total);
+    }, [userData])
 
     return (
         <section className="container py-4">
@@ -31,10 +39,12 @@ const ShopCart = ({ userData }) => {
                     </div>
                 }
             </div>
-
-            {userData.cart[0] != undefined ?
-                <button type="button" class="btn btn-success btn-lg mb-3 mt-2">Payment</button> : null
-            }
+            <div className="d-flex align-items-baseline justify-content-between pr-5">
+                <h4 className='mt-4 d-inline'>Total Price : ${totalPrice}</h4>
+                {userData.cart[0] != undefined ?
+                    <button type="button" class="btn btn-success btn-lg mb-3 mt-2">Payment</button> : null
+                }
+            </div>
         </section>
     );
 }

@@ -19,6 +19,37 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
         console.log(newCart);
     }
 
+    //! Handle Product Count
+    const plus = async () => {
+        await axios.get(`${config.domain}/api/cart/plus/${context.userData._id}/${id}`).then(res => {
+            console.log(res);
+            context.setUserData(res.data.user);
+        }).catch(err => {
+            toast.error(`Something went wrong please try later`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+    }
+    const minus = async () => {
+        if (count != 1) {
+            await axios.get(`${config.domain}/api/cart/minus/${context.userData._id}/${id}`).then(res => {
+                console.log(res);
+                context.setUserData(res.data.user);
+            }).catch(err => {
+                toast.error(`Something went wrong please try later`, {
+                    position: "bottom-right",
+                    theme: "light",
+                    closeOnClick: true
+                })
+                console.log(err);
+            })
+        }
+    }
+
+    //! Handle Api
     const deleteProduct = async () => {
         Swal.fire({
             icon: "error",
@@ -92,7 +123,7 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                                         <span class={`product-color-dot color-dot-${color} float-left rounded-circle ml-1`} style={{ padding: "10px" }}></span>
                                     </li>
                                 </ul>
-                                <p class="mb-0 font-weight-normal d-block" style={{ color: "#208e38" }} onClick={result}>${price}</p>
+                                <p class="mb-0 font-weight-normal d-block" style={{ color: "#208e38" }} onClick={result}>${count * price}</p>
                             </div> :
                             null
                         }
@@ -102,9 +133,9 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                                 <div className="d-flex align-items-baseline justify-content-between w-100 mt-3">
                                     <i class="far fa-trash-xmark btn btn-danger" style={{ fontSize: "200px" }} onClick={deleteProduct}></i>
                                     <ul class="list-inline">
-                                        <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+                                        <li class="list-inline-item"><span class="btn btn-success" id="btn-minus" onClick={minus}>-</span></li>
                                         <li class="list-inline-item"><span style={{ fontWeight: "bolder" }}>{count}</span></li>
-                                        <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+                                        <li class="list-inline-item"><span class="btn btn-success" id="btn-plus" onClick={plus}>+</span></li>
                                     </ul>
                                 </div> :
                                 <p class="mb-0 font-weight-normal" style={{ color: "#208e38" }}>${price}</p>
