@@ -19,16 +19,46 @@ exports.addCart = async (req, res) => {
         const newCart = {
             name: req.body.name,
             count: req.body.count,
+            color: req.body.color,
+            size: req.body.size,
             price: req.body.price,
-            pic: req.body.pic,
+            picture: req.body.picture,
             productId: req.body.productId
         }
         await user.cart.push(newCart);
-    } else {
+    }
+    else if (productIndex != -1 && user.cart[productIndex].size != req.body.size) {
+        const newCart = {
+            name: req.body.name,
+            count: req.body.count,
+            color: req.body.color,
+            size: req.body.size,
+            price: req.body.price,
+            picture: req.body.picture,
+            productId: req.body.productId
+        }
+        await user.cart.push(newCart);
+    }
+    else if (productIndex != -1 && user.cart[productIndex].color != req.body.color) {
+        const newCart = {
+            name: req.body.name,
+            count: req.body.count,
+            color: req.body.color,
+            size: req.body.size,
+            price: req.body.price,
+            picture: req.body.picture,
+            productId: req.body.productId
+        }
+        await user.cart.push(newCart);
+    }
+    else {
         user.cart[productIndex].count += req.body.count;
+        user.cart[productIndex].price += req.body.price;
+        // user.cart[productIndex].discount += req.body.discount;
     }
 
     await user.save();
+    // res.json({ text: "The product has been added to the cart", userCart:user.cart });
     res.json({ text: "The product has been added to the cart", user });
 }
 
@@ -67,16 +97,20 @@ exports.editCart = async (req, res) => {
 //! Delete Request
 exports.deleteCart = async (req, res) => {
     if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
-    else if (!isValidObjectId(req.params.productId)) return res.status(422).json({ text: "product id is not valid" });
+    if (!isValidObjectId(req.params.productId)) return res.status(422).json({ text: "product id is not valid" });
 
     const user = await userModel.findById(req.params.userId);
     if (!user) return res.status(422).json({ text: "user not found" });
 
-    const product = user.cart.id(req.params.productId);
-    if (!product) return res.status(422).json({ text: "No products were found in the shopping cart" });
-    else product.remove();
+    const indexItem = user.cart.findIndex(item => {
+        return item._id == req.params.productId
+    })
 
+    if (indexItem > -1) {
+        user.cart.splice(indexItem, 1);
+    } else {
+        return res.status(422).json({ text: "product not found" })
+    }
     await user.save();
-
-    res.json({ text: "deleted successfully" });
+    res.json({ text: "product deleted",user })
 }

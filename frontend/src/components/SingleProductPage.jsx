@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Swal from "sweetalert2";
 
 import config from "../services/config.json";
+import ContextApi from '../services/ContextApi';
 
-import SingleRelatedCart from './SingleRelatedCart';
-import { Link, useNavigate } from 'react-router-dom';
 
 const SingleProductPage = ({ products }) => {
 
     const [product, setProduct] = useState();
     const [image, setImage] = useState();
-
-    const [productSize, setProductSize] = useState();
-    const [productCount, setProductCount] = useState(1);
     const [relatedProduct, setRelatedProduct] = useState();
 
+    //! Buy States
+    const [productSize, setProductSize] = useState();
+    const [productCount, setProductCount] = useState(1);
+    const [productColor, setProductColor] = useState();
+    const [totalPrice, setTotalPrice] = useState();
+
+    //! Buy Class
+    const [colorClass, setColorClass] = useState("text-danger font-weight-normal mb-4 d-none");
+    const [sizeClass, setSizeClass] = useState("text-danger font-weight-normal mb-4 d-none");
+
+    const context = useContext(ContextApi);
     const navigation = useNavigate();
-    // to={`/product/${item._id}`}
+
+
     useEffect(() => {
         getProductApi();
     }, [])
@@ -30,21 +41,15 @@ const SingleProductPage = ({ products }) => {
         setRelatedProduct(filterProducts);
     }, [products])
 
-    // useEffect(() => {
-    //     // console.log("change location");
-    //     alert("test")
-    // }, [window.location.pathname.split("/")[2]])
-    // useEffect(() => {
-    //     if (window.location.pathname.split("/")[1] == "about") {
-    //         setUserData(undefined);
-    //         getUserApi();
-    //     }
-    // }, [window.location.pathname.split("/")[2]])
 
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
             console.log("single product fetched");
             setProduct(res.data.product);
+            if (totalPrice == undefined) {
+                setTotalPrice(res.data.product.price * productCount)
+            }
+
             if (res.data.product.picture[0] && image == undefined) {
                 setImage(res.data.product.picture[0]);
             }
@@ -59,8 +64,6 @@ const SingleProductPage = ({ products }) => {
 
 
 
-
-
     //! Product Handler
     const changeImage = (id) => {
         setImage(id);
@@ -71,11 +74,21 @@ const SingleProductPage = ({ products }) => {
 
     const plusCount = () => {
         setProductCount(productCount + 1)
+        const count = productCount + 1
+        setTotalPrice(product.price * count)
     }
     const minusCount = () => {
-        if (productCount > 1) setProductCount(productCount - 1)
+        if (productCount > 1) {
+            setProductCount(productCount - 1)
+            const count = productCount - 1
+            setTotalPrice(product.price * count)
+        }
     }
 
+    //! Handle Color
+    const changeColor = (color) => {
+        setProductColor(color);
+    }
 
     //! Page Handler
     const changeProduct = async (id) => {
@@ -103,8 +116,75 @@ const SingleProductPage = ({ products }) => {
         })
     }
 
+
+    const addToCart = async () => {
+        if (productColor == undefined) {
+            toast.error(`Please choose the color of the product you want`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            return setColorClass("text-danger font-weight-normal mb-4 d-block");
+        }
+        else if (productSize == undefined) {
+            setColorClass("text-danger font-weight-normal mb-4 d-none")
+            toast.error(`Please choose the size of the product you want`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            return setSizeClass("text-danger font-weight-normal mb-4 d-block");
+        }
+        setSizeClass("text-danger font-weight-normal mb-4 d-none");
+
+        const body = {
+            name: product.name,
+            count: productCount,
+            color: productColor,
+            size: productSize,
+            price: totalPrice,
+            picture: product.picture[0],
+            productId: product.productId
+        }
+
+        axios.post(`${config.domain}/api/cart/addCart/${context.userData._id}`, body).then(res => {
+            console.log(res);
+            context.setUserData(res.data.user);
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to cart',
+                showDenyButton: true,
+                // showCancelButton: true,
+                confirmButtonColor: "#59AB6E",
+                confirmButtonText: "Ok",
+                denyButtonColor: "#ffffff",
+                denyButtonText: `<i class="fa-solid fa-cart-shopping" style="color: #59AB6E;font-size:1.5rem;"></i>`,
+
+            }).then((result) => {
+                if (result.isDenied) {
+                    navigation("/shop-cart")
+                }
+            })
+        }).catch(err => {
+            toast.error(`Something went wrong please try later`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+
+    }
+
+
     const result = () => {
-        console.log(product);
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Added to cart',
+        //     confirmButtonColor: "#59AB6E",
+        //     confirmButtonText: "Ok"
+        // })
+
     }
 
     return (
@@ -221,39 +301,42 @@ const SingleProductPage = ({ products }) => {
 
                                     <h6>Description:</h6>
                                     <p>{product ? product.description : null}.</p>
-                                    <ul class="list-inline">
+                                    <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
-                                            <h6>Avaliable Color :</h6>
+                                            <h6 className='mb-0'>Avaliable Color :</h6>
                                         </li>
                                         <li class="list-inline-item">
                                             <div className="product-wap">
                                                 {product && product.color[0] ?
-                                                    product.color.map(color => <span class={`product-color-dot color-dot-${color} float-left rounded-circle ml-1`}></span>) : null
+                                                    product.color.map(color => <span class={`product-color-dot color-dot-${color} float-left rounded-circle ml-1 d-flex align-items-center justify-content-center`} style={{ padding: "16px", cursor: "pointer" }} onClick={() => changeColor(color)}>{productColor == color ? <i class="fa-solid fa-check" style={{ color: "#ffffff", textShadow: "0px 0px 5px rgba(0,0,0,0.7)" }}></i> : null}</span>) : null
                                                 }
                                             </div>
                                         </li>
+                                        <span className={colorClass} style={{ fontSize: "1.07rem" }}>Please select the color of the product</span>
                                     </ul>
 
-                                    <h6>Specification:</h6>
+                                    <h6 className='mt-4'>Specification:</h6>
                                     <ul class="list-unstyled">
                                         {product && product.Specification != null ? product.Specification : "_"}
                                     </ul>
 
-                                    {product && product.available == true ? <h4 class="pb-2 mb-4 font-weight-bold" style={{ color: "#169632" }}>${product ? product.price : null}</h4> : null}
+                                    {product && product.available == true ? <h4 class="pb-2 mb-4 font-weight-bold" style={{ color: "#169632" }}>${totalPrice != undefined ? totalPrice : null}</h4> : null}
 
 
                                     <form>
-                                        <div class="row">
-                                            <div class="col-auto">
-                                                <ul class="list-inline pb-3">
+                                        <div class="d-flex justify-content-between pr-4">
+                                            <div>
+                                                <ul class="list-inline mb-2">
                                                     <li class="list-inline-item">Size :</li>
                                                     {product && product.size[0] != "single" ?
                                                         product.size.map(size => <li class="list-inline-item"><span class={productSize != size ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize(size)}>{size}</span></li>) :
                                                         <li class="list-inline-item"><span class={productSize != "single" ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize("single")}>One Size</span></li>
                                                     }
                                                 </ul>
+                                                <span className={sizeClass} style={{ fontSize: "1.07rem" }}>Please select the color of the product</span>
+
                                             </div>
-                                            <div class="col-auto">
+                                            <div>
                                                 <ul class="list-inline pb-3">
                                                     <li class="list-inline-item text-right">
                                                         Quantity
@@ -264,10 +347,33 @@ const SingleProductPage = ({ products }) => {
                                                 </ul>
                                             </div>
                                         </div>
+                                        {/* <div class="row">
+                                            <div class="col-6">
+                                                <ul class="list-inline mb-2">
+                                                    <li class="list-inline-item">Size :</li>
+                                                    {product && product.size[0] != "single" ?
+                                                        product.size.map(size => <li class="list-inline-item"><span class={productSize != size ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize(size)}>{size}</span></li>) :
+                                                        <li class="list-inline-item"><span class={productSize != "single" ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize("single")}>One Size</span></li>
+                                                    }
+                                                </ul>
+                                                <span className={sizeClass} style={{ fontSize: "1.07rem" }}>Please select the color of the product</span>
+
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="list-inline pb-3">
+                                                    <li class="list-inline-item text-right">
+                                                        Quantity
+                                                    </li>
+                                                    <li class="list-inline-item"><span class={productCount == 1 ? "btn btn-secondary" : "btn btn-success"} id="btn-minus" onClick={minusCount}>-</span></li>
+                                                    <li class="list-inline-item"><span style={{ fontWeight: "bolder" }}>{productCount}</span></li>
+                                                    <li class="list-inline-item"><span class="btn btn-success" id="btn-plus" onClick={plusCount}>+</span></li>
+                                                </ul>
+                                            </div>
+                                        </div> */}
                                         <div class="row pb-3">
                                             <div class="col d-flex justify-content-between align-items-center">
                                                 {product && product.available == true ?
-                                                    <button type="button" class="btn btn-success btn-lg">Add To Cart</button> :
+                                                    <button type="button" class="btn btn-success btn-lg" onClick={addToCart}>Add To Cart</button> :
                                                     <h4 className='mr-3 mt-2 text-danger'>Not Available</h4>
                                                 }
                                             </div>
@@ -289,7 +395,6 @@ const SingleProductPage = ({ products }) => {
 
                 <div className="row">
 
-                    {/* {relatedProduct ? relatedProduct.map(item => <SingleRelatedCart id={item._id} name={item.name} picture={item.picture} price={item.price} color={item.color} size={item.size} />) : null} */}
                     {relatedProduct && relatedProduct.length < 0 ? relatedProduct.map(item =>
                         <div id="carousel-related-product" className='col-4'>
                             <div class="p-2 pb-3">

@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
-import ContextApi from '../../services/ContextApi';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import SingleShopCart from '../SingleShopCart';
+import ContextApi from '../../services/ContextApi';
 
 
 const ShopCart = ({ userData }) => {
 
-    const context = useContext(ContextApi);
-
     const result = () => {
-        console.log(userData.cart[0]);
-        // context
+        
+
     }
 
     return (
@@ -23,11 +22,19 @@ const ShopCart = ({ userData }) => {
                     </p>
                 </div>
             </div>
-            <button className="btn btn-success" onClick={result}>Result</button>
+            <button className="btn btn-success" onClick={result}>Resultt</button>
             <div className="row">
-                {userData.cart[0] != undefined ? userData.cart.map(item => <SingleShopCart path={"cart"} id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />) : <h5 className='mx-auto my-5'>There is nothing in the shopping cart</h5>}
+                {userData.cart[0] != undefined ?
+                    userData.cart.map(item => <SingleShopCart path={"cart"} id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} count={item.count} />) :
+                    <div className='mx-auto'>
+                        <h5 className='my-5 font-weight-normal'>There is nothing in the shopping cart <Link to="/shop" className="text-success font-weight-normal ml-3" style={{ textDecoration: "none" }}>Buy Now <i class="far fa-cart-shopping"></i></Link></h5>
+                    </div>
+                }
             </div>
 
+            {userData.cart[0] != undefined ?
+                <button type="button" class="btn btn-success btn-lg mb-3 mt-2">Payment</button> : null
+            }
         </section>
     );
 }
