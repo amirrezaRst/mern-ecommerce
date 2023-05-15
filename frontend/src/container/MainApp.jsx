@@ -88,7 +88,7 @@ const MainApp = () => {
 
                     <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
 
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
                     <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
                 </Routes>
                 <ToastContainer />

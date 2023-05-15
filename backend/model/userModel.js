@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
     profile: { type: String },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     cart: [cartSchema],
+    wallet: { type: Number, default: 0 },
     zayScore: { type: Number, default: 0 },
     favorite: [{ type: mongoose.Types.ObjectId, ref: "products", default: null }]
 })

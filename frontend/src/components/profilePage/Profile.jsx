@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-import { Link } from "react-router-dom";
+import config from "../../services/config.json";
+import ContextApi from '../../services/ContextApi';
 
-import profile from "./profile.jpg";
+const Profile = ({ userData }) => {
 
-const Profile = () => {
+    const context = useContext(ContextApi);
+    const navigation = useNavigate();
+
+    const result = () => {
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("userId"));
+    }
+
+    const logout = () => {
+        Swal.fire({
+            icon: "error",
+            html: '<span style="font-size:1.4rem;font-weight:normal">Are you sure you want to log out?</sp>',
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#db3030",
+            confirmButtonText: "Logout!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                context.setUserData(undefined);
+                context.setUserLogin(false);
+                navigation("/");
+                Swal.fire({
+                    icon: "success",
+                    html: '<span style="font-size:1.4rem;font-weight:normal">You have logout successfully</span>',
+                    confirmButtonColor: "#59AB6E",
+                    confirmButtonText: "Ok"
+                })
+            }
+        })
+    }
+
     return (
         <React.Fragment>
 
@@ -16,31 +51,32 @@ const Profile = () => {
                             <div className="card-body px-3">
 
                                 <div className="d-flex align-items-center justify-content-between">
-                                    <img src={profile} alt="" className='img-fluid rounded-circle' style={{ width: "17%" }} />
+                                    {/* <img src={`${config.domain}/${userData ? userData.profile : null}`} alt="" className='img-fluid rounded-circle' style={{ width: "17%" }} /> */}
                                     <div className="d-flex flex-column">
-                                        <span className='font-weight-bold'>Amirreza Rostami</span>
-                                        <span className='font-weight-normal text-black-50'>09903738378</span>
+                                        {/* <span className='font-weight-bold text-capitalize'>{userData.fullName ? userData.fullName : null}</span>
+                                        <span className='font-weight-normal text-black-50'>{userData.phone ? userData.phone : null}</span> */}
                                     </div>
-                                    <i class="fa-solid fa-user-pen" style={{ color: "#169632" }}></i>
+                                    <Link to="/profile/info"><i class="fa-solid fa-user-pen" style={{ color: "#169632" }}></i></Link>
                                     {/* <i class="fa-solid fa-pen-line"></i> */}
                                 </div>
                                 <div className="d-flex justify-content-between mt-4">
                                     <div className="d-flex flex-column">
                                         <span className='font-weight-normal' style={{ fontSize: "1.1rem" }}>Wallet</span>
-                                        <span className='font-weight-normal' style={{ fontSize: "1.1rem", color: "#169632" }}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span>
+                                        <span className='font-weight-normal' style={{ fontSize: "1.1rem", color: "#169632", cursor: "pointer" }}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span>
                                     </div>
-                                    <span className='font-weight-bold'>$0</span>
+                                    <span className='font-weight-bold'>${userData && userData.wallet ? userData.wallet : null}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mt-4">
                                     <div className="d-flex flex-column">
                                         <span className='font-weight-normal' style={{ fontSize: "1.1rem" }}>Zay Club</span>
-                                        {/* <span className='font-weight-normal' style={{fontSize:"1.1rem",color:"#169632"}}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span> */}
+                                        <span className='font-weight-normal' style={{ fontSize: "1.1rem", color: "#169632" }}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span>
                                     </div>
-                                    <span className='font-weight-bold' style={{ fontSize: "1rem" }}>Score 14</span>
+                                    <span className='font-weight-normal' style={{ fontSize: "1rem" }}>Score <span className='font-weight-bold'>{userData && userData.zayScore ? userData.zayScore : null}</span></span>
                                 </div>
 
                                 <div className="dropdown-divider mt-4 mb-3"></div>
 
+                                <button className="btn btn-primary" onClick={result}>Result</button>
                             </div>
                             <div className='pb-3' >
 
@@ -98,9 +134,9 @@ const Profile = () => {
                                 </div>
                                 {/* End Single Menu Item */}
                                 <div className="d-flex align-items-center justify-content-between mt-5 pt-3">
-                                    <div style={{ cursor: "pointer", color: "#ef0000" }}>
-                                        <i class="fa-solid fa-right-from-bracket pl-3 mx-2" style={{fontSize:"1.3rem"}}></i>
-                                        <span className='font-weight-normal' style={{fontSize:"1.3rem"}}>Logout</span>
+                                    <div style={{ cursor: "pointer", color: "#ef0000" }} onClick={logout}>
+                                        <i class="fa-solid fa-right-from-bracket pl-3 mx-2" style={{ fontSize: "1.3rem" }}></i>
+                                        <span className='font-weight-normal' style={{ fontSize: "1.3rem" }}>Logout</span>
                                     </div>
                                 </div>
 
@@ -117,8 +153,8 @@ const Profile = () => {
                     </main>
 
                 </div>
-            </div>
-        </React.Fragment>
+            </div >
+        </React.Fragment >
     );
 }
 

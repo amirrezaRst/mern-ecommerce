@@ -67,6 +67,10 @@ const Login = () => {
             context.setUserLogin(true);
             context.setUserData(res.data.user)
             navigation("/");
+            window.scrollTo({
+                top: 20,
+                behavior: "smooth"
+            })
         }).catch(err => {
             if (err.message == "Request failed with status code 433") {
                 setPasswordClass("form-control mb-3 form-invalid");
