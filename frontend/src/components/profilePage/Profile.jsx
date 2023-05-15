@@ -51,10 +51,10 @@ const Profile = ({ userData }) => {
                             <div className="card-body px-3">
 
                                 <div className="d-flex align-items-center justify-content-between">
-                                    {/* <img src={`${config.domain}/${userData ? userData.profile : null}`} alt="" className='img-fluid rounded-circle' style={{ width: "17%" }} /> */}
+                                    <img src={`${config.domain}/${userData ? userData.profile : null}`} alt="" className='img-fluid rounded-circle' style={{ width: "17%" }} />
                                     <div className="d-flex flex-column">
-                                        {/* <span className='font-weight-bold text-capitalize'>{userData.fullName ? userData.fullName : null}</span>
-                                        <span className='font-weight-normal text-black-50'>{userData.phone ? userData.phone : null}</span> */}
+                                        <span className='font-weight-bold text-capitalize'>{userData ? userData.fullName : null}</span>
+                                        <span className='font-weight-normal text-black-50'>{userData ? userData.phone : null}</span>
                                     </div>
                                     <Link to="/profile/info"><i class="fa-solid fa-user-pen" style={{ color: "#169632" }}></i></Link>
                                     {/* <i class="fa-solid fa-pen-line"></i> */}
