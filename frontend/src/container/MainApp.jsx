@@ -1,10 +1,13 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 import axios from "axios";
 import config from "../services/config.json";
 import { ToastContainer } from "react-toastify";
 import { toast } from 'react-toastify';
+
+import MainLayout from '../components/layout/MainLayout';
+import ProfileLayout from '../components/layout/ProfileLayout';
 
 import About from '../components/aboutPage/About';
 import Contact from '../components/contactPage/Contact';
@@ -17,11 +20,13 @@ import SingleProductPage from "../components/SingleProductPage";
 import Signup from '../components/register/Signup';
 import Login from '../components/register/Login';
 
-import FavoriteProduct from '../components/profilePage/FavoriteProduct';
 import Profile from "../components/profilePage/Profile";
-
-import MainLayout from '../components/layout/MainLayout';
+import FavoriteProduct from '../components/profilePage/FavoriteProduct';
 import ContextApi from '../services/ContextApi';
+import Messages from '../components/profilePage/Messages';
+import PersonalInfo from '../components/profilePage/PersonalInfo';
+import Comments from '../components/profilePage/Comments';
+import Orders from '../components/profilePage/Orders';
 
 
 const MainApp = () => {
@@ -31,6 +36,9 @@ const MainApp = () => {
     const [userLogin, setUserLogin] = useState(false);
 
     const [products, setProducts] = useState([]);
+
+    const path = useLocation().pathname;
+
 
 
     const getProductApi = async () => {
@@ -51,7 +59,6 @@ const MainApp = () => {
         const userId = localStorage.getItem("userId");
 
         await axios.get(`${config.domain}/api/user/singleUser/${userId}`).then(res => {
-            // console.log(res.data.user);
             setUserData(res.data.user);
             setUserLogin(true);
         }).catch(err => {
@@ -71,33 +78,50 @@ const MainApp = () => {
 
 
     return (
+        <Fragment>
+            {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" ?
+                <ProfileLayout userStatus={userLogin} userData={userData}>
 
-        <MainLayout userStatus={userLogin} userData={userData}>
+                    <Routes>
+                        <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
+                        <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
+                        <Route path="/profile/messages" element={userLogin === true ? <Messages /> : <Login />} />
+                        <Route path="/profile/info" element={userLogin === true ? <PersonalInfo /> : <Login />} />
+                        <Route path="/profile/comments" element={userLogin === true ? <Comments /> : <Login />} />
+                        <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
+                    </Routes>
 
-            <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
+                </ProfileLayout> :
+                <MainLayout userStatus={userLogin} userData={userData}>
 
-                <Routes>
-                    <Route path="/" exact element={<Home products={products} />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/shop" element={<Shop products={products} />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/product/*" element={<SingleProductPage products={products} />} />
+                    <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/login" element={<Login />} />
+                        <Routes>
+                            <Route path="/" exact element={<Home products={products} />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/shop" element={<Shop products={products} />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/product/*" element={<SingleProductPage products={products} />} />
 
-                    <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
+                            <Route path="/signup" element={<Signup />} />
+                            <Route path="/login" element={<Login />} />
 
-                    <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
-                    <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
-                </Routes>
-                <ToastContainer />
+                            <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
 
 
-            </ContextApi.Provider>
 
-        </MainLayout>
 
+                        </Routes>
+                        <ToastContainer />
+
+
+                    </ContextApi.Provider>
+
+                </MainLayout>
+            }
+
+
+        </Fragment>
     );
 }
 
