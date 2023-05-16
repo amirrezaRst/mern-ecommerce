@@ -21,3 +21,10 @@ exports.loginValidation = (data) => {
     })
     return schema.validate(data);
 }
+
+exports.favoriteValidation = (data) => {
+    const schema = joi.object({
+        id: joi.string().required().trim()
+    })
+    return schema.validate(data);
+}

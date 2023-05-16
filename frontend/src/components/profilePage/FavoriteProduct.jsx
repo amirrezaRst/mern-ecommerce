@@ -1,33 +1,36 @@
 import React from 'react';
-import SingleShopCart from '../SingleShopCart';
 
+import SingleFavoriteCart from './SingleFavoriteCart';
+import { Favorite } from "../utils/ProfileSvg"
 
 const FavoriteProduct = ({ userData }) => {
 
     const result = () => {
-        console.log(userData);
+        // console.log(userData.favorite);
+        // userData.map((item) => {
+        //     console.log(item.name);
+        // })
     }
 
     return (
-        <section className="container py-4">
-            <div class="row text-center pt-3 mb-5" >
-                <div class="col-lg-6 m-auto">
-                    <h1 class="h1">Favorite Product</h1>
-                    <p>
-                        It's not cheaper than us, so don't waste your time.
-                    </p>
+        <div className="card shadow-sm" >
+            <div className="card-body">
+
+                <button className="btn btn-primary" onClick={result}>Result</button>
+                <div className="row">
+                    {userData ?
+                        userData.favorite.map(item => <SingleFavoriteCart id={item._id} name={item.name} color={item.color} price={item.price} picture={item.picture[0]} size={item.size} />) :
+                        <div className="py-3 pb-5">
+                            <div className="mx-auto text-center">
+                                <Favorite />
+                            </div>
+                            <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>Your favorites list is empty</span>
+                        </div>
+                    }
                 </div>
+
             </div>
-
-            {/* <button className="btn btn-success" onClick={result}>Result</button> */}
-
-            <div className="row">
-                {userData.favorite[0] != undefined ? userData.cart.map(item => <SingleShopCart path={"cart"} id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />) : <h5 className='mx-auto my-5'>There is nothing your favorite</h5>}
-
-                {/* <SingleShopCart path={"cart"} /> */}
-            </div>
-
-        </section>
+        </div>
     );
 }
 

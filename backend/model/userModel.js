@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
     cart: [cartSchema],
     wallet: { type: Number, default: 0 },
     zayScore: { type: Number, default: 0 },
-    favorite: [{ type: mongoose.Types.ObjectId, ref: "products", default: null }]
+    // favorite: [{ type: mongoose.Types.ObjectId, ref: "products", default: null }]
+    favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }]
 })
 
 exports.userModel = mongoose.model("users", userSchema);

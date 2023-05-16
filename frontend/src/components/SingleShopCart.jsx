@@ -95,7 +95,7 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                             null :
                             <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
                                 <ul class="list-unstyled">
-                                    <li><button class="btn btn-success text-white"><i class="fas fa-heart"></i></button></li>
+                                    <li><button class="btn btn-success text-white"><i class="far fa-heart"></i></button></li>
                                     <li><Link to={`/product/${id}`} class="btn btn-success text-white mt-2"><i class="far fa-eye"></i></Link></li>
                                     <li><button class="btn btn-success text-white mt-2"><i class="fa-solid fa-cart-plus"></i></button></li>
                                 </ul>

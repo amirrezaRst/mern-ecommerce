@@ -6,7 +6,7 @@ const sharp = require('sharp');
 const shortid = require('shortid');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation } = require("./validation/userValidation");
 
 
 
@@ -24,6 +24,40 @@ exports.singleUser = async (req, res) => {
     if (!targetUser) res.status(404).json({ text: "user not found" });
 
     res.json({ text: "success", user: targetUser });
+}
+
+exports.addFavorite = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+
+    const user = await userModel.findById(req.params.userId).populate("favorite");
+
+    user.favorite.push(req.params.productId);
+    await user.save();
+
+    const newUser = await userModel.findById(req.params.userId).populate("favorite");
+
+    res.json({ text: "product added", user: newUser });
+}
+
+exports.removeFavorite = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+
+    const user = await userModel.findById(req.params.userId).populate("favorite");
+
+    const itemIndex = user.favorite.findIndex(item => {
+        return item._id == req.params.productId
+    })
+
+    if (itemIndex > -1) {
+        await user.favorite.splice(itemIndex, 1);
+    }
+    else {
+        return res.status(422).json({ text: "product not found" });
+    }
+
+    await user.save();
+
+    res.json({ text: "product removed", user })
 }
 
 
@@ -126,6 +160,8 @@ exports.login = async (req, res) => {
 }
 
 
+
+//! Delete Request
 exports.deleteUser = async (req, res) => {
     if (!isValidObjectId(req.params)) return res.status(422).json({ text: "id is not valid" })
 
