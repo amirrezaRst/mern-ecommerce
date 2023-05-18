@@ -7,7 +7,7 @@ const MainNav = ({ userStatus, userData }) => {
 
 
     const result = () => {
-        console.log(userData.cart.length);
+        console.log(userData);
     }
 
     return (

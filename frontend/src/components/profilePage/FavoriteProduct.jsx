@@ -10,6 +10,7 @@ const FavoriteProduct = ({ userData }) => {
         // userData.map((item) => {
         //     console.log(item.name);
         // })
+        console.log(userData);
     }
 
     return (
@@ -17,20 +18,20 @@ const FavoriteProduct = ({ userData }) => {
             <div className="card-body">
 
                 <button className="btn btn-primary" onClick={result}>Result</button>
-                <div className="row">
-                    {userData ?
-                        userData.favorite.map(item => <SingleFavoriteCart id={item._id} name={item.name} color={item.color} price={item.price} picture={item.picture[0]} size={item.size} />) :
-                        <div className="py-3 pb-5">
-                            <div className="mx-auto text-center">
-                                <Favorite />
-                            </div>
-                            <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>Your favorites list is empty</span>
+                {userData ?
+                    <div className="row">
+                        {userData.favorite.map(item => <SingleFavoriteCart id={item._id} userId={userData._id} name={item.name} color={item.color} price={item.price} picture={item.picture[0]} size={item.size} />)}
+                    </div> :
+                    <div className="py-3 pb-5">
+                        <div className="d-flex justify-content-center">
+                            <Favorite />
                         </div>
-                    }
-                </div>
+                        <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>Your favorites list is empty</span>
+                    </div>
+                }
 
             </div>
-        </div>
+        </div >
     );
 }
 
