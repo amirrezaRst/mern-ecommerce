@@ -6,7 +6,7 @@ const sharp = require('sharp');
 const shortid = require('shortid');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation, favoriteValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation } = require("./validation/userValidation");
 
 
 
@@ -167,6 +167,55 @@ exports.login = async (req, res) => {
     const token = jwt.sign(tokenData, process.env.JWT_SECRET);
 
     res.header("Access-Control-Expose-headers", "x-auth-token").header("x-auth-token", token).json({ text: "login successfully", user });
+}
+
+//! Delete Request
+exports.editFullName = async (req, res) => {
+    if (editNameValidation(req.body).error) return res.status(422).json({ text: editNameValidation(req.body).error.message });
+
+    const user = await userModel.findById(req.params.id);
+
+    user.fullName = req.body.fullName;
+
+    await user.save();
+
+    res.json({ text: "user edited", user })
+}
+
+exports.editPhone = async (req, res) => {
+    if (editPhoneValidation(req.body).error) return res.status(422).json({ text: editPhoneValidation(req.body).error.message });
+
+    const user = await userModel.findById(req.params.id);
+
+    user.phone = req.body.phone;
+
+    await user.save();
+
+    res.json({ text: "user edited", user })
+}
+
+exports.editEmail = async (req, res) => {
+    if (editEmailValidation(req.body).error) return res.status(422).json({ text: editEmailValidation(req.body).error.message });
+
+    const user = await userModel.findById(req.params.id);
+
+    user.email = req.body.email;
+
+    await user.save();
+
+    res.json({ text: "user edited", user })
+}
+
+exports.editPassword = async (req, res) => {
+    if (editPasswordValidation(req.body).error) return res.status(422).json({ text: editPasswordValidation(req.body).error.message });
+
+    const user = await userModel.findById(req.params.id);
+
+    user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+
+    await user.save();
+
+    res.json({ text: "user edited", user })
 }
 
 

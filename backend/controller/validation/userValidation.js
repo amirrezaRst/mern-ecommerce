@@ -28,3 +28,33 @@ exports.favoriteValidation = (data) => {
     })
     return schema.validate(data);
 }
+
+
+
+exports.editNameValidation = (data) => {
+    const schema = joi.object({
+        fullName: joi.string().trim().max(40).min(3).required()
+    })
+    return schema.validate(data);
+}
+
+exports.editPhoneValidation = (data) => {
+    const schema = joi.object({
+        phone: joi.string().trim().max(11).min(11).required()
+    })
+    return schema.validate(data)
+}
+
+exports.editEmailValidation = (data) => {
+    const schema = joi.object({
+        email: joi.string().trim().required()
+    })
+    return schema.validate(data);
+}
+
+exports.editPasswordValidation = (data) => {
+    const schema = joi.object({
+        password: joi.string().trim().required()
+    })
+    return schema.validate(data);
+}

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-import { Delivered, Processing, Returned } from "../utils/ProfileSvg";
+import { Delivered, Processing, Returned, History } from "../utils/ProfileSvg";
 
-import ReturnedSvg from "../utils/ReturnedSvg";
-import ProcessingSvg from "../utils/ProcessingSvg";
 
 const Profile = ({ userData }) => {
+
+    const result = () => {
+        console.log(localStorage.getItem("recentProduct"));
+    }
+
     return (
         <React.Fragment>
 
@@ -66,7 +69,19 @@ const Profile = ({ userData }) => {
                                 <h5>History</h5>
                                 <div className="mt-3" style={{ background: "#169632", width: "75%", height: "3px" }}></div>
                             </div>
-                            <h6><Link style={{ color: "#169632", textDecoration: "none" }}>View all <i class="fa-regular fa-arrow-right ml-1"></i></Link></h6>
+                            <h6 onClick={result}><Link style={{ color: "#169632", textDecoration: "none" }}>View all <i class="fa-regular fa-arrow-right ml-1"></i></Link></h6>
+                        </div>
+
+                        <div className="">
+                            {localStorage.getItem("recentProduct") != null ?
+                                null :
+                                <div className="py-3 pb-5">
+                                    <div className="d-flex justify-content-center">
+                                        <History />
+                                    </div>
+                                    <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>You have not visited any products recently</span>
+                                </div>
+                            }
                         </div>
 
                     </div>

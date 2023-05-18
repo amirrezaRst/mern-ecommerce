@@ -11,6 +11,6 @@ module.exports = (req, res, next) => {
         // res.send(user)
         next()
     } catch (ex) {
-        return res.status(401).send("You do not have permission to access the information")
+        return res.status(401).json({ text: "You do not have permission to access the information" })
     }
 }

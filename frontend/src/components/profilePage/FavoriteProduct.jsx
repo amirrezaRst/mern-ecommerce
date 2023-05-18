@@ -5,8 +5,6 @@ import { toast } from 'react-toastify';
 
 import { Favorite } from "../utils/ProfileSvg"
 import SingleFavoriteCart from './SingleFavoriteCart';
-import config from "../../services/config.json";
-import ContextApi from '../../services/ContextApi';
 
 
 const FavoriteProduct = ({ userData }) => {
@@ -14,6 +12,13 @@ const FavoriteProduct = ({ userData }) => {
     return (
         <div className="card shadow-sm" >
             <div className="card-body pt-4 pb-5">
+
+                <div className="d-flex mb-4">
+                    <div className="">
+                        <h5 className='font-weight-normal'>Favorite List</h5>
+                        <div style={{ background: "#169632", width: "75%", height: "3px" }}></div>
+                    </div>
+                </div>
 
                 {userData != undefined && userData.favorite.length != 0 ?
                     <div className="row">
