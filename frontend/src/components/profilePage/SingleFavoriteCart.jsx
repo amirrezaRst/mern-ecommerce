@@ -7,17 +7,21 @@ import config from "../../services/config.json";
 import ContextApi from '../../services/ContextApi';
 
 
-const SingleFavoriteCart = ({ id, userId, name, picture, color, size, price, index }) => {
+const SingleFavoriteCart = ({ id, name, picture, color, size, price, index }) => {
 
     const context = useContext(ContextApi);
 
     const result = () => {
-        console.log(context);
+        console.log(context.userData);
     }
 
     const removeFavorite = async () => {
-        await axios.get(`${config.domain}/api/user/removeFavorite/${userId}/${id}`).then(res => {
-            console.log(res);
+        await axios.get(`${config.domain}/api/user/removeFavorite/${context.userData._id}/${id}`).then(res => {
+            toast.success(`Removed from favorites list`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
             context.setUserData(res.data.user);
         }).catch(err => {
             toast.error(`Something went wrong please try again`, {
@@ -34,13 +38,12 @@ const SingleFavoriteCart = ({ id, userId, name, picture, color, size, price, ind
 
             <div class="col-md-4">
                 <div>
-                    <div class="card mb-4 product-wap">
+                    <div class="card product-wap">
                         <div class="card">
                             <img class="card-img img-fluid" src={picture ? `${config.domain}/${picture}` : null} />
                             <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
                                 <ul class="list-unstyled">
-                                    <li><button class="btn btn-success text-white mb-2" onClick={result}><i class="fas fa-car"></i></button></li>
-                                    <li><button class="btn btn-success text-white" onClick={removeFavorite}><i class="fas fa-heart"></i></button></li>
+                                    <li><button class="btn btn-success text-white" onClick={removeFavorite}><i class="fas fa-heart-circle-minus"></i></button></li>
                                     <li><Link to={`/product/${id}`} class="btn btn-success text-white mt-2"><i class="far fa-eye"></i></Link></li>
                                     {/* <li><button class="btn btn-success text-white mt-2"><i class="fa-solid fa-cart-plus"></i></button></li> */}
                                 </ul>
@@ -52,7 +55,7 @@ const SingleFavoriteCart = ({ id, userId, name, picture, color, size, price, ind
 
                             <div className="">
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-1">
-                                    <li className='' style={{ color: "#898989" }}>{size[0] && size[0] != "single" ? size.map(size => <span>{size}/</span>) : "_"}</li>
+                                    <li className='' style={{ color: "#898989", wordBreak: "break-all" }}>{size[0] && size[0] != "single" ? size.map(size => <span>{size}/</span>) : "_"}</li>
                                 </ul>
                                 <li class="pt-2 pb-3 d-block">
                                     <div className='d-flex'>{color.map(col => <span class={`product-color-dot color-dot-${col} float-left rounded-circle ml-1`}></span>)}</div>

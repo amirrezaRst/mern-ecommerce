@@ -79,22 +79,25 @@ const MainApp = () => {
 
     return (
         <Fragment>
-            {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" ?
-                <ProfileLayout userStatus={userLogin} userData={userData}>
+           
+            <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
+           
+                {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" ?
+                    <ProfileLayout userStatus={userLogin} userData={userData}>
 
-                    <Routes>
-                        <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
-                        <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
-                        <Route path="/profile/messages" element={userLogin === true ? <Messages /> : <Login />} />
-                        <Route path="/profile/info" element={userLogin === true ? <PersonalInfo /> : <Login />} />
-                        <Route path="/profile/comments" element={userLogin === true ? <Comments /> : <Login />} />
-                        <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
-                    </Routes>
+                        <Routes>
+                            <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
+                            <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
+                            <Route path="/profile/messages" element={userLogin === true ? <Messages /> : <Login />} />
+                            <Route path="/profile/info" element={userLogin === true ? <PersonalInfo /> : <Login />} />
+                            <Route path="/profile/comments" element={userLogin === true ? <Comments /> : <Login />} />
+                            <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
+                        </Routes>
+                        <ToastContainer />
 
-                </ProfileLayout> :
-                <MainLayout userStatus={userLogin} userData={userData}>
+                    </ProfileLayout> :
+                    <MainLayout userStatus={userLogin} userData={userData}>
 
-                    <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
                         <Routes>
                             <Route path="/" exact element={<Home products={products} />} />
@@ -114,12 +117,10 @@ const MainApp = () => {
                         </Routes>
                         <ToastContainer />
 
+                    </MainLayout>
+                }
 
-                    </ContextApi.Provider>
-
-                </MainLayout>
-            }
-
+            </ContextApi.Provider>
 
         </Fragment>
     );

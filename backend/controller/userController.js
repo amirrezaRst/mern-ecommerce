@@ -31,7 +31,17 @@ exports.addFavorite = async (req, res) => {
 
     const user = await userModel.findById(req.params.userId).populate("favorite");
 
-    user.favorite.push(req.params.productId);
+    const itemIndex = user.favorite.findIndex(item => {
+        return item._id == req.params.productId
+    })
+
+    if (itemIndex > -1) {
+        return res.status(203).json({ text: "The product has already been added" });
+    }
+    else {
+        user.favorite.push(req.params.productId);
+    }
+
     await user.save();
 
     const newUser = await userModel.findById(req.params.userId).populate("favorite");

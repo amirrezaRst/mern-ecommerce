@@ -13,10 +13,7 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
     const context = useContext(ContextApi);
 
     const result = () => {
-        var newCart = context.userData
-        // newCart = []
-        newCart.cart = []
-        console.log(newCart);
+        console.log(context.userData);
     }
 
     //! Handle Product Count
@@ -59,10 +56,8 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
             confirmButtonColor: "#db3030",
             confirmButtonText: "Delete!"
         }).then(async (result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 await axios.delete(`${config.domain}/api/cart/deleteCart/${context.userData._id}/${id}`).then(res => {
-                    // console.log(res);
                     context.setUserData(res.data.user);
                 }).catch(err => {
                     toast.error(`Something went wrong please try later`, {
@@ -95,7 +90,7 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                             null :
                             <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
                                 <ul class="list-unstyled">
-                                    <li><button class="btn btn-success text-white"><i class="far fa-heart"></i></button></li>
+                                    <li><button class="btn btn-success text-white"><i class="far fa-heart-circle-plus"></i></button></li>
                                     <li><Link to={`/product/${id}`} class="btn btn-success text-white mt-2"><i class="far fa-eye"></i></Link></li>
                                     <li><button class="btn btn-success text-white mt-2"><i class="fa-solid fa-cart-plus"></i></button></li>
                                 </ul>

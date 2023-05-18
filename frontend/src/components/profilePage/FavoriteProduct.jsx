@@ -1,26 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import axios from "axios";
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import SingleFavoriteCart from './SingleFavoriteCart';
 import { Favorite } from "../utils/ProfileSvg"
+import SingleFavoriteCart from './SingleFavoriteCart';
+import config from "../../services/config.json";
+import ContextApi from '../../services/ContextApi';
+
 
 const FavoriteProduct = ({ userData }) => {
 
-    const result = () => {
-        // console.log(userData.favorite);
-        // userData.map((item) => {
-        //     console.log(item.name);
-        // })
-        console.log(userData);
-    }
-
     return (
         <div className="card shadow-sm" >
-            <div className="card-body">
+            <div className="card-body pt-4 pb-5">
 
-                <button className="btn btn-primary" onClick={result}>Result</button>
-                {userData ?
+                {userData != undefined && userData.favorite.length != 0 ?
                     <div className="row">
-                        {userData.favorite.map(item => <SingleFavoriteCart id={item._id} userId={userData._id} name={item.name} color={item.color} price={item.price} picture={item.picture[0]} size={item.size} />)}
+                        {userData.favorite.map(item => <SingleFavoriteCart id={item._id} name={item.name} color={item.color} price={item.price} picture={item.picture[0]} size={item.size} />)}
                     </div> :
                     <div className="py-3 pb-5">
                         <div className="d-flex justify-content-center">
