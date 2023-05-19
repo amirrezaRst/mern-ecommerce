@@ -4,9 +4,11 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
 const shortid = require('shortid');
+const fs = require('fs');
+const path = require('path');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation } = require("./validation/userValidation");
 
 
 
@@ -112,7 +114,6 @@ exports.register = async (req, res) => {
                     })
                     .resize(255, 255)
                     .toFile(`./public/profile/${fileName}`)
-                    // .toFile(path.join(__dirname, "public", "profile/", fileName))
                     .catch((err) => console.log(err));
 
 
@@ -169,11 +170,12 @@ exports.login = async (req, res) => {
     res.header("Access-Control-Expose-headers", "x-auth-token").header("x-auth-token", token).json({ text: "login successfully", user });
 }
 
-//! Delete Request
+//! Put Request
 exports.editFullName = async (req, res) => {
     if (editNameValidation(req.body).error) return res.status(422).json({ text: editNameValidation(req.body).error.message });
 
     const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" })
 
     user.fullName = req.body.fullName;
 
@@ -186,6 +188,7 @@ exports.editPhone = async (req, res) => {
     if (editPhoneValidation(req.body).error) return res.status(422).json({ text: editPhoneValidation(req.body).error.message });
 
     const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" })
 
     user.phone = req.body.phone;
 
@@ -198,6 +201,7 @@ exports.editEmail = async (req, res) => {
     if (editEmailValidation(req.body).error) return res.status(422).json({ text: editEmailValidation(req.body).error.message });
 
     const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" })
 
     user.email = req.body.email;
 
@@ -210,12 +214,76 @@ exports.editPassword = async (req, res) => {
     if (editPasswordValidation(req.body).error) return res.status(422).json({ text: editPasswordValidation(req.body).error.message });
 
     const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" })
 
     user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 
     await user.save();
 
     res.json({ text: "user edited", user })
+}
+exports.editProfile = async (req, res) => {
+
+    const fileFilter = (req, file, cb) => {
+        if (file.mimetype == "image/jpeg") {
+            cb(null, true);
+        }
+        else if (file.mimetype == "image/jpg") {
+            cb(null, true);
+        }
+        else {
+            cb("The file extension must be jpg or jpeg", false);
+        }
+    };
+
+    const upload = multer({
+        limits: { fileSize: 5000000 },
+        fileFilter: fileFilter,
+    }).single("profile");
+
+    upload(req, res, async (err) => {
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return res
+                    .status(422)
+                    .json({ text: "The size of the photo should not be more than 5 MB" });
+            }
+            res.status(422).send(err);
+        } else {
+            if (req.file) {
+                const fileName = `${shortid.generate()}_${req.file.originalname}`;
+                await sharp(req.file.buffer)
+                    .jpeg({
+                        quality: 70,
+                    })
+                    .resize(255, 255)
+                    .toFile(`./public/profile/${fileName}`)
+                    .catch((err) => console.log(err));
+
+                if (editProfileValidation(req.body).error) return res.status(422).json({ text: editProfileValidation(req.body).error.message });
+
+
+                const user = await userModel.findById(req.params.id);
+                if (!user) return res.status(422).json({ text: "user not found" })
+
+                if (user.profile != "anonymous-user.jpg"){
+                    fs.unlink(path.join(__dirname, '..', "public", "profile/") + user.profile, (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                    });
+                }
+                    console.log(user.profile);
+                user.profile = fileName;
+                console.log(user);
+                await user.save();
+
+                res.json({ message: "user edited", user });
+            } else {
+                return res.status(422).json({ message: "Please enter the profile field" });
+            }
+        }
+    });
 }
 
 

@@ -57,3 +57,27 @@ Custom Css
 .shadow-lg {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important
 }
+
+
+
+/*! personal info */
+
+#change-profile {
+    background-color: transparent;
+    /* border: 1px solid #59AB6E !important; */
+    /* color: #24aa41; */
+    border: 1px solid #2e2e2e !important;
+    color: #141414b6;
+    font-family: sans-serif;
+}
+
+#save-profile{
+    background-color: transparent;
+    border: 1px solid #59AB6E !important;
+    color: #24aa41;
+    font-family: sans-serif;
+}
+
+#info-profile {
+    width: 15%;
+}

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const Auth = require('../middleware/Auth');
-const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword } = require('../controller/userController');
+const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile } = require('../controller/userController');
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.put("/editFullName/:id", [Auth], editFullName);
 router.put("/editPhone/:id", [Auth], editPhone);
 router.put("/editEmail/:id", [Auth], editEmail);
 router.put("/editPassword/:id", [Auth], editPassword);
-
+router.put("/editProfile/:id", [Auth], editProfile);
 
 //! Delete Routes
 router.delete("/deleteUser/:id", deleteUser);

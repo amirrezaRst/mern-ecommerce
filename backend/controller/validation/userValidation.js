@@ -58,3 +58,10 @@ exports.editPasswordValidation = (data) => {
     })
     return schema.validate(data);
 }
+
+exports.editProfileValidation = (data) => {
+    const schema = joi.object({
+        profile: joi.string(),
+    })
+    return schema.validate(data);
+}
