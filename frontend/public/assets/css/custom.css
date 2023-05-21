@@ -9,7 +9,6 @@ Custom Css
     box-shadow: none !important;
 }
 
-
 .shop-top-menu {
     user-select: none;
 }
@@ -71,7 +70,7 @@ Custom Css
     font-family: sans-serif;
 }
 
-#save-profile{
+#save-profile {
     background-color: transparent;
     border: 1px solid #59AB6E !important;
     color: #24aa41;

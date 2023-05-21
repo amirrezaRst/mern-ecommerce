@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios"
 import { toast } from 'react-toastify';
@@ -10,10 +10,19 @@ import ContextApi from '../services/ContextApi';
 
 const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) => {
 
+    const [inFavoriteList, setInFavoriteList] = useState(false);
     const context = useContext(ContextApi);
 
     const result = () => {
-        console.log(context.userData);
+        // console.log(context.userData);
+
+        const findItem = context.userData.favorite.findIndex(item => {
+            return item._id == id
+        })
+
+        if (findItem > -1) console.log(true);
+        else console.log(false);
+        // console.log(findItem);
     }
 
     //! Handle Product Count
@@ -74,8 +83,45 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                 })
             }
         })
-
     }
+
+    //! Handle Favorite Product
+    useEffect(() => {
+        const findItem = context.userData.favorite.findIndex(item => {
+            return item._id == id
+        })
+        if (findItem > -1) {
+            return setInFavoriteList(true);
+        }
+        else {
+            return setInFavoriteList(false);
+        }
+    }, [context.userData])
+    const addToFavorite = async () => {
+        await axios.get(`${config.domain}/api/user/addFavorite/${context.userData._id}/${id}`).then(res => {
+            context.setUserData(res.data.user);
+        }).catch(err => {
+            toast.error(`Something went wrong please try later`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+    }
+    const remoteToFavorite = async () => {
+        await axios.get(`${config.domain}/api/user/removeFavorite/${context.userData._id}/${id}`).then(res => {
+            context.setUserData(res.data.user);
+        }).catch(err => {
+            toast.error(`Something went wrong please try later`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+    }
+
 
     return (
         <div class={path == "cart" ? "col-md-3" : "col-md-4"}>
@@ -83,14 +129,17 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                 <div class="card mb-4 product-wap">
                     <div class="card">
                         {path == "cart" ?
-                            <img class="card-img img-fluid" src={picture ? `${config.domain}/${picture}` : null} /> :
+                            <img class="card-img img-fluid product-cover" src={picture ? `${config.domain}/${picture}` : null} /> :
                             <img class="card-img img-fluid" src={picture[0] ? `${config.domain}/${picture[0]}` : null} />
                         }
                         {path == "cart" ?
                             null :
                             <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
                                 <ul class="list-unstyled">
-                                    <li><button class="btn btn-success text-white"><i class="far fa-heart-circle-plus"></i></button></li>
+                                    {inFavoriteList == true ?
+                                        <li><button class="btn btn-success text-white" onClick={remoteToFavorite}><i class="far fa-heart-circle-minus"></i></button></li> :
+                                        <li><button class="btn btn-success text-white" onClick={addToFavorite}><i class="far fa-heart-circle-plus"></i></button></li>
+                                    }
                                     <li><Link to={`/product/${id}`} class="btn btn-success text-white mt-2"><i class="far fa-eye"></i></Link></li>
                                     <li><button class="btn btn-success text-white mt-2"><i class="fa-solid fa-cart-plus"></i></button></li>
                                 </ul>

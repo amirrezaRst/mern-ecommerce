@@ -27,6 +27,7 @@ import Messages from '../components/profilePage/Messages';
 import PersonalInfo from '../components/profilePage/PersonalInfo';
 import Comments from '../components/profilePage/Comments';
 import Orders from '../components/profilePage/Orders';
+import Payment from '../components/Payment';
 
 
 const MainApp = () => {
@@ -110,8 +111,7 @@ const MainApp = () => {
                             <Route path="/login" element={<Login />} />
 
                             <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
-
-
+                            <Route path="/payment" element={<Payment />} />
 
 
                         </Routes>
