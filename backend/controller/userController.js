@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation, addAddress, addressValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation, addAddress, addressValidation, editAddressValidation } = require("./validation/userValidation");
 
 
 
@@ -23,7 +23,7 @@ exports.singleUser = async (req, res) => {
     if (!isValidObjectId(req.params.id)) return res.status(400).json({ text: "id is not valid" });
 
     const targetUser = await userModel.findById(req.params.id).populate("favorite");
-    if (!targetUser) res.status(404).json({ text: "user not found" });
+    if (!targetUser) return res.status(404).json({ text: "user not found" });
 
     res.json({ text: "success", user: targetUser });
 }
@@ -313,6 +313,37 @@ exports.editProfile = async (req, res) => {
     });
 }
 
+exports.editAddress = async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not founda" });
+
+    if (editAddressValidation(req.body).error) return res.status(422).json({ text: editAddressValidation(req.body).error.message });
+
+
+    if (!user.address[req.params.index]) {
+        return res.status(422).json({ text: "This address does not exist" });
+    }
+
+    // const editAddressInfo = async (index) => {
+    //     user.address[index].location = await req.body.location;
+    //     user.address[index].city = req.body.city;
+    //     user.address[index].postalCode = req.body.postalCode;
+    //     user.address[index].unit = req.body.unit;
+    //     user.address[index].plaque = req.body.plaque;
+    //     user.address[index].transferee = req.body.transferee;
+    //     user.address[index].transfereePhone = req.body.transfereePhone;
+    //     user.address[index].transfereeEmail = req.body.transfereeEmail;
+    // }
+    // await editAddressInfo(req.params.index);
+
+    await user.save();
+
+    res.json({ text: "address edited", user });
+}
+
+
 
 
 //! Delete Request
@@ -323,4 +354,17 @@ exports.deleteUser = async (req, res) => {
     if (!user) return res.status(404).json({ text: "user not found" });
 
     res.json({ text: "user deleted" });
+}
+
+exports.deleteAddress = async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    await user.address.splice(req.params.index, 1);
+
+    await user.save();
+
+    res.json({ text: "address deleted", user })
 }

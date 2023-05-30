@@ -80,3 +80,17 @@ exports.editProfileValidation = (data) => {
     })
     return schema.validate(data);
 }
+
+exports.editAddressValidation = (data) => {
+    const schema = joi.object({
+        location: joi.string().required(),
+        city: joi.string().required(),
+        postalCode: joi.string().required(),
+        unit: joi.string().required(),
+        plaque: joi.string().required(),
+        transferee: joi.string().required(),
+        transfereePhone: joi.string().required(),
+        transfereeEmail: joi.string().required()
+    })
+    return schema.validate(data);
+}

@@ -87,6 +87,7 @@ export const FullNameModal = () => {
                         <input type="text" ref={fullNameRef} id='fullName' className={fullNameClass} placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} />
 
                         <div className="mt-4 pt-1">
+                            <div className="dropdown-divider"></div>
                             <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }} onClick={editApi}>Save</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
@@ -181,6 +182,7 @@ export const PhoneModal = () => {
                         <input type="text" ref={phoneRef} id='phone' className={phoneClass} placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
 
                         <div className="mt-4 pt-1">
+                            <div className="dropdown-divider"></div>
                             <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }} onClick={editApi}>Save</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
@@ -256,6 +258,7 @@ export const EmailModal = () => {
                         <input type="email" ref={emailRef} id='email' className={emailClass} placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
 
                         <div className="mt-4 pt-1">
+                            <div className="dropdown-divider"></div>
                             <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }} onClick={editApi}>Save</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
@@ -287,6 +290,7 @@ export const PasswordModal = () => {
                         <input type="email" id='password' className="form-control" placeholder="Password" />
 
                         <div className="mt-4 pt-1">
+                            <div className="dropdown-divider"></div>
                             <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }}>Save</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
@@ -315,6 +319,90 @@ export const WalletModal = () => {
                         </div>
 
                         <h5 className='py-3 text-center font-weight-normal'>This part is still not available</h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+export const NewAddressModal = () => {
+
+    //! Data States
+    const [locationData, setLocationData] = useState();
+    const [cityData, setCityData] = useState();
+    const [plaqueData, setPlaqueData] = useState();
+    const [unitData, setUnitData] = useState();
+    const [postalData, setPostalData] = useState();
+    const [recipientName, setRecipientName] = useState();
+    const [recipientPhone, setRecipientPhone] = useState();
+    const [recipientEmail, setRecipientEmail] = useState();
+
+    const fullNameRef = useRef();
+    const [fullNameClass, setFullNameClass] = useState("form-control");
+    const context = useContext(ContextApi);
+
+    return (
+        <div class="modal fade" id="new-address-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body my-1">
+
+                        <div className="d-flex justify-content-between">
+                            <div className="">
+                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }}>Address information</h5>
+                                <div style={{ background: "#169632", width: "75%", height: "1.5px" }}></div>
+                            </div>
+                            <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>
+                        </div>
+
+                        <div className="dropdown-divider mt-3 mb-4"></div>
+
+                        <div className="">
+                            <label htmlFor="address" className='font-weight-normal text-black-50 mb-1'>Postal address</label>
+                            <input type="text" ref={fullNameRef} id='address' className={locationData} placeholder="Address" value={locationData} onChange={e => setLocationData(e.target.value)} />
+                            <div className="dropdown-divider mt-4"></div>
+
+                            <label htmlFor="city" className='font-weight-normal text-black-50 mb-1'>City</label>
+                            <input type="text" ref={fullNameRef} id='city' className={fullNameClass} value={cityData} onChange={e => setCityData(e.target.value)} />
+
+                            <div class="row my-3">
+                                <div class="col">
+                                    <input type="text" class="form-control" value={plaqueData} onChange={e => setPlaqueData(e.target.value)} placeholder="Plaque" />
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" value={unitData} placeholder="Unit" onChange={e => setUnitData(e.target.value)} />
+                                </div>
+                            </div>
+                            <input type="text" ref={fullNameRef} id='city' className={fullNameClass} placeholder="Postal Code" value={fullName} onChange={e => setFullName(e.target.value)} />
+
+                            <div className="dropdown-divider my-4"></div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="recipient" />
+                                <label class="form-check-label" for="recipient">
+                                    <span style={{ fontSize: "1rem" }}>I am the recipient of my order</span>
+                                </label>
+                            </div>
+
+                            <label htmlFor="recipient-name" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient full name</label>
+                            <input type="text" ref={fullNameRef} id='recipient-name' className={fullNameClass} placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} />
+
+                            <label htmlFor="recipient-phone" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient phone</label>
+                            <input type="text" ref={fullNameRef} id='recipient-phone' className={fullNameClass} placeholder="Phone Number" value={fullName} onChange={e => setFullName(e.target.value)} />
+
+                            <label htmlFor="recipient-email" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient email</label>
+                            <input type="text" ref={fullNameRef} id='recipient-email' className={fullNameClass} placeholder="Email" value={fullName} onChange={e => setFullName(e.target.value)} />
+
+                        </div>
+
+                        <div className="mt-4 pt-1">
+                            <div className="dropdown-divider"></div>
+                            <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }}>Save</span>
+                            <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
+                        </div>
 
                     </div>
                 </div>

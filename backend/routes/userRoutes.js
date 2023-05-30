@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const Auth = require('../middleware/Auth');
-const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress } = require('../controller/userController');
+const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress, deleteAddress, editAddress } = require('../controller/userController');
 
 const router = Router();
 
@@ -21,9 +21,11 @@ router.put("/editPhone/:id", [Auth], editPhone);
 router.put("/editEmail/:id", [Auth], editEmail);
 router.put("/editPassword/:id", [Auth], editPassword);
 router.put("/editProfile/:id", [Auth], editProfile);
+router.put("/editAddress/:id/:index", [Auth], editAddress);
 
 //! Delete Routes
 router.delete("/deleteUser/:id", deleteUser);
+router.delete("/deleteAddress/:id/:index", deleteAddress);
 
 
 module.exports = router;

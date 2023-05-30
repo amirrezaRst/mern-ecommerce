@@ -22,14 +22,14 @@ const ProfileSidebar = ({ userData }) => {
                     <span className='font-weight-normal' style={{ fontSize: "1.1rem" }}>Wallet</span>
                     <span className='font-weight-normal' style={{ fontSize: "1.1rem", color: "#169632", cursor: "pointer" }}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span>
                 </div>
-                <span className='font-weight-bold'>${userData && userData.wallet ? userData.wallet : null}</span>
+                <span className='font-weight-bold'>${userData && userData.wallet ? userData.wallet : 0}</span>
             </div>
             <div className="d-flex justify-content-between mt-4">
                 <div className="d-flex flex-column">
                     <span className='font-weight-normal' style={{ fontSize: "1.1rem" }}>Zay Club</span>
                     <span className='font-weight-normal' style={{ fontSize: "1.1rem", color: "#169632" }}>Increase credit <i class="fa-solid fa-chevron-right ml-1"></i></span>
                 </div>
-                <span className='font-weight-normal' style={{ fontSize: "1rem" }}>Score <span className='font-weight-bold'>{userData && userData.zayScore ? userData.zayScore : null}</span></span>
+                <span className='font-weight-normal' style={{ fontSize: "1rem" }}>Score <span className='font-weight-bold'>{userData && userData.zayScore ? userData.zayScore : 0}</span></span>
             </div>
 
             <div className="dropdown-divider mt-4 mb-3"></div>
