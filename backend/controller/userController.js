@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation, addAddress, addressValidation } = require("./validation/userValidation");
 
 
 
@@ -170,6 +170,33 @@ exports.login = async (req, res) => {
     res.header("Access-Control-Expose-headers", "x-auth-token").header("x-auth-token", token).json({ text: "login successfully", user });
 }
 
+exports.addAddress = async (req, res) => {
+    if (addressValidation(req.body).error) return res.status(422).json({ text: addressValidation(req.body).error.message });
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status("422").json({ text: "user not found" });
+
+    const address = {
+        location: req.body.location,
+        city: req.body.city,
+        postalCode: req.body.postalCode,
+        unit: req.body.unit,
+        plaque: req.body.plaque,
+        transferee: req.body.transferee,
+        transfereePhone: req.body.transfereePhone,
+        transfereeEmail: req.body.transfereeEmail
+    }
+
+    user.address.push(address);
+
+    await user.save();
+
+    res.send(user);
+}
+
+
+
 //! Put Request
 exports.editFullName = async (req, res) => {
     if (editNameValidation(req.body).error) return res.status(422).json({ text: editNameValidation(req.body).error.message });
@@ -266,14 +293,14 @@ exports.editProfile = async (req, res) => {
                 const user = await userModel.findById(req.params.id);
                 if (!user) return res.status(422).json({ text: "user not found" })
 
-                if (user.profile != "anonymous-user.jpg"){
+                if (user.profile != "anonymous-user.jpg") {
                     fs.unlink(path.join(__dirname, '..', "public", "profile/") + user.profile, (err) => {
                         if (err) {
                             throw err;
                         }
                     });
                 }
-                    console.log(user.profile);
+                console.log(user.profile);
                 user.profile = fileName;
                 console.log(user);
                 await user.save();

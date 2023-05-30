@@ -14,7 +14,7 @@ const ProfileSidebar = ({ userData }) => {
                     <span className='font-weight-bold text-capitalize'>{userData ? userData.fullName : null}</span>
                     <span className='font-weight-normal text-black-50'>{userData ? userData.phone : null}</span>
                 </div>
-                <Link to="/profile/info"><i class="fa-solid fa-user-pen" style={{ color: "#169632" }}></i></Link>
+                <Link to="/profile/info"><i class="far fa-user-pen" style={{ color: "#169632" }}></i></Link>
                 {/* <i class="fa-solid fa-pen-line"></i> */}
             </div>
             <div className="d-flex justify-content-between mt-4">

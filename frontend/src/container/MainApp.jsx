@@ -28,6 +28,7 @@ import PersonalInfo from '../components/profilePage/PersonalInfo';
 import Comments from '../components/profilePage/Comments';
 import Orders from '../components/profilePage/Orders';
 import Payment from '../components/Payment';
+import Address from '../components/profilePage/Address';
 
 
 const MainApp = () => {
@@ -83,7 +84,7 @@ const MainApp = () => {
 
             <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
-                {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" ?
+                {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" || path == "/profile/address" ?
                     <ProfileLayout userStatus={userLogin} userData={userData}>
 
                         <Routes>
@@ -92,6 +93,7 @@ const MainApp = () => {
                             <Route path="/profile/messages" element={userLogin === true ? <Messages userData={userData} /> : <Login />} />
                             <Route path="/profile/info" element={userLogin === true ? <PersonalInfo userData={userData} /> : <Login />} />
                             <Route path="/profile/comments" element={userLogin === true ? <Comments userData={userData} /> : <Login />} />
+                            <Route path="/profile/address" element={userLogin === true ? <Address userData={userData} /> : <Login />} />
                             <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
                         </Routes>
                         <ToastContainer />

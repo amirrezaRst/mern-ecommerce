@@ -42,7 +42,7 @@ const ShopCart = ({ userData }) => {
             <div className="d-flex align-items-baseline justify-content-between pr-5">
                 <h4 className='mt-4 d-inline'>Total Price : ${totalPrice}</h4>
                 {userData.cart[0] != undefined ?
-                    <button type="button" class="btn btn-success btn-lg mb-3 mt-2">Payment</button> : null
+                    <button type="button" class="btn btn-success btn-lg mb-3 mt-2"><Link to="/payment" style={{color:"#ffffff",textDecoration:"none"}}>Payment</Link></button> : null
                 }
             </div>
         </section>

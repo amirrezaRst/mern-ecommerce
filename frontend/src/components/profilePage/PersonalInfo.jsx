@@ -106,7 +106,7 @@ const PersonalInfo = ({ userData }) => {
                     <div className="dropdown-divider my-3"></div>
                     <PasswordModal />
 
-
+                 
                     <div className="mb-2">
                         <span className='d-block font-weight-bold' style={{ fontSize: "1.08rem" }}>Wallet</span>
                         <div className="d-flex justify-content-between mt-2">

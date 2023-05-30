@@ -80,3 +80,17 @@ Custom Css
 #info-profile {
     width: 15%;
 }
+
+
+/*! address page */
+#address-button {
+    background: transparent;
+    border: 1.5px solid #169632;
+    color: #169632
+}
+
+#address-button:hover {
+    background: #169632;
+    border: 1.5px solid #169632;
+    color: #ffffff
+}

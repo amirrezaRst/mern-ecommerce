@@ -29,6 +29,21 @@ exports.favoriteValidation = (data) => {
     return schema.validate(data);
 }
 
+exports.addressValidation = (data) => {
+    const schema = joi.object({
+        location: joi.string().required(),
+        city: joi.string().required(),
+        postalCode: joi.string().required(),
+        unit: joi.string().required(),
+        plaque: joi.string().required(),
+        transferee: joi.string().required(),
+        transfereePhone: joi.string().required(),
+        transfereeEmail: joi.string().required()
+    })
+    return schema.validate(data);
+}
+
+
 
 
 exports.editNameValidation = (data) => {
@@ -61,7 +76,7 @@ exports.editPasswordValidation = (data) => {
 
 exports.editProfileValidation = (data) => {
     const schema = joi.object({
-        profile: joi.string(),
+        profile: joi.string()
     })
     return schema.validate(data);
 }

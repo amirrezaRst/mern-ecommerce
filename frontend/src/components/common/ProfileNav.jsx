@@ -11,7 +11,7 @@ const ProfileNav = () => {
     const navigation = useNavigate();
     const path = useLocation().pathname;
 
-      const logout = () => {
+    const logout = () => {
         Swal.fire({
             icon: "error",
             html: '<span style="font-size:1.4rem;font-weight:normal">Are you sure you want to log out?</sp>',
@@ -89,6 +89,17 @@ const ProfileNav = () => {
                     <div className="bg-success d-inline py-2 mr-2" style={path == "/profile/info" ? { borderRadius: "0 20px 20px 0" } : { borderRadius: "0 20px 20px 0", visibility: "hidden" }}><span style={{ visibility: "hidden" }}>.</span></div>
                     <i class={`${path == "/profile/info" ? "fas" : "far"} fa-fw fa-user mx-2`}></i>
                     <span className='font-weight-normal'>Personal Info</span>
+                </Link>
+            </div>
+            <div className="dropdown-divider mx-2 my-3"></div>
+            {/* End Single Menu Item */}
+
+            {/* Start Single Menu Item */}
+            <div className="d-flex align-items-center justify-content-between">
+                <Link to="/profile/address" style={{ color: "#000000", textDecoration: "none" }}>
+                    <div className="bg-success d-inline py-2 mr-2" style={path == "/profile/address" ? { borderRadius: "0 20px 20px 0" } : { borderRadius: "0 20px 20px 0", visibility: "hidden" }}><span style={{ visibility: "hidden" }}>.</span></div>
+                    <i class={`${path == "/profile/address" ? "fas" : "far"} fa-location-dot mx-2`}></i>
+                    <span className='font-weight-normal'>Address</span>
                 </Link>
             </div>
             <div className="dropdown-divider mx-2 my-3"></div>
