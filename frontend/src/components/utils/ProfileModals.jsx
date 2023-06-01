@@ -340,10 +340,135 @@ export const NewAddressModal = () => {
     const [recipientName, setRecipientName] = useState();
     const [recipientPhone, setRecipientPhone] = useState();
     const [recipientEmail, setRecipientEmail] = useState();
+    const [isRecipient, setIsRecipient] = useState(false);
 
-    const fullNameRef = useRef();
-    const [fullNameClass, setFullNameClass] = useState("form-control");
+    //! Data Ref
+    const locationRef = useRef();
+    const cityRef = useRef();
+    const plaqueRef = useRef();
+    const unitRef = useRef();
+    const postalRef = useRef();
+    const recipientNameRef = useRef();
+    const recipientPhoneRef = useRef();
+    const recipientEmailRef = useRef();
+
+    //! Class States
+    const [locationClass, setLocationClass] = useState("form-control");
+    const [cityClass, setCityClass] = useState("form-control");
+    const [plaqueClass, setPlaqueClass] = useState("form-control");
+    const [unitClass, setUnitClass] = useState("form-control");
+    const [postalClass, setPostalClass] = useState("form-control");
+    const [nameClass, setNameClass] = useState("form-control");
+    const [phoneClass, setPhoneClass] = useState("form-control");
+    const [emailClass, setEmailClass] = useState("form-control");
+
     const context = useContext(ContextApi);
+
+    const changeForm = () => {
+        if (isRecipient === true) {
+            return setIsRecipient(false)
+        }
+        else {
+            setIsRecipient(true);
+            setRecipientName("");
+            setRecipientPhone("");
+            setRecipientEmail("");
+        }
+    }
+
+
+    const addAddressApi = async () => {
+        if (locationData == undefined || locationData == "") {
+            locationRef.current.focus();
+            return setLocationClass("form-control form-invalid")
+        }
+        else if (cityData == undefined || cityData == "") {
+            cityRef.current.focus();
+            setLocationClass("form-control")
+            return setCityClass("form-control form-invalid");
+        }
+        else if (plaqueData == undefined || plaqueData == "") {
+            plaqueRef.current.focus();
+            setCityClass("form-control");
+            return setPlaqueClass("form-control form-invalid");
+        }
+        else if (unitData == undefined || unitData == "") {
+            unitRef.current.focus();
+            setPlaqueClass("form-control");
+            return setUnitClass("form-control form-invalid");
+        }
+        else if (postalData == undefined || postalData == "") {
+            postalRef.current.focus();
+            setUnitClass("form-control");
+            return setPostalClass("form-control form-invalid");
+        }
+        else if (!isRecipient && recipientName == undefined) {
+            recipientNameRef.current.focus();
+            setPostalClass("form-control");
+            return setNameClass("form-control form-invalid");
+        }
+        else if (!isRecipient && recipientPhone == undefined) {
+            recipientPhoneRef.current.focus();
+            setNameClass("form-control");
+            return setPhoneClass("form-control form-invalid");
+        }
+        else if (!isRecipient && recipientEmail == undefined) {
+            recipientEmailRef.current.focus();
+            setPhoneClass("form-control");
+            return setEmailClass("form-control form-invalid");
+        }
+        else {
+            setEmailClass("form-control");
+        }
+
+        if (isRecipient) {
+            setRecipientName(context.userData.fullName);
+            setRecipientPhone(context.userData.phone)
+            setRecipientEmail(context.userData.email)
+        }
+
+
+        const body = {
+            location: locationData,
+            city: cityData,
+            postalCode: postalData,
+            unit: unitData,
+            plaque: plaqueData,
+            transferee: recipientName,
+            transfereePhone: recipientPhone,
+            transfereeEmail: recipientEmail
+
+        };
+
+        await axios.post(`${config.domain}/api/user/addAddress/${context.userData._id}`, body, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(res => {
+            toast.success(`Address added!`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            context.setUserData(res.data.user);
+        }).catch(err => {
+            if (err.message == "Request failed with status code 401") {
+                toast.error(`You do not have the required permission.`, {
+                    position: "bottom-right",
+                    theme: "light",
+                    closeOnClick: true
+                })
+                return console.log(err);
+            }
+            toast.error(`Something went wrong!`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+
+    }
+
+    const result = () => {
+        console.log(recipientName);
+    }
 
     return (
         <div class="modal fade" id="new-address-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -353,7 +478,7 @@ export const NewAddressModal = () => {
 
                         <div className="d-flex justify-content-between">
                             <div className="">
-                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }}>Address information</h5>
+                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }} onClick={result}>Address information</h5>
                                 <div style={{ background: "#169632", width: "75%", height: "1.5px" }}></div>
                             </div>
                             <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>
@@ -363,44 +488,50 @@ export const NewAddressModal = () => {
 
                         <div className="">
                             <label htmlFor="address" className='font-weight-normal text-black-50 mb-1'>Postal address</label>
-                            <input type="text" ref={fullNameRef} id='address' className={locationData} placeholder="Address" value={locationData} onChange={e => setLocationData(e.target.value)} />
+                            <input type="text" ref={locationRef} id='address' className={locationClass} placeholder="Address" value={locationData} onChange={e => setLocationData(e.target.value)} />
                             <div className="dropdown-divider mt-4"></div>
 
                             <label htmlFor="city" className='font-weight-normal text-black-50 mb-1'>City</label>
-                            <input type="text" ref={fullNameRef} id='city' className={fullNameClass} value={cityData} onChange={e => setCityData(e.target.value)} />
+                            <input type="text" ref={cityRef} id='city' className={cityClass} value={cityData} onChange={e => setCityData(e.target.value)} />
 
                             <div class="row my-3">
                                 <div class="col">
-                                    <input type="text" class="form-control" value={plaqueData} onChange={e => setPlaqueData(e.target.value)} placeholder="Plaque" />
+                                    <input type="text" ref={plaqueRef} class={plaqueClass} value={plaqueData} onChange={e => setPlaqueData(e.target.value)} placeholder="Plaque" />
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" value={unitData} placeholder="Unit" onChange={e => setUnitData(e.target.value)} />
+                                    <input type="text" ref={unitRef} class={unitClass} value={unitData} placeholder="Unit" onChange={e => setUnitData(e.target.value)} />
                                 </div>
                             </div>
-                            <input type="text" ref={fullNameRef} id='city' className={fullNameClass} placeholder="Postal Code" value={fullName} onChange={e => setFullName(e.target.value)} />
+                            <input type="text" ref={postalRef} id='postal' className={postalClass} placeholder="Postal Code" value={postalData} onChange={e => setPostalData(e.target.value)} />
 
                             <div className="dropdown-divider my-4"></div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="recipient" />
+                                <input class="form-check-input" type="checkbox" value={isRecipient} id="recipient" onChange={changeForm} />
                                 <label class="form-check-label" for="recipient">
                                     <span style={{ fontSize: "1rem" }}>I am the recipient of my order</span>
                                 </label>
                             </div>
 
-                            <label htmlFor="recipient-name" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient full name</label>
-                            <input type="text" ref={fullNameRef} id='recipient-name' className={fullNameClass} placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} />
+                            <label htmlFor="recipient-name" className={`font-weight-normal text-black-50 mb-1 mt-4 ${isRecipient ? "text-muted" : null}`}>
+                                <span style={{ fontSize: "1.06rem" }}>Recipient full name</span>
+                            </label>
+                            <input type="text" ref={recipientNameRef} readOnly={isRecipient == true ? true : false} id='recipient-name' className={nameClass} placeholder="Full Name" value={isRecipient == true ? context.userData.fullName : recipientName} onChange={e => setRecipientName(e.target.value)} />
 
-                            <label htmlFor="recipient-phone" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient phone</label>
-                            <input type="text" ref={fullNameRef} id='recipient-phone' className={fullNameClass} placeholder="Phone Number" value={fullName} onChange={e => setFullName(e.target.value)} />
+                            <label htmlFor="recipient-phone" className={`font-weight-normal text-black-50 mb-1 mt-4 ${isRecipient ? "text-muted" : null}`}>
+                                <span style={{ fontSize: "1.06rem" }}>Recipient phone</span>
+                            </label>
+                            <input type="text" ref={recipientPhoneRef} readOnly={isRecipient == true ? true : false} id='recipient-phone' className={phoneClass} placeholder="Phone Number" value={isRecipient == true ? context.userData.phone : recipientPhone} onChange={e => setRecipientPhone(e.target.value)} />
 
-                            <label htmlFor="recipient-email" className='font-weight-normal text-black-50 mb-1 mt-4'>Recipient email</label>
-                            <input type="text" ref={fullNameRef} id='recipient-email' className={fullNameClass} placeholder="Email" value={fullName} onChange={e => setFullName(e.target.value)} />
+                            <label htmlFor="recipient-email" className={`font-weight-normal text-black-50 mb-1 mt-4 ${isRecipient ? "text-muted" : null}`}>
+                                <span style={{ fontSize: "1.06rem" }}>Recipient email</span>
+                            </label>
+                            <input type="email" ref={recipientEmailRef} readOnly={isRecipient == true ? true : false} id='recipient-email' className={emailClass} placeholder="Email" value={isRecipient == true ? context.userData.email : recipientEmail} onChange={e => setRecipientEmail(e.target.value)} />
 
                         </div>
 
-                        <div className="mt-4 pt-1">
-                            <div className="dropdown-divider"></div>
-                            <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }}>Save</span>
+                        <div className="dropdown-divider mt-4"></div>
+                        <div className="pt-2">
+                            <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }} onClick={addAddressApi}>Add</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
 

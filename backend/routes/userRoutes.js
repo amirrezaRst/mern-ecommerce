@@ -13,7 +13,7 @@ router.get("/removeFavorite/:userId/:productId", removeFavorite)
 //! Post Routes
 router.post("/register", register);
 router.post("/login", login);
-router.post("/addAddress/:id", addAddress);
+router.post("/addAddress/:id",[Auth], addAddress);
 
 //! Put Routes
 router.put("/editFullName/:id", [Auth], editFullName);

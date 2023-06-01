@@ -192,7 +192,7 @@ exports.addAddress = async (req, res) => {
 
     await user.save();
 
-    res.send(user);
+    res.status(201).json({ text: "address added", user });
 }
 
 
