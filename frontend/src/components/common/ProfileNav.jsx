@@ -112,6 +112,7 @@ const ProfileNav = () => {
                     <i class={`${path == "/profile/messages" ? "fas" : "far"} fa-messages mx-2`}></i>
                     <span className='font-weight-normal'>Messages</span>
                 </Link>
+                <div className="badge badge-success badge-pill mr-3 py-1 px-2"><span style={{ fontSize: "1rem" }}>1</span></div>
             </div>
             {/* End Single Menu Item */}
             <div className="d-flex align-items-center justify-content-between mt-5 pt-3">

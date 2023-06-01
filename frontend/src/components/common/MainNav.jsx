@@ -7,7 +7,8 @@ const MainNav = ({ userStatus, userData }) => {
 
 
     const result = () => {
-        console.log(userData);
+        const item = JSON.parse(localStorage.getItem("history"))
+        console.log(item);
     }
 
     return (
@@ -59,7 +60,7 @@ const MainNav = ({ userStatus, userData }) => {
                                 </Link>
                                 <Link class="nav-icon position-relative text-decoration-none" to="/shop-cart">
                                     <i class="fa fa-fw fa-cart-arrow-down text-dark"></i>
-                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData!=undefined &&userData.cart ? userData.cart.length : null}</span>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{userData != undefined && userData.cart ? userData.cart.length : null}</span>
                                 </Link>
                                 {/* <Link class="nav-icon position-relative text-decoration-none mr-4" to="/favorite-product">
                                     <i class="fa fa-fw fa-heart text-dark"></i>

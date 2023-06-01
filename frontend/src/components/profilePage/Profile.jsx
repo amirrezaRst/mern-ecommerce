@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 
 import { Delivered, Processing, Returned, History } from "../utils/ProfileSvg";
+import SingleFavoriteCart from './SingleHistoryItem';
 
 
 const Profile = ({ userData }) => {
 
+    const [historyProduct, setHistoryProduct] = useState();
+
     const result = () => {
-        console.log(localStorage.getItem("recentProduct"));
+        console.log(historyProduct);
     }
+
+    useEffect(() => {
+        const item = JSON.parse(localStorage.getItem("history"));
+        if (item) {
+            console.log(item.length);
+        }
+        setHistoryProduct(item);
+    }, [])
 
     return (
         <React.Fragment>
@@ -72,9 +83,12 @@ const Profile = ({ userData }) => {
                             <h6 onClick={result}><Link style={{ color: "#169632", textDecoration: "none" }}>View all <i class="fa-regular fa-arrow-right ml-1"></i></Link></h6>
                         </div>
 
-                        <div className="">
-                            {localStorage.getItem("recentProduct") != null ?
-                                null :
+                        <div className="pt-5 pb-4">
+                            {historyProduct != null || historyProduct && historyProduct.length > 0 ?
+                                <div className='row'>
+                                    {historyProduct.map(item => <SingleFavoriteCart id={item.id} name={item.name} picture={item.picture} color={item.color} price={item.price} size={item.size} />)}
+                                </div> :
+                                // null :
                                 <div className="py-3 pb-5">
                                     <div className="d-flex justify-content-center">
                                         <History />

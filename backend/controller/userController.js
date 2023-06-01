@@ -107,7 +107,6 @@ exports.register = async (req, res) => {
 
             if (req.file) {
                 const fileName = `${shortid.generate()}_${req.file.originalname}`;
-                console.log(req.file);
                 await sharp(req.file.buffer)
                     .jpeg({
                         quality: 70,

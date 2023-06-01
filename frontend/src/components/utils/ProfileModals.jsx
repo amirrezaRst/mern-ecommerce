@@ -437,7 +437,6 @@ export const NewAddressModal = () => {
             transferee: recipientName,
             transfereePhone: recipientPhone,
             transfereeEmail: recipientEmail
-
         };
 
         await axios.post(`${config.domain}/api/user/addAddress/${context.userData._id}`, body, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(res => {
@@ -465,11 +464,6 @@ export const NewAddressModal = () => {
         })
 
     }
-
-    const result = () => {
-        console.log(recipientName);
-    }
-
     return (
         <div class="modal fade" id="new-address-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -478,7 +472,7 @@ export const NewAddressModal = () => {
 
                         <div className="d-flex justify-content-between">
                             <div className="">
-                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }} onClick={result}>Address information</h5>
+                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }}>Address information</h5>
                                 <div style={{ background: "#169632", width: "75%", height: "1.5px" }}></div>
                             </div>
                             <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>

@@ -14,15 +14,14 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
     const context = useContext(ContextApi);
 
     const result = () => {
-        // console.log(context.userData);
+        // const findItem = context.userData.favorite.findIndex(item => {
+        //     return item._id == id
+        // })
 
-        const findItem = context.userData.favorite.findIndex(item => {
-            return item._id == id
-        })
+        // if (findItem > -1) console.log(true);
+        // else console.log(false);
 
-        if (findItem > -1) console.log(true);
-        else console.log(false);
-        // console.log(findItem);
+        console.log("test");
     }
 
     //! Handle Product Count
@@ -122,9 +121,46 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
         })
     }
 
+    //! Handle History
+    const addToHistory = () => {
+        console.log("running");
+        var existingEntries = JSON.parse(localStorage.getItem("history"));
+        if (existingEntries == null) existingEntries = [];
+        var item = {
+            id,
+            name,
+            picture: picture[0],
+            color,
+            size,
+            price
+        };
+        existingEntries.push(item);
+
+        // console.log(item);
+        // if (item.length >= 5) {
+        //     const newItem = item
+        //     // item.slice(4, 1);
+        //     // console.log(item);
+        //     return setHistoryProduct(newItem);
+        // };
+        // if (existingEntries.length > 5) {
+        //     const array = [
+        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 },
+        //         { id: "645b8ca977b756a0daa60077", name: "jordan air", "picture": "OJ5KrPNiS.png", color: ["black", "white", "gray", "green", "blue", "red", "purple"], size: ["38", "39", "40", "41", "42", "43", "44"], price: 450 },
+        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 },
+        //         { id: "644bd6060949a63c9046a3b0", name: "iphone 11", "picture": "jqixybibln.png", color: ["white", "red", "green", "purple"], size: ["single"], price: 999 },
+        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 }
+        //     ]
+        //     const newArray = array.splice(3, 1);
+        //     console.log(newArray);
+        //     // return localStorage.setItem("history", JSON.stringify(newArray));
+        // }
+        localStorage.setItem("history", JSON.stringify(existingEntries));
+    }
+
 
     return (
-        <div class={path == "cart" ? "col-md-3" : "col-md-4"}>
+        <div onClick={addToHistory} class={path == "cart" ? "col-md-3" : "col-md-4"}>
             <div>
                 <div class="card mb-4 product-wap">
                     <div class="card">
@@ -167,7 +203,7 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
                                         <span class={`product-color-dot color-dot-${color} float-left rounded-circle ml-1`} style={{ padding: "10px" }}></span>
                                     </li>
                                 </ul>
-                                <p class="mb-0 font-weight-normal d-block" style={{ color: "#208e38" }} onClick={result}>${count * price}</p>
+                                <p class="mb-0 font-weight-normal d-block" style={{ color: "#208e38" }}>${count * price}</p>
                             </div> :
                             null
                         }

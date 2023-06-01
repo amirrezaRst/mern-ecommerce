@@ -16,31 +16,31 @@ const ShopContent = ({ products }) => {
 
 
     const handleFilter = (genderProp, productProp) => {
-        console.log("running handle filter function");
+        // console.log("running handle filter function");
         if (!genderProp && !productProp) {
-            console.log("without props");
+            // console.log("without props");
             const newFilter = products.filter(item => {
                 if (categoryGender == "all" && categoryProduct == "all") {
-                    console.log("gender and product == ALL");
+                    // console.log("gender and product == ALL");
                     return products;
                 }
                 else if (categoryGender == "all") {
-                    console.log("gender == ALL");
+                    // console.log("gender == ALL");
                     return item.category == categoryProduct;
                 }
                 else if (categoryProduct == "all") {
-                    console.log("product == ALL");
+                    // console.log("product == ALL");
                     return item.gender == categoryGender;
                 }
                 else {
-                    console.log("gender and product != ALL");
+                    // console.log("gender and product != ALL");
                     return item.category == categoryProduct && item.gender == categoryGender
                 }
             })
             setFilterProduct(newFilter);
         }
         else if (genderProp && !productProp) {
-            console.log("gender props");
+            // console.log("gender props");
             if (genderProp == "all") return setFilterProduct(products);
             const genderFilter = products.filter(item => {
                 return item.gender == genderProp
@@ -48,7 +48,7 @@ const ShopContent = ({ products }) => {
             setFilterProduct(genderFilter);
         }
         else if (!genderProp && productProp) {
-            console.log("product props");
+            // console.log("product props");
             if (productProp == "all") return setFilterProduct(products);
             const productFilter = products.filter(item => {
                 return item.category == productProp
@@ -56,7 +56,7 @@ const ShopContent = ({ products }) => {
             setFilterProduct(productFilter);
         }
         else if (genderProp && productProp) {
-            console.log("gender & product props");
+            // console.log("gender & product props");
             if (genderProp == "all") setFilterProduct(products);
             else if (productProp == "all") return setFilterProduct(products);
             const allFilter = products.filter(item => {
@@ -68,7 +68,6 @@ const ShopContent = ({ products }) => {
 
     useEffect(() => {
         handleFilter();
-        // console.log("useEffect test");
     }, [products])
 
     //! gender handler
@@ -222,7 +221,7 @@ const ShopContent = ({ products }) => {
                     <div class="row">
 
                         {/* {products.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />)} */}
-                        {filterProduct ? filterProduct.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />):null}
+                        {filterProduct ? filterProduct.map(item => <SingleShopContent id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />) : null}
 
                     </div>
 
