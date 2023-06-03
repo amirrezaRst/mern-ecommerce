@@ -1,7 +1,14 @@
 import React from 'react';
+
+import SingleMessageItem from "./SingleMessageItem";
 import { Message } from "../utils/ProfileSvg";
 
 const Messages = ({ userData }) => {
+
+    const result = () => {
+        console.log(userData);
+    }
+
     return (
         <React.Fragment>
             <main>
@@ -10,13 +17,13 @@ const Messages = ({ userData }) => {
 
                         <div className="d-flex mb-4">
                             <div className="">
-                                <h5 className='font-weight-normal'>Messages</h5>
+                                <h5 className='font-weight-normal' onClick={result}>Messages</h5>
                                 <div style={{ background: "#169632", width: "75%", height: "3px" }}></div>
                             </div>
                         </div>
 
-                        {!userData ?
-                            null :
+                        {userData && userData.message.length > 0 ?
+                            userData.message.map(item => <SingleMessageItem id={item._id} icon={item.icon} title={item.title} text={item.text} read={item.isRead} time={item.time} />) :
                             <div className="py-3 pb-5">
                                 <div className="d-flex justify-content-center">
                                     <Message />

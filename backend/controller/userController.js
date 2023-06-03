@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { userModel } = require("../model/userModel");
-const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation, addAddress, addressValidation, editAddressValidation } = require("./validation/userValidation");
+const { registerValidation, loginValidation, favoriteValidation, editNameValidation, editPhoneValidation, editEmailValidation, editPasswordValidation, editProfileValidation, addAddress, addressValidation, editAddressValidation, addMessageValidation } = require("./validation/userValidation");
 
 
 
@@ -72,6 +72,27 @@ exports.removeFavorite = async (req, res) => {
     res.json({ text: "product removed", user })
 }
 
+exports.seenMessage = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+    if (!isValidObjectId(req.params.messageId)) return res.status(422).json({ text: "message id is not valid" });
+
+    const user = await userModel.findById(req.params.userId);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    const itemIndex = user.message.findIndex(item => {
+        return item._id == req.params.messageId
+    })
+    if (itemIndex > -1) {
+        // await user.message.splice(itemIndex, 1);
+        user.message[itemIndex].isRead = true;
+    }
+    else {
+        return res.status(422).json({ text: "message not found" });
+    }
+    await user.save();
+
+    res.json({ text: "message removed", user });
+}
 
 
 //! Post Request
@@ -192,6 +213,25 @@ exports.addAddress = async (req, res) => {
     await user.save();
 
     res.status(201).json({ text: "address added", user });
+}
+
+exports.addMessage = async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+    if (addMessageValidation(req.body).error) return res.status(422).json({ text: addMessageValidation(req.body).error.message });
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    const newMessage = {
+        icon: req.body.icon,
+        title: req.body.title,
+        text: req.body.text
+    }
+
+    await user.message.push(newMessage);
+    await user.save();
+
+    res.status(201).json({ text: "message added" })
 }
 
 

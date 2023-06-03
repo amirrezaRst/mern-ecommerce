@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import ContextApi from '../../services/ContextApi';
 
 
-const ProfileNav = () => {
+const ProfileNav = ({ userData }) => {
 
     const context = useContext(ContextApi);
     const navigation = useNavigate();
@@ -112,15 +112,18 @@ const ProfileNav = () => {
                     <i class={`${path == "/profile/messages" ? "fas" : "far"} fa-messages mx-2`}></i>
                     <span className='font-weight-normal'>Messages</span>
                 </Link>
-                <div className="badge badge-success badge-pill mr-3 py-1 px-2"><span style={{ fontSize: "1rem" }}>1</span></div>
-            </div>
-            {/* End Single Menu Item */}
-            <div className="d-flex align-items-center justify-content-between mt-5 pt-3">
-                <div style={{ cursor: "pointer", color: "#ef0000" }} onClick={logout}>
-                    <i class="fa-solid fa-right-from-bracket pl-3 mx-2" style={{ fontSize: "1.3rem" }}></i>
-                    <span className='font-weight-normal' style={{ fontSize: "1.3rem" }}>Logout</span>
-                </div>
-            </div>
+                {userData.message && userData.message.length > 0 ?
+                    <div className="badge badge-success badge-pill mr-3 py-1 px-2" ><span style={{ fontSize: "1rem" }}>{userData.message && userData.message.length > 0 ? userData.message.length : null}</span></div>:null
+                }
+
+        </div>
+            {/* End Single Menu Item */ }
+    <div className="d-flex align-items-center justify-content-between mt-5 pt-3">
+        <div style={{ cursor: "pointer", color: "#ef0000" }} onClick={logout}>
+            <i class="fa-solid fa-right-from-bracket pl-3 mx-2" style={{ fontSize: "1.3rem" }}></i>
+            <span className='font-weight-normal' style={{ fontSize: "1.3rem" }}>Logout</span>
+        </div>
+    </div>
 
         </div >
     );

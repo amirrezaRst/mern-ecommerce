@@ -15,9 +15,6 @@ const Profile = ({ userData }) => {
 
     useEffect(() => {
         const item = JSON.parse(localStorage.getItem("history"));
-        if (item) {
-            console.log(item.length);
-        }
         setHistoryProduct(item);
     }, [])
 

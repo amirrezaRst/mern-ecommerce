@@ -27,7 +27,7 @@ const ProfileLayout = ({ children, userData, userStatus }) => {
 
                             </div>
 
-                            <ProfileNav />
+                            <ProfileNav userData={userData} />
 
                         </div>
                     </aside>

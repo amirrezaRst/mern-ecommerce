@@ -1,19 +1,23 @@
 const { Router } = require('express');
+
 const Auth = require('../middleware/Auth');
-const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress, deleteAddress, editAddress } = require('../controller/userController');
+const Admin = require('../middleware/AdminAuth');
+const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress, deleteAddress, editAddress, addMessage, seenMessage } = require('../controller/userController');
 
 const router = Router();
 
 //! Get Routes
 router.get("/userList", userList);
 router.get("/singleUser/:id", singleUser);
-router.get("/addFavorite/:userId/:productId", addFavorite)
-router.get("/removeFavorite/:userId/:productId", removeFavorite)
+router.get("/addFavorite/:userId/:productId", addFavorite);
+router.get("/removeFavorite/:userId/:productId", removeFavorite);
+router.get("/seenMessage/:userId/:messageId", seenMessage);
 
 //! Post Routes
 router.post("/register", register);
 router.post("/login", login);
-router.post("/addAddress/:id",[Auth], addAddress);
+router.post("/addAddress/:id", [Auth], addAddress);
+router.post("/addMessage/:id", [Auth, Admin], addMessage);
 
 //! Put Routes
 router.put("/editFullName/:id", [Auth], editFullName);

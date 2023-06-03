@@ -43,6 +43,14 @@ exports.addressValidation = (data) => {
     return schema.validate(data);
 }
 
+exports.addMessageValidation = (data) => {
+    const schema = joi.object({
+        icon: joi.string().required(),
+        title: joi.string().required(),
+        text: joi.string().required(),
+    })
+    return schema.validate(data);
+}
 
 
 
