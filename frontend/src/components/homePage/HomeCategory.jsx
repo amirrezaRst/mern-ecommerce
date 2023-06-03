@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import category1 from "../../img/category_img_01.jpg";
-import category2 from "../../img/category_img_02.jpg";
-import category3 from "../../img/category_img_03.jpg";
-
 import ContextApi from '../../services/ContextApi';
+
 
 const HomeCategory = () => {
 
@@ -31,17 +28,17 @@ const HomeCategory = () => {
             </div>
             <div class="row">
                 <div class="col-12 col-md-4 p-5 mt-3">
-                    <a href="#"><img src={category1} class="rounded-circle img-fluid border" /></a>
+                    <a href="#"><img src="/assets/img/category_img_01.jpg" class="rounded-circle img-fluid border" /></a>
                     <h5 class="text-center mt-3 mb-3">Watches</h5>
                     <p class="text-center text-white"><Link to="/shop" class="btn btn-success">Go Shop</Link></p>
                 </div>
                 <div class="col-12 col-md-4 p-5 mt-3">
-                    <a href="#"><img src={category2} class="rounded-circle img-fluid border" /></a>
+                    <a href="#"><img src="/assets/img/category_img_02.jpg" class="rounded-circle img-fluid border" /></a>
                     <h2 class="h5 text-center mt-3 mb-3">Shoes</h2>
                     <p class="text-center text-white"><Link to="/shop" class="btn btn-success">Go Shop</Link></p>
                 </div>
                 <div class="col-12 col-md-4 p-5 mt-3">
-                    <a href="#"><img src={category3} class="rounded-circle img-fluid border" /></a>
+                    <a href="#"><img src="/assets/img/category_img_03.jpg" class="rounded-circle img-fluid border" /></a>
                     <h2 class="h5 text-center mt-3 mb-3">Accessories</h2>
                     <p class="text-center text-white"><Link to="/shop" class="btn btn-success">Go Shop</Link></p>
                 </div>

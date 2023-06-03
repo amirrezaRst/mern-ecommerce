@@ -1,7 +1,5 @@
 import React from 'react';
 
-import about from "../../img/about-hero.svg";
-
 
 const AboutBanner = () => {
     return ( 
@@ -17,7 +15,7 @@ const AboutBanner = () => {
                             </p>
                         </div>
                         <div class="col-md-4">
-                            <img src={about} alt="About Hero" />
+                            <img src="/assets/img/about-hero.svg" alt="About Hero" />
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import config from "../../services/config.json";
 import ContextApi from "../../services/ContextApi";
 
-const SingleMessageItem = ({ userId, id, icon, title, text, read, time }) => {
+const SingleMessageItem = ({ id, icon, title, text, read, time }) => {
 
     const context = useContext(ContextApi);
 

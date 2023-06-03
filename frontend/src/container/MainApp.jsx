@@ -1,47 +1,53 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { lazy, Suspense, Fragment, useEffect, useState } from 'react';
 
 import { Route, Routes, useLocation } from 'react-router';
 import axios from "axios";
-import config from "../services/config.json";
 import { ToastContainer } from "react-toastify";
 import { toast } from 'react-toastify';
 
+import config from "../services/config.json";
 import MainLayout from '../components/layout/MainLayout';
 import ProfileLayout from '../components/layout/ProfileLayout';
-
-import About from '../components/aboutPage/About';
-import Contact from '../components/contactPage/Contact';
-import Home from '../components/homePage/Home';
-import Shop from '../components/shopPage/Shop';
-
-import ShopCart from '../components/shopPage/ShopCart';
-import SingleProductPage from "../components/SingleProductPage";
-
-import Signup from '../components/register/Signup';
-import Login from '../components/register/Login';
-
-import Profile from "../components/profilePage/Profile";
-import FavoriteProduct from '../components/profilePage/FavoriteProduct';
 import ContextApi from '../services/ContextApi';
-import Messages from '../components/profilePage/Messages';
-import PersonalInfo from '../components/profilePage/PersonalInfo';
-import Comments from '../components/profilePage/Comments';
-import Orders from '../components/profilePage/Orders';
-import Payment from '../components/Payment';
-import Address from '../components/profilePage/Address';
+import Loading from "../components/common/Loading";
 
 
 const MainApp = () => {
+
+    //? Import Lazy Components
+    const Home = lazy(() => import("../components/homePage/Home"));
+    const Shop = lazy(() => import("../components/shopPage/Shop"));
+    const About = lazy(() => import("../components/aboutPage/About"));
+    const Contact = lazy(() => import("../components/contactPage/Contact"));
+    const SingleProductPage = lazy(() => import("../components/SingleProductPage"));
+
+    const Signup = lazy(() => import("../components/register/Signup"));
+    const Login = lazy(() => import("../components/register/Login"));
+
+    const ShopCart = lazy(() => import("../components/shopPage/ShopCart"));
+    const Payment = lazy(() => import("../components/Payment"));
+
+    const Profile = lazy(() => import("../components/profilePage/Profile"));
+    const FavoriteProduct = lazy(() => import("../components/profilePage/FavoriteProduct"));
+    const Messages = lazy(() => import("../components/profilePage/Messages"));
+    const PersonalInfo = lazy(() => import("../components/profilePage/PersonalInfo"));
+    const Comments = lazy(() => import("../components/profilePage/Comments"));
+    const Orders = lazy(() => import("../components/profilePage/Orders"));
+    const Address = lazy(() => import("../components/profilePage/Address"));
+
 
     //! Auth States
     const [userData, setUserData] = useState({});
     const [userLogin, setUserLogin] = useState(false);
 
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const path = useLocation().pathname;
 
-
+    setTimeout(() => {
+        setLoading(false);
+    }, 2000);
 
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/productList`).then(res => {
@@ -84,47 +90,56 @@ const MainApp = () => {
 
             <ContextApi.Provider value={{ products, setProducts, userData, setUserData, userLogin, setUserLogin }}>
 
-                {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" || path == "/profile/address" ?
-                    <ProfileLayout userStatus={userLogin} userData={userData}>
+                {loading === true ?
+                    <Loading />
+                    :
 
-                        <Routes>
-                            <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
-                            <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
-                            <Route path="/profile/messages" element={userLogin === true ? <Messages userData={userData} /> : <Login />} />
-                            <Route path="/profile/info" element={userLogin === true ? <PersonalInfo userData={userData} /> : <Login />} />
-                            <Route path="/profile/comments" element={userLogin === true ? <Comments userData={userData} /> : <Login />} />
-                            <Route path="/profile/address" element={userLogin === true ? <Address userData={userData} /> : <Login />} />
-                            <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
-                        </Routes>
-                        <ToastContainer />
+                    <Suspense fallback={<Loading />}>
 
-                    </ProfileLayout> :
-                    <MainLayout userStatus={userLogin} userData={userData}>
+                        {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" || path == "/profile/address" ?
+                            <ProfileLayout userStatus={userLogin} userData={userData}>
 
+                                <Routes>
+                                    <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
+                                    <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
+                                    <Route path="/profile/messages" element={userLogin === true ? <Messages userData={userData} /> : <Login />} />
+                                    <Route path="/profile/info" element={userLogin === true ? <PersonalInfo userData={userData} /> : <Login />} />
+                                    <Route path="/profile/comments" element={userLogin === true ? <Comments userData={userData} /> : <Login />} />
+                                    <Route path="/profile/address" element={userLogin === true ? <Address userData={userData} /> : <Login />} />
+                                    <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
+                                </Routes>
+                                <ToastContainer />
 
-                        <Routes>
-                            <Route path="/" exact element={<Home products={products} />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="/shop" element={<Shop products={products} />} />
-                            <Route path="/contact" element={<Contact />} />
-                            <Route path="/product/*" element={<SingleProductPage products={products} />} />
-
-                            <Route path="/signup" element={<Signup />} />
-                            <Route path="/login" element={<Login />} />
-
-                            <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
-                            <Route path="/payment" element={<Payment />} />
+                            </ProfileLayout> :
+                            <MainLayout userStatus={userLogin} userData={userData}>
 
 
-                        </Routes>
-                        <ToastContainer />
+                                <Routes>
+                                    <Route path="/" exact element={<Home products={products} />} />
+                                    <Route path="/about" element={<About />} />
+                                    <Route path="/shop" element={<Shop products={products} />} />
+                                    <Route path="/contact" element={<Contact />} />
+                                    <Route path="/product/*" element={<SingleProductPage products={products} />} />
 
-                    </MainLayout>
+                                    <Route path="/signup" element={<Signup />} />
+                                    <Route path="/login" element={<Login />} />
+
+                                    <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
+                                    <Route path="/payment" element={<Payment />} />
+
+
+                                </Routes>
+                                <ToastContainer />
+
+                            </MainLayout>
+                        }
+
+                    </Suspense>
                 }
 
-            </ContextApi.Provider>
+            </ContextApi.Provider >
 
-        </Fragment>
+        </Fragment >
     );
 }
 

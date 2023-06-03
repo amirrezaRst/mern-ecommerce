@@ -1,10 +1,5 @@
 import React from 'react';
 
-import banner1 from "../../img/banner_img_01.jpg";
-import banner2 from "../../img/banner_img_02.jpg";
-import banner3 from "../../img/banner_img_03.jpg";
-
-
 const HomeBanner = () => {
     return (
 
@@ -19,7 +14,7 @@ const HomeBanner = () => {
                     <div class="container">
                         <div class="row p-5">
                             <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                                <img class="img-fluid" src={banner1} alt="" />
+                                <img class="img-fluid" src="/assets/img/banner_img_01.jpg" alt="" />
                             </div>
                             <div class="col-lg-6 mb-0 d-flex align-items-center">
                                 <div class="text-align-left align-self-center">
@@ -38,7 +33,7 @@ const HomeBanner = () => {
                     <div class="container">
                         <div class="row p-5">
                             <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                                <img class="img-fluid" src={banner2} alt="" />
+                                <img class="img-fluid" src="/assets/img/banner_img_02.jpg" alt="" />
                             </div>
                             <div class="col-lg-6 mb-0 d-flex align-items-center">
                                 {/* <div class="text-align-left">
@@ -65,7 +60,7 @@ const HomeBanner = () => {
                     <div class="container">
                         <div class="row p-5">
                             <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                                <img class="img-fluid" src={banner3} alt="" />
+                                <img class="img-fluid" src="/assets/img/banner_img_03.jpg" alt="" />
                             </div>
                             <div class="col-lg-6 mb-0 d-flex align-items-center">
                                 {/* <div class="text-align-left">
