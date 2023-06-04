@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from "axios"
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
@@ -12,16 +12,9 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
 
     const [inFavoriteList, setInFavoriteList] = useState(false);
     const context = useContext(ContextApi);
-
+    const location = useLocation();
     const result = () => {
-        // const findItem = context.userData.favorite.findIndex(item => {
-        //     return item._id == id
-        // })
-
-        // if (findItem > -1) console.log(true);
-        // else console.log(false);
-
-        console.log("test");
+        console.log(location);
     }
 
     //! Handle Product Count
@@ -123,18 +116,22 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
 
     //! Handle History
     const addToHistory = () => {
-        console.log("running");
-        var existingEntries = JSON.parse(localStorage.getItem("history"));
-        if (existingEntries == null) existingEntries = [];
-        var item = {
-            id,
-            name,
-            picture: picture[0],
-            color,
-            size,
-            price
-        };
-        existingEntries.push(item);
+        if (location.pathname != "/shop-cart") {
+
+            var existingEntries = JSON.parse(localStorage.getItem("history"));
+            if (existingEntries == null) existingEntries = [];
+            var item = {
+                id,
+                name,
+                picture: picture[0],
+                color,
+                size,
+                price
+            };
+            existingEntries.push(item);
+
+            localStorage.setItem("history", JSON.stringify(existingEntries));
+        }
 
         // console.log(item);
         // if (item.length >= 5) {
@@ -155,7 +152,6 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
         //     console.log(newArray);
         //     // return localStorage.setItem("history", JSON.stringify(newArray));
         // }
-        localStorage.setItem("history", JSON.stringify(existingEntries));
     }
 
 

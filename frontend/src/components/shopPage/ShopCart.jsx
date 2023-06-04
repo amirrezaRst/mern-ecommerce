@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import SingleShopCart from '../SingleShopCart';
 import ContextApi from '../../services/ContextApi';
@@ -8,6 +8,7 @@ import ContextApi from '../../services/ContextApi';
 const ShopCart = ({ userData }) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
+    const navigation = useNavigate();
 
     const result = () => {
         console.log(userData.cart);
@@ -19,7 +20,6 @@ const ShopCart = ({ userData }) => {
         const total = userData.cart.reduce(function (a, b) { return a + (b.price * b.count) }, 0)
         setTotalPrice(total);
     }, [userData])
-
     return (
         <section className="container py-4">
             <div class="row text-center pt-3 mb-5" >
@@ -42,7 +42,7 @@ const ShopCart = ({ userData }) => {
             <div className="d-flex align-items-baseline justify-content-between pr-5">
                 <h4 className='mt-4 d-inline'>Total Price : ${totalPrice}</h4>
                 {userData.cart[0] != undefined ?
-                    <button type="button" class="btn btn-success btn-lg mb-3 mt-2"><Link to="/payment" style={{color:"#ffffff",textDecoration:"none"}}>Payment</Link></button> : null
+                    <button type="button" class="btn btn-success btn-lg mb-3 mt-2"><Link to="/payment" style={{ color: "#ffffff", textDecoration: "none" }}>Payment</Link></button> : null
                 }
             </div>
         </section>

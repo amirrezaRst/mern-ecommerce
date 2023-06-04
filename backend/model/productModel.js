@@ -16,6 +16,7 @@ const productSchema = mongoose.Schema({
     picture: { type: Array },
     category: { type: String, require: true },
     gender: { type: String, required: true },
+    clubScore: { type: Number, required: true },
     available: { type: Boolean, default: true },
     score: { type: Number, default: 0 },
     scoreCount: { type: Number, default: 0 },

@@ -92,6 +92,7 @@ exports.createProduct = async (req, res) => {
                     description: req.body.description,
                     brand: req.body.brand,
                     category: req.body.category,
+                    clubScore: req.body.clubScore,
                     available: req.body.available
                 })
 

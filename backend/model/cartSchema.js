@@ -7,6 +7,7 @@ exports.cartSchema = mongoose.Schema({
     size: { type: String, require: true },
     price: { type: Number, require: true },
     picture: { type: String, require: true },
+    clubScore:{type:Number,require:true},
     productId: { type: String },
     discount: { type: Number, default: 0 },
 })

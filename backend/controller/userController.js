@@ -407,3 +407,16 @@ exports.deleteAddress = async (req, res) => {
 
     res.json({ text: "address deleted", user })
 }
+
+exports.deleteCart = async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" })
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    user.cart = []
+
+    await user.save();
+
+    res.json({ text: "cart is empty", user });
+}

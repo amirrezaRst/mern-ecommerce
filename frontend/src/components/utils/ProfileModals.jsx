@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import config from "../../services/config.json";
 import ContextApi from '../../services/ContextApi';
+import { CheckboxSvg } from './ProfileSvg';
 
 
 export const FullNameModal = () => {
@@ -528,6 +529,77 @@ export const NewAddressModal = () => {
                             <span className='d-inline mr-3 font-weight-bold' style={{ color: "#169632", cursor: "pointer" }} onClick={addAddressApi}>Add</span>
                             <span className='d-inline font-weight-normal text-black-50' style={{ cursor: "pointer" }} data-dismiss="modal">Close</span>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+const AddressItem = ({ addressIndex, changeAddress, index, location, postalCode, phone, transferee, plaque }) => {
+
+    const handleChange = () => {
+        changeAddress(index);
+    }
+
+    return (
+        <div className="card shadow-sm mb-3" onClick={handleChange} style={addressIndex == index ? { borderRadius: "14px", border: "2px solid #169632", cursor: "pointer" } : { borderRadius: "14px", cursor: "pointer" }}>
+            <div className="card-body">
+                <div className="d-flex justify-content-between">
+                    <span className="d-block text-capitalize mb-1" style={{ fontWeight: "normal", fontSize: "1rem" }}>{location}</span>
+                    {addressIndex == index ? <CheckboxSvg /> : null}
+                </div>
+                <span className="d-block" style={{ color: "#707070" }}>
+                    <i class="far fa-envelope mr-1" style={{ fontSize: "1.1rem" }}></i> <span style={{ fontWeight: "normal", fontSize: "1rem" }}>{postalCode}</span></span>
+                <span className="d-block" style={{ color: "#707070" }}>
+                    <i class="far fa-mobile-notch mr-2"></i> <span style={{ fontWeight: "normal", fontSize: "1rem" }}>{phone}</span>
+                </span>
+                <span className="d-block text-capitalize" style={{ color: "#707070" }}>
+                    <i class="far fa-user mr-2"></i> <span style={{ fontWeight: "normal", fontSize: "1rem" }}>{transferee}</span>
+                </span>
+                <span className="d-block" style={{ color: "#707070" }}>
+                    <i class="fa-regular fa-house mr-1"></i> <span style={{ fontWeight: "normal", fontSize: "1rem" }}>{plaque}</span>
+                </span>
+            </div>
+        </div>
+    )
+}
+
+export const ChangeAddressModal = ({ userData, addressIndex, changeAddress }) => {
+
+    return (
+        <div class="modal fade" id="change-address-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body my-1 pb-4">
+
+                        <div className="d-flex justify-content-between">
+                            <div className="">
+                                <h5 className='font-weight-normal mb-1' style={{ fontSize: "1.2rem" }}>Address</h5>
+                                <div style={{ background: "#169632", width: "75%", height: "2px" }}></div>
+                            </div>
+                            <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>
+                        </div>
+                        <div className="dropdown-divider mt-3 mb-4"></div>
+
+
+                        <div className="card shadow-sm" style={{ borderRadius: "14px" }}>
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between" style={{ cursor: "pointer" }} data-dismiss="modal" data-toggle="modal" data-target="#new-address-modal">
+                                    <div>
+                                        <i class="fa-regular fa-location-plus" style={{ fontSize: "1.4rem" }}></i> <span style={{ fontWeight: "normal", fontSize: "1.1rem" }}>Add a new address</span>
+                                    </div>
+                                    <i class="fa-solid fa-angle-right float-right mr-2" style={{ fontSize: '1.3rem' }}></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="dropdown-divider mt-4 mb-4"></div>
+
+                        {userData && userData.address.length > 0 ?
+                            userData.address.map((item, index) => <AddressItem addressIndex={addressIndex} changeAddress={changeAddress} index={index} location={item.location} postalCode={item.postalCode} phone={item.transfereePhone} transferee={item.transferee} plaque={item.plaque} />) : null
+                        }
 
                     </div>
                 </div>

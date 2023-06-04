@@ -94,3 +94,12 @@ Custom Css
     border: 1.5px solid #169632;
     color: #ffffff
 }
+
+
+#shipping-btn {
+    background: transparent;
+    border: 1.5px solid #009E24;
+    color: #009E24;
+    font-weight: bold;
+    padding: 10px 0;
+}

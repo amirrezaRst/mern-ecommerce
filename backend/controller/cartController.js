@@ -63,6 +63,7 @@ exports.addCart = async (req, res) => {
             size: req.body.size,
             price: req.body.price,
             picture: req.body.picture,
+            clubScore: req.body.clubScore,
             productId: req.body.productId
         }
         await user.cart.push(newCart);
@@ -75,6 +76,7 @@ exports.addCart = async (req, res) => {
             size: req.body.size,
             price: req.body.price,
             picture: req.body.picture,
+            clubScore: req.body.clubScore,
             productId: req.body.productId
         }
         await user.cart.push(newCart);
@@ -87,6 +89,7 @@ exports.addCart = async (req, res) => {
             size: req.body.size,
             price: req.body.price,
             picture: req.body.picture,
+            clubScore: req.body.clubScore,
             productId: req.body.productId
         }
         await user.cart.push(newCart);

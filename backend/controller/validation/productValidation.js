@@ -21,6 +21,7 @@ exports.createValidation = (data) => {
         brand: joi.string().required(),
         category: joi.string().required(),
         gender: joi.string().valid("men", "women", "multiple").required(),
+        clubScore: joi.number().required(),
         picture: joi.array(),
         available: joi.boolean().default(true),
         Specification: joi.string().default(null)
@@ -38,6 +39,7 @@ exports.editValidation = (data) => {
         description: joi.string().required().trim(),
         brand: joi.string().required(),
         category: joi.string().required(),
+        clubScore: joi.number().required(),
         available: joi.boolean().default(true)
     })
     return schema.validate(data);

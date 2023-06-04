@@ -10,6 +10,7 @@ exports.addValidation = (data) => {
         size:joi.string().required(),
         price: joi.number().required(),
         picture: joi.string().required(),
+        clubScore: joi.number().required(),
         productId:joi.string().required(),
         discount: joi.number().default(0),
     })

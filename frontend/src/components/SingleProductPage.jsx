@@ -144,6 +144,7 @@ const SingleProductPage = ({ products }) => {
             size: productSize,
             price: totalPrice,
             picture: product.picture[0],
+            clubScore: product.clubScore,
             productId: product.productId
         }
 

@@ -14,7 +14,6 @@ import Loading from "../components/common/Loading";
 
 const MainApp = () => {
 
-    //? Import Lazy Components
     const Home = lazy(() => import("../components/homePage/Home"));
     const Shop = lazy(() => import("../components/shopPage/Shop"));
     const About = lazy(() => import("../components/aboutPage/About"));
@@ -25,7 +24,7 @@ const MainApp = () => {
     const Login = lazy(() => import("../components/register/Login"));
 
     const ShopCart = lazy(() => import("../components/shopPage/ShopCart"));
-    const Payment = lazy(() => import("../components/Payment"));
+    const Payment = lazy(() => import("../components/paymentPage/Payment"));
 
     const Profile = lazy(() => import("../components/profilePage/Profile"));
     const FavoriteProduct = lazy(() => import("../components/profilePage/FavoriteProduct"));
@@ -47,7 +46,8 @@ const MainApp = () => {
 
     setTimeout(() => {
         setLoading(false);
-    }, 2000);
+        // }, 2000);
+    }, 0);
 
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/productList`).then(res => {
@@ -125,8 +125,7 @@ const MainApp = () => {
                                     <Route path="/login" element={<Login />} />
 
                                     <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
-                                    <Route path="/payment" element={<Payment />} />
-
+                                    <Route path="/payment" element={userData.cart && userData.cart.length > 0 ? <Payment userData={userData} /> : <ShopCart userData={userData} />} />
 
                                 </Routes>
                                 <ToastContainer />
