@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { cartSchema } = require('./cartSchema');
 const { messageSchema } = require('./messageSchma');
+const { orderSchema } = require('./orderSchema');
 
 const userSchema = mongoose.Schema({
     fullName: { type: String, require: true },
@@ -14,8 +15,8 @@ const userSchema = mongoose.Schema({
     address: [Object],
     wallet: { type: Number, default: 0 },
     zayScore: { type: Number, default: 0 },
-    // favorite: [{ type: mongoose.Types.ObjectId, ref: "products", default: null }]
-    favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }]
+    favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }],
+    order: [orderSchema]
 })
 
 exports.userModel = mongoose.model("users", userSchema);
