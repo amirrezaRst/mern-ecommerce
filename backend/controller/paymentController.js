@@ -48,7 +48,7 @@ exports.checkoutCart = async (req, res) => {
 exports.verifyPayment = async (req, res) => {
     const paymentCode = req.params.authority;
     const status = req.params.status;
-    const payment = await paymentModel.findOne({ paymentCode })
+    const payment = await paymentModel.findOne({ paymentCode }).populate("cart")
 
     const user = await userModel.findById(payment.user._id);
 
@@ -65,18 +65,10 @@ exports.verifyPayment = async (req, res) => {
             user.cart = [];
             await user.save();
             await payment.save()
-            res.json({ response,payment });
+            res.json({ response, payment });
         }
     } else return res.status(403).json({ text: "Payment failed" })
 }
-
-exports.userPaymentInfo = async (req, res) => {
-    const payment = await paymentModel.findOne({ authority: req.params.authority });
-    if (!payment) return res.status(422).json({ text: "payment not found" });
-
-    res.json({ payment });
-}
-
 
 exports.totalPayment = async (req, res) => {
     const payment = await paymentModel.find();
