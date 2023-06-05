@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import config from "../../services/config.json";
 import { Link } from 'react-router-dom';
 import Loading from '../common/Loading';
-
+import ContextApi from "../../services/ContextApi"
 const VerifyPayment = () => {
     const [paymentStatus, setPaymentStatus] = useState();
     const [userPayment, setUserPayment] = useState();
@@ -12,11 +12,13 @@ const VerifyPayment = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const authority = queryParams.get("Authority");
     const status = queryParams.get("Status");
-
+    const context = useContext(ContextApi);
 
     const verifyPaymentApi = async () => {
         await axios.get(`${config.domain}/api/payment/verifyPayment/${authority}/${status}`).then(async (res) => {
             setPaymentStatus(true);
+            console.log("running");
+            context.setUserData(res.data.user);
             setUserPayment(res.data.payment)
         }).catch(err => {
             console.log(err);
@@ -26,7 +28,9 @@ const VerifyPayment = () => {
 
     useEffect(() => {
         if (status == "OK") {
-            verifyPaymentApi();
+            if (!userPayment) {
+                verifyPaymentApi();
+            }
         }
         else {
             setPaymentStatus(false);

@@ -63,9 +63,15 @@ exports.verifyPayment = async (req, res) => {
             payment.refId = response.RefID;
             payment.success = true;
             user.cart = [];
+
+            const newOrder = {
+                products: payment.cart.map(item => item),
+            }
+            console.log(newOrder);
+            user.order.push(newOrder)
             await user.save();
             await payment.save()
-            res.json({ response, payment });
+            res.json({ response, payment, user });
         }
     } else return res.status(403).json({ text: "Payment failed" })
 }
