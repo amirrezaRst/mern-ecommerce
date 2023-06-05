@@ -4,13 +4,14 @@ const cartSchema = require('./cartSchema');
 
 const paymentSchema = new mongoose.Schema({
     user: {
-        id: {
+        _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "users"
         },
         fullName: String,
         email: String,
-        address: String
+        phone: String,
+        address: Object
     },
     cart: [cartSchema],
     paymentCode: String,

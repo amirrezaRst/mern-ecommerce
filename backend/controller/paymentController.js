@@ -1,23 +1,29 @@
 const ZarinpalCheckout = require('zarinpal-checkout');
 const { paymentModel } = require('../model/paymentModel');
 const { userModel } = require('../model/userModel');
+const joi = require('joi');
 
 const zarinpal = ZarinpalCheckout.create('00000000-0000-0000-0000-000000000000', true);
 
 exports.checkoutCart = async (req, res) => {
-    const user = await userModel.findById(req.user._id);
-    const cart = user.cart;
-    const address = req.params.address;
+    const schema = joi.object({
+        address: joi.object().required(),
+        amount: joi.number().required(),
+        user: joi.object().required()
+    })
+    if (schema.validate(req.body).error) return res.status(422).json({ text: schema.validate(req.body).error.message });
 
-    const amount = user.cart.reduce((acc, item) => {
-        return acc + (item.price * item.count);
-    }, 0)
+    const user = req.body.user;
+    const cart = user.cart;
+    const address = req.body.address;
+    const amount = req.body.amount
 
     const payment = new paymentModel({
         user: {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
+            phone: user.phone,
             address
         },
         cart,
@@ -25,8 +31,8 @@ exports.checkoutCart = async (req, res) => {
     });
 
     const response = await zarinpal.PaymentRequest({
-        Amount: amount * 52000, // In Tomans
-        CallbackURL: 'http://localhost:3001/verifyPayment',
+        Amount: amount * 55000, // In Tomans
+        CallbackURL: `${process.env.FRONT_URI}verifyPayment`,
         Description: `Payment To zay shop`,
         Email: user.email,
     });
@@ -59,9 +65,9 @@ exports.verifyPayment = async (req, res) => {
             user.cart = [];
             await user.save();
             await payment.save()
-            res.json({ response });
+            res.json({ response,payment });
         }
-    } else return res.status(400).json({ text: "Payment failed" })
+    } else return res.status(403).json({ text: "Payment failed" })
 }
 
 exports.userPaymentInfo = async (req, res) => {

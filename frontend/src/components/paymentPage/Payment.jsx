@@ -48,7 +48,6 @@ const Payment = ({ userData }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 await axios.delete(`${config.domain}/api/user/deleteCart/${userData._id}`).then(res => {
-                    // console.log(res);
                     context.setUserData(res.data.user);
                 }).catch(err => {
                     toast.error(`Something went wrong please try later.`, {
@@ -60,9 +59,33 @@ const Payment = ({ userData }) => {
                 })
             }
         })
-
-
     }
+
+    const checkoutApi = async () => {
+        const body = {
+            address: userData.address[shippingAddress],
+            amount: totalPrice + shippingPrice,
+            user: userData
+        }
+        await axios.post(`${config.domain}/api/payment/checkoutCart`, body, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(res => {
+            window.location = res.data.response.url
+        }).catch(err => {
+            if (err.message == "Request failed with status code 401") {
+                toast.error(`You do not have the required permission.`, {
+                    position: "bottom-right",
+                    theme: "light",
+                    closeOnClick: true
+                })
+                return console.log(err);
+            }
+            toast.error(`Something went wrong!`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+        })
+    }
+
 
     return (
         <React.Fragment>
@@ -93,7 +116,7 @@ const Payment = ({ userData }) => {
                                     <span style={{ fontWeight: "normal", fontSize: "1.2rem" }}>{totalPrice + shippingPrice}$</span>
                                 </div>
 
-                                <button className="btn btn-block mt-4" id='shipping-btn'>Order Payment</button>
+                                <button className="btn btn-block mt-4" id='shipping-btn' onClick={checkoutApi}>Order Payment</button>
 
                             </div>
                             <div className="" style={{ width: "100%", background: "#F1F2F4" }}>

@@ -7,8 +7,9 @@ const MainNav = ({ userStatus, userData }) => {
 
 
     const result = () => {
-        const item = JSON.parse(localStorage.getItem("history"))
-        console.log(item);
+        // const item = JSON.parse(localStorage.getItem("history"))
+        // console.log(item);
+        console.log(userData.address[0]);
     }
 
     return (
