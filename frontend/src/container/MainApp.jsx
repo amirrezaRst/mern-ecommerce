@@ -110,7 +110,7 @@ const MainApp = () => {
                                         <Route path="/profile/info" element={userLogin === true ? <PersonalInfo userData={userData} /> : <Login />} />
                                         <Route path="/profile/comments" element={userLogin === true ? <Comments userData={userData} /> : <Login />} />
                                         <Route path="/profile/address" element={userLogin === true ? <Address userData={userData} /> : <Login />} />
-                                        <Route path="/profile/orders" element={userLogin === true ? <Orders /> : <Login />} />
+                                        <Route path="/profile/orders" element={userLogin === true ? <Orders userData={userData} /> : <Login />} />
                                     </Routes>
                                     <ToastContainer />
 
