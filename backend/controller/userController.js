@@ -420,3 +420,17 @@ exports.deleteCart = async (req, res) => {
 
     res.json({ text: "cart is empty", user });
 }
+
+
+exports.deleteMessages = async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+
+    const user = await userModel.findById(req.params.id);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    user.message = [];
+
+    await user.save();
+
+    res.json({ text: "all message deleted", user });
+}

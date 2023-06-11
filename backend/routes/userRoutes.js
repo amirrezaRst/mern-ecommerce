@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const Auth = require('../middleware/Auth');
 const Admin = require('../middleware/AdminAuth');
-const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress, deleteAddress, editAddress, addMessage, seenMessage, deleteCart } = require('../controller/userController');
+const { userList, singleUser, register, login, deleteUser, addFavorite, removeFavorite, editFullName, editPhone, editEmail, editPassword, editProfile, addAddress, deleteAddress, editAddress, addMessage, seenMessage, deleteCart, deleteMessages } = require('../controller/userController');
 
 const router = Router();
 
@@ -31,6 +31,7 @@ router.put("/editAddress/:id/:index", [Auth], editAddress);
 router.delete("/deleteUser/:id", deleteUser);
 router.delete("/deleteAddress/:id/:index", deleteAddress);
 router.delete("/deleteCart/:id", deleteCart);
+router.delete("/deleteMessages/:id", deleteMessages);
 
 
 module.exports = router;

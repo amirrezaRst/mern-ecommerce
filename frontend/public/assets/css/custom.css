@@ -103,3 +103,10 @@ Custom Css
     font-weight: bold;
     padding: 10px 0;
 }
+
+
+#delete-message-btn {
+    color: #cc0000;
+    font-weight: normal;
+    cursor: pointer;
+}

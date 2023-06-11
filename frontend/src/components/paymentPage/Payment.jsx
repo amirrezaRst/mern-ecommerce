@@ -1,24 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import Swal from "sweetalert2";
 
 import PaymentHeader from "./PaymentHeader";
 import PaymentAddress from './PaymentAddress';
 import PaymentItem from "./PaymentItem";
-import { ClubSvg } from "../utils/ProfileSvg"
+import Loading from "../common/Loading";
+
 import config from "../../services/config.json";
 import ContextApi from '../../services/ContextApi';
+import { ClubSvg } from "../utils/ProfileSvg"
+
 
 const Payment = ({ userData }) => {
+    const [loading, setLoading] = useState(false);
+    const context = useContext(ContextApi);
 
     const [totalPrice, setTotalPrice] = useState();
     const [countPackage, setCountPackage] = useState();
     const [shippingPrice, setShippingPrice] = useState(0);
     const [totalScore, setTotalScore] = useState();
     const [shippingAddress, setShippingAddress] = useState();
-    const context = useContext(ContextApi);
 
     useEffect(() => {
         if (userData && userData.cart) {
@@ -62,14 +67,18 @@ const Payment = ({ userData }) => {
     }
 
     const checkoutApi = async () => {
+        setLoading(true);
+
         const body = {
             address: userData.address[shippingAddress],
             amount: totalPrice + shippingPrice,
             user: userData
         }
         await axios.post(`${config.domain}/api/payment/checkoutCart`, body, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(res => {
+            setLoading(false);
             window.location = res.data.response.url
         }).catch(err => {
+            setLoading(false);
             if (err.message == "Request failed with status code 401") {
                 toast.error(`You do not have the required permission.`, {
                     position: "bottom-right",
@@ -90,70 +99,77 @@ const Payment = ({ userData }) => {
     return (
         <React.Fragment>
 
-            <PaymentHeader />
+            {loading === true ?
+                <Loading />
+                :
 
-            <main className="container mb-5">
-                <button className="btn btn-success" onClick={result}>Result</button>
-                <div className="row">
-                    <section className='col-lg-4 pl-0'>
-                        <div className="card shadow-sm" style={{ borderRadius: "10px" }}>
-                            <div className="card-body px-3 py-4">
+                <div>
+                    <PaymentHeader />
 
-                                <div className="d-flex justify-content-between">
-                                    <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Commodity Prices</span>
-                                    <span style={{ fontWeight: "normal", fontSize: "1.1rem" }}>{totalPrice}$</span>
-                                </div>
-                                <div className="special-divider mt-2 mb-4"></div>
+                    <main className="container mb-5">
+                        <button className="btn btn-success" onClick={result}>Result</button>
+                        <div className="row">
+                            <section className='col-lg-4 pl-0'>
+                                <div className="card shadow-sm" style={{ borderRadius: "10px" }}>
+                                    <div className="card-body px-3 py-4">
 
-                                <div className="d-flex justify-content-between">
-                                    <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Shipping Cost <span className='badge badge-success ml-2' style={{ fontSize: ".9rem", fontWeight: "normal" }}>{countPackage} Package</span></span>
-                                    <span style={{ fontWeight: "normal", fontSize: "1.1rem" }}>{shippingPrice}$</span>
-                                </div>
-                                <div className="special-divider mt-2 mb-4"></div>
+                                        <div className="d-flex justify-content-between">
+                                            <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Commodity Prices</span>
+                                            <span style={{ fontWeight: "normal", fontSize: "1.1rem" }}>{totalPrice}$</span>
+                                        </div>
+                                        <div className="special-divider mt-2 mb-4"></div>
 
-                                <div className="d-flex justify-content-between pt-3">
-                                    <span style={{ fontWeight: "normal", fontSize: "1.15rem" }}>Payable</span>
-                                    <span style={{ fontWeight: "normal", fontSize: "1.2rem" }}>{totalPrice + shippingPrice}$</span>
-                                </div>
+                                        <div className="d-flex justify-content-between">
+                                            <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Shipping Cost <span className='badge badge-success ml-2' style={{ fontSize: ".9rem", fontWeight: "normal" }}>{countPackage} Package</span></span>
+                                            <span style={{ fontWeight: "normal", fontSize: "1.1rem" }}>{shippingPrice}$</span>
+                                        </div>
+                                        <div className="special-divider mt-2 mb-4"></div>
 
-                                <button className="btn btn-block mt-4" id='shipping-btn' onClick={checkoutApi}>Order Payment</button>
+                                        <div className="d-flex justify-content-between pt-3">
+                                            <span style={{ fontWeight: "normal", fontSize: "1.15rem" }}>Payable</span>
+                                            <span style={{ fontWeight: "normal", fontSize: "1.2rem" }}>{totalPrice + shippingPrice}$</span>
+                                        </div>
 
-                            </div>
-                            <div className="" style={{ width: "100%", background: "#F1F2F4" }}>
-                                <div className="d-flex justify-content-between p-3">
-                                    <span style={{ fontWeight: "normal", fontSize: "1.05rem", display: "flex", alignItems: "center" }}><ClubSvg /><span className='ml-1'> Zay Club Score</span></span>
-                                    <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>{totalScore} Points</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                                        <button className="btn btn-block mt-4" id='shipping-btn' onClick={checkoutApi}>Order Payment</button>
 
-                    <section className='col-lg-8 pr-0'>
-
-                        <PaymentAddress userData={userData} changeShipping={setShippingPrice} changeShippingAddress={setShippingAddress} />
-
-                        <div className="card shadow-sm" style={{ borderRadius: "10px" }}>
-                            <div className="card-body pt-3 px-4 pb-4">
-                                <div class="btn-group dropright">
-                                    <i type="button" class="badge fas fa-ellipsis-vertical" data-toggle="dropdown" aria-expanded="false" style={{ fontSize: "1.5rem", cursor: "pointer" }}></i>
-                                    <div class="dropdown-menu">
-                                        <Link to="/shop-cart" class="dropdown-item text-dark"><i class="fa-regular fa-cart-shopping mr-2"></i> <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Edit Product</span></Link>
-                                        <div class="dropdown-item text-danger" onClick={handleDeleteCart}><i class="fa-regular fa-trash mr-3"></i> <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Delete Cart</span></div>
+                                    </div>
+                                    <div className="" style={{ width: "100%", background: "#F1F2F4" }}>
+                                        <div className="d-flex justify-content-between p-3">
+                                            <span style={{ fontWeight: "normal", fontSize: "1.05rem", display: "flex", alignItems: "center" }}><ClubSvg /><span className='ml-1'> Zay Club Score</span></span>
+                                            <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>{totalScore} Points</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="row mt-2">
+                            </section>
 
-                                    {userData.cart && userData.cart.length > 0 ?
-                                        userData.cart.map(item => <PaymentItem picture={item.picture} count={item.count} color={item.color} />) : null
-                                    }
+                            <section className='col-lg-8 pr-0'>
 
+                                <PaymentAddress userData={userData} changeShipping={setShippingPrice} changeShippingAddress={setShippingAddress} />
+
+                                <div className="card shadow-sm" style={{ borderRadius: "10px" }}>
+                                    <div className="card-body pt-3 px-4 pb-4">
+                                        <div class="btn-group dropright">
+                                            <i type="button" class="badge fas fa-ellipsis-vertical" data-toggle="dropdown" aria-expanded="false" style={{ fontSize: "1.5rem", cursor: "pointer" }}></i>
+                                            <div class="dropdown-menu">
+                                                <Link to="/shop-cart" class="dropdown-item text-dark"><i class="fa-regular fa-cart-shopping mr-2"></i> <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Edit Product</span></Link>
+                                                <div class="dropdown-item text-danger" onClick={handleDeleteCart}><i class="fa-regular fa-trash mr-3"></i> <span style={{ fontWeight: "normal", fontSize: "1.05rem" }}>Delete Cart</span></div>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+
+                                            {userData.cart && userData.cart.length > 0 ?
+                                                userData.cart.map(item => <PaymentItem picture={item.picture} count={item.count} color={item.color} />) : null
+                                            }
+
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </section>
+                            </section>
 
+                        </div>
+                    </main>
                 </div>
-            </main>
+            }
 
         </React.Fragment>
     );

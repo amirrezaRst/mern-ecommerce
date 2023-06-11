@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Swal from "sweetalert2";
 
 import SingleMessageItem from "./SingleMessageItem";
 import { Message } from "../utils/ProfileSvg";
+import ContextApi from '../../services/ContextApi';
+import config from "../../services/config.json";
 
 const Messages = ({ userData }) => {
 
-    const result = () => {
-        console.log(userData);
+    const context = useContext(ContextApi);
+
+    const deleteMessages = async () => {
+
+        Swal.fire({
+            icon: "error",
+            html: '<span style="font-size:1.4rem;font-weight:normal">Are you sure you want to delete messages?</sp>',
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#db3030",
+            confirmButtonText: "Delete!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axios.delete(`${config.domain}/api/user/deleteMessages/${userData._id}`).then(res => {
+                    context.setUserData(res.data.user);
+                }).catch(err => {
+                    toast.error(`Something went wrong, please try later.`, {
+                        position: "bottom-right",
+                        theme: "light",
+                        closeOnClick: true
+                    })
+                    console.log(err);
+                })
+            }
+        })
     }
+
 
     return (
         <React.Fragment>
@@ -15,10 +44,13 @@ const Messages = ({ userData }) => {
                 <div className="card shadow-sm" >
                     <div className="card-body pt-4 pb-5">
 
-                        <div className="d-flex mb-4">
+                        <div className="d-flex align-items-center justify-content-between mb-4">
                             <div className="">
-                                <h5 className='font-weight-normal' onClick={result}>Messages</h5>
+                                <h5 className='font-weight-normal'>Messages</h5>
                                 <div style={{ background: "#169632", width: "75%", height: "3px" }}></div>
+                            </div>
+                            <div className="">
+                                <span id="delete-message-btn" onClick={deleteMessages}><i className="far fa-trash"></i> Delete messages</span>
                             </div>
                         </div>
 

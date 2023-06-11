@@ -11,6 +11,7 @@ import ProfileLayout from '../components/layout/ProfileLayout';
 import ContextApi from '../services/ContextApi';
 import Loading from "../components/common/Loading";
 import ErrorBoundary from './ErrorBoundary';
+import PaymentValidation from '../components/paymentPage/PaymentValidation';
 
 
 const MainApp = () => {
@@ -130,6 +131,8 @@ const MainApp = () => {
                                         <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
                                         <Route path="/payment" element={userData.cart && userData.cart.length > 0 ? <Payment userData={userData} /> : <ShopCart userData={userData} />} />
                                         <Route path="/verifyPayment" element={<VerifyPayment />} />
+                                        <Route path="/paymentValidation" element={<PaymentValidation />} />
+
 
                                     </Routes>
                                     <ToastContainer />

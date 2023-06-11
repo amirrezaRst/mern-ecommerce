@@ -32,7 +32,7 @@ exports.checkoutCart = async (req, res) => {
 
     const response = await zarinpal.PaymentRequest({
         Amount: amount * 55000, // In Tomans
-        CallbackURL: `${process.env.FRONT_URI}verifyPayment`,
+        CallbackURL: `${process.env.FRONT_URI}paymentValidation`,
         Description: `Payment To zay shop`,
         Email: user.email,
     });
@@ -67,7 +67,7 @@ exports.verifyPayment = async (req, res) => {
             const newOrder = {
                 products: payment.cart.map(item => item),
             }
-            console.log(newOrder);
+            // console.log(newOrder);
             user.order.push(newOrder)
             await user.save();
             await payment.save()
