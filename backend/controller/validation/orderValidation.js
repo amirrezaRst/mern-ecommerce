@@ -8,6 +8,7 @@ exports.addOrderValidation = (data) => {
                 _id: joi.string().required(),
                 name: joi.string().required(),
                 color: joi.string().required(),
+                price: joi.number().required(),
                 size: joi.string().required(),
                 picture: joi.string().required(),
                 viewPoint: joi.string(),
