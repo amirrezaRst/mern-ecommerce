@@ -4,7 +4,8 @@ const productSchema = new mongoose.Schema({
     _id: { type: mongoose.Schema.Types.ObjectId, require: true },
     name: { type: String, require: true },
     color: { type: String, require: true },
-    count:{type:Number,require:true},
+    price: { type: Number, required: true },
+    count: { type: Number, require: true },
     size: { type: String, require: true },
     picture: { type: String, require: true },
     viewPoint: { type: String },
@@ -15,5 +16,7 @@ const productSchema = new mongoose.Schema({
 exports.orderSchema = new mongoose.Schema({
     products: [productSchema],
     status: { type: String, default: "processing" },
+    refId: { type: String, required: true },
+    date: { type: Date, default: Date.now }
 })
 

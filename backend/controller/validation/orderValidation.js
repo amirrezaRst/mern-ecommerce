@@ -15,7 +15,8 @@ exports.addOrderValidation = (data) => {
                 isViewPoint: joi.boolean().default(false)
             }
         ],
-        status: joi.string().valid("processing", "Returned", "Delivered").default("processing")
+        status: joi.string().valid("processing", "Returned", "Delivered", "canceled").default("processing"),
+        refId: joi.string().required()
     })
     return schema.validate(data);
 }

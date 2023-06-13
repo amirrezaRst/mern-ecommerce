@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Comment } from '../utils/ProfileSvg';
+import OrderItem from './OrderItem';
 
 
 const Orders = ({ userData }) => {
 
     const [activeTab, setActiveTab] = useState("processing");
+    const [processing, setProcessing] = useState();
+    const [returned, setReturned] = useState();
+    const [delivered, setDelivered] = useState();
+    const [canceled, setCanceled] = useState();
 
     const changeTab = (prop) => {
         setActiveTab(prop);
     }
 
+    useEffect(() => {
+        if (userData.order) {
+            const processingItems = userData.order.filter(item => {
+                return item.status == "processing";
+            })
+            setProcessing(processingItems)
+            const deliveredItems = userData.order.filter(item => {
+                return item.status == "delivered";
+            })
+            setDelivered(deliveredItems)
+            const returnedItems = userData.order.filter(item => {
+                return item.status == "returned";
+            })
+            setReturned(returnedItems)
+        }
+    }, [])
+
     const result = () => {
-        console.log(activeTab);
+        console.log(processing);
     }
 
 
@@ -23,7 +45,7 @@ const Orders = ({ userData }) => {
                     <div className="">
                         <h5 onClick={result}>Orders</h5>
                     </div>
-                    <div className="d-flex my-4" style={{ borderBottom: "2px solid #f1f2f4" }}>
+                    <div className="d-flex my-4 " style={{ borderBottom: "2px solid #f1f2f4" }}>
 
                         <div className="mr-4" style={{ cursor: "pointer" }} onClick={() => changeTab("processing")}>
                             <h6 className='font-weight-normal'>Processing</h6>
@@ -45,13 +67,21 @@ const Orders = ({ userData }) => {
 
                     </div>
 
-
-                    <div className="py-3 pb-5">
-                        <div className="d-flex justify-content-center">
-                            <Comment />
-                        </div>
-                        <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>You do not have any products to comment yet</span>
+                    <div className="mt-5">
+                        {activeTab == "processing" && processing && processing.length > 0 ? processing.map(item =>
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                        ) : null}
+                        {activeTab == "returned" && returned && returned.length > 0 ? returned.map(item =>
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                        ) : null}
+                        {activeTab == "delivered" && delivered && delivered.length > 0 ? delivered.map(item =>
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                        ) : null}
+                        {activeTab == "canceled" && canceled && canceled.length > 0 ? canceled.map(item =>
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                        ) : null}
                     </div>
+
 
                 </div>
             </div>

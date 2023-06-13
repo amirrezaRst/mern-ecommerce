@@ -66,9 +66,9 @@ exports.verifyPayment = async (req, res) => {
 
             const newOrder = {
                 products: payment.cart.map(item => item),
+                refId: response.RefID
             }
-            // console.log(newOrder);
-            user.order.push(newOrder)
+            user.order.push(newOrder);
             await user.save();
             await payment.save()
             res.json({ response, payment, user });

@@ -110,3 +110,16 @@ Custom Css
     font-weight: normal;
     cursor: pointer;
 }
+
+
+/*! order page */
+.order-info {
+    display: flex;
+
+}
+
+.order-info span {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0 8px;
+}
