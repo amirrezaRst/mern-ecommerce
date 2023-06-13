@@ -72,7 +72,8 @@ const Payment = ({ userData }) => {
         const body = {
             address: userData.address[shippingAddress],
             amount: totalPrice + shippingPrice,
-            user: userData
+            user: userData,
+            scores: totalScore
         }
         await axios.post(`${config.domain}/api/payment/checkoutCart`, body, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(res => {
             setLoading(false);

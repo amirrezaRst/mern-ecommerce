@@ -4,7 +4,7 @@ import moment from "moment";
 import config from "../../services/config.json";
 
 
-const OrderItem = ({ id, status, products, refId, date }) => {
+const OrderItem = ({ id, status, products, refId, date, scores }) => {
     const [totalPrice, setTotalPrice] = useState();
     const [allProduct, setAllProduct] = useState();
 
@@ -17,9 +17,7 @@ const OrderItem = ({ id, status, products, refId, date }) => {
     }, [])
 
     const result = () => {
-        products.map(item => {
-            console.log(item.picture);
-        })
+        console.log(scores);
     }
 
     return (
@@ -44,10 +42,12 @@ const OrderItem = ({ id, status, products, refId, date }) => {
                     <i class="fas fa-period"></i>
                     <span style={{ color: "#767790" }}>Amount<span style={{ color: "#3f4064", fontWeight: "normal" }}>{totalPrice}$</span></span>
                 </div>
-                <div className="mt-2 d-flex align-items-center">
-                    <ClubSvg /> <span style={{ fontWeight: "normal", fontSize: "1rem", color: "#767790", marginLeft: "4px" }}>Zayclub score</span>
-                    <span style={{ fontSize: "1.05rem", color: "#3f4064", fontWeight: "normal", marginLeft: "7px" }}>17</span>
-                </div>
+                {status == "delivered" ?
+                    <div className="mt-2 d-flex align-items-center">
+                        <ClubSvg /> <span style={{ fontWeight: "normal", fontSize: "1rem", color: "#767790", marginLeft: "4px" }}>Zayclub score</span>
+                        <span style={{ fontSize: "1.05rem", color: "#3f4064", fontWeight: "normal", marginLeft: "7px" }}>{scores ? scores : null}</span>
+                    </div> : null
+                }
                 <div className="dropdown-divider mt-3"></div>
 
                 <div className="py-3 d-flex flex-wrap">

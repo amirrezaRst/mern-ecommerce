@@ -69,16 +69,16 @@ const Orders = ({ userData }) => {
 
                     <div className="mt-5">
                         {activeTab == "processing" && processing && processing.length > 0 ? processing.map(item =>
-                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} scores={item.scores} />
                         ) : null}
                         {activeTab == "returned" && returned && returned.length > 0 ? returned.map(item =>
-                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} scores={item.scores} />
                         ) : null}
                         {activeTab == "delivered" && delivered && delivered.length > 0 ? delivered.map(item =>
-                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} scores={item.scores} />
                         ) : null}
                         {activeTab == "canceled" && canceled && canceled.length > 0 ? canceled.map(item =>
-                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
+                            <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} scores={item.scores} />
                         ) : null}
                     </div>
 

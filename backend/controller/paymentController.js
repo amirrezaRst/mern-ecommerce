@@ -9,14 +9,16 @@ exports.checkoutCart = async (req, res) => {
     const schema = joi.object({
         address: joi.object().required(),
         amount: joi.number().required(),
-        user: joi.object().required()
+        user: joi.object().required(),
+        scores: joi.number().required()
     })
     if (schema.validate(req.body).error) return res.status(422).json({ text: schema.validate(req.body).error.message });
 
     const user = req.body.user;
     const cart = user.cart;
     const address = req.body.address;
-    const amount = req.body.amount
+    const amount = req.body.amount;
+    const scores = req.body.scores;
 
     const payment = new paymentModel({
         user: {
@@ -27,6 +29,7 @@ exports.checkoutCart = async (req, res) => {
             address
         },
         cart,
+        scores,
         amount
     });
 
@@ -40,7 +43,7 @@ exports.checkoutCart = async (req, res) => {
     payment.paymentCode = response.authority;
     await payment.save();
 
-    res.json({ response })
+    res.json({ response });
 }
 
 
@@ -66,7 +69,8 @@ exports.verifyPayment = async (req, res) => {
 
             const newOrder = {
                 products: payment.cart.map(item => item),
-                refId: response.RefID
+                refId: response.RefID,
+                scores: payment.scores
             }
             user.order.push(newOrder);
             await user.save();

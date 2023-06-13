@@ -17,6 +17,7 @@ exports.orderSchema = new mongoose.Schema({
     products: [productSchema],
     status: { type: String, default: "processing" },
     refId: { type: String, required: true },
+    scores: { type: Number, require: true },
     date: { type: Date, default: Date.now }
 })
 

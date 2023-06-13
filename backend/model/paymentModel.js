@@ -25,6 +25,7 @@ const paymentSchema = new mongoose.Schema({
         discount: { type: Number, default: 0 },
     }
     ],
+    scores: { type: Number, require: true },
     paymentCode: String,
     success: {
         type: Boolean,
