@@ -51,21 +51,20 @@ const OrderItem = ({ id, status, products, refId, date }) => {
                 <div className="dropdown-divider mt-3"></div>
 
                 <div className="py-3 d-flex flex-wrap">
-
                     {products && products.length > 0 ?
-                        // products.map(item =>
-                        //     // <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
-                        //     <h1>{item.picture}</h1>
-                        // )
                         products.map(item =>
-                            // <OrderItem id={item._id} status={item.status} refId={item.refId} products={item.products} date={item.date} />
-                            // <h1>{item.picture}</h1>
-                            <img src={`${config.domain}/${item.picture}`} alt="" style={{width:"17%"}} />
+                            <img src={`${config.domain}/${item.picture}`} alt="" style={{ width: "17%" }} />
                         )
                         : null
                     }
-
                 </div>
+
+                {status == "delivered" ?
+                    <div>
+                        <div className="dropdown-divider mt-3"></div>
+                        <span style={{ fontSize: '1.05rem', fontWeight: "450", color: "#5faf18", cursor: "pointer", float: "right" }}>View the invoice</span>
+                    </div> : null
+                }
 
             </div>
         </div>
