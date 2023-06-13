@@ -2,6 +2,7 @@ const ZarinpalCheckout = require('zarinpal-checkout');
 const { paymentModel } = require('../model/paymentModel');
 const { userModel } = require('../model/userModel');
 const joi = require('joi');
+const { isValidObjectId } = require('mongoose');
 
 const zarinpal = ZarinpalCheckout.create('00000000-0000-0000-0000-000000000000', true);
 
@@ -84,4 +85,28 @@ exports.totalPayment = async (req, res) => {
     const payment = await paymentModel.find();
 
     res.json({ text: "success", payment })
+}
+
+
+
+//! order controller
+exports.cancelOrder = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+    if (!isValidObjectId(req.params.orderId)) return res.status(422).json({ text: "order id is not valid" });
+
+    const user = await userModel.findById(req.params.userId);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    const orderIndex = user.order.findIndex(item => {
+        return item._id == req.params.orderId
+    })
+    if (orderIndex == -1) {
+        return res.status(422).json({ text: "order not found" });
+    }
+
+    user.order[orderIndex].status = "canceled";
+
+    await user.save();
+
+    res.json({ text: "order canceled", user });
 }

@@ -13,11 +13,11 @@ const Profile = ({ userData }) => {
     const [delivered, setDelivered] = useState();
 
     const result = () => {
-        console.log(processing);
-        console.log(returned);
-        console.log(delivered);
+        // console.log(processing);
+        // console.log(returned);
+        // console.log(delivered);
 
-
+        console.log(userData);
     }
 
     useEffect(() => {
