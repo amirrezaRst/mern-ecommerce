@@ -110,3 +110,45 @@ exports.cancelOrder = async (req, res) => {
 
     res.json({ text: "order canceled", user });
 }
+
+exports.returnOrder = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+    if (!isValidObjectId(req.params.orderId)) return res.status(422).json({ text: "order id is not valid" });
+
+    const user = await userModel.findById(req.params.userId);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    const orderIndex = user.order.findIndex(item => {
+        return item._id == req.params.orderId
+    })
+    if (orderIndex == -1) {
+        return res.status(422).json({ text: "order not found" });
+    }
+
+    user.order[orderIndex].status = "returned";
+
+    await user.save();
+
+    res.json({ text: "order canceled", user });
+}
+
+exports.deliverOrder = async (req, res) => {
+    if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "user id is not valid" });
+    if (!isValidObjectId(req.params.orderId)) return res.status(422).json({ text: "order id is not valid" });
+
+    const user = await userModel.findById(req.params.userId);
+    if (!user) return res.status(422).json({ text: "user not found" });
+
+    const orderIndex = user.order.findIndex(item => {
+        return item._id == req.params.orderId
+    })
+    if (orderIndex == -1) {
+        return res.status(422).json({ text: "order not found" });
+    }
+
+    user.order[orderIndex].status = "delivered";
+
+    await user.save();
+
+    res.json({ text: "order canceled", user });
+}

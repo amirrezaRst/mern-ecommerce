@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { OrderMessage } from '../utils/Messages';
-import { Comment } from '../utils/ProfileSvg';
 import OrderItem from './OrderItem';
 
 
