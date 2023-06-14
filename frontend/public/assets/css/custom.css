@@ -123,3 +123,23 @@ Custom Css
     font-weight: normal;
     margin: 0 8px;
 }
+
+
+
+/*! comment page */
+.waiting-image {
+    width: 35%;
+    borderRight: 1px solid #f1f2f4
+}
+
+@media only screen and (max-width: 1201px) {
+    .waiting-image {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .waiting-image {
+        width: 25%;
+    }
+}

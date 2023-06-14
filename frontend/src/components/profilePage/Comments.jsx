@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Comment } from '../utils/ProfileSvg';
+import SendingComment from './SendingComment';
+import WaitingComment from './WaitingComment';
 
 const Comments = ({ userData }) => {
 
@@ -73,16 +75,18 @@ const Comments = ({ userData }) => {
 
                     </div>
 
-
-                    {/* {!userData ?
-                        null : */}
-                    <div className="py-3 pb-5">
-                        <div className="d-flex justify-content-center">
-                            <Comment />
-                        </div>
-                        <span className='d-block text-center font-weight-normal' style={{ fontSize: "1.15rem" }}>You do not have any products to comment yet</span>
-                    </div>
-                    {/* } */}
+                    {activeTab == "waiting" && waitingComment ?
+                        waitingComment.length > 0 ?
+                            <div className='row'>
+                                {waitingComment.map(item => <WaitingComment id={item._id} name={item.name} picture={item.picture} />)}
+                            </div>
+                            : null : null
+                    }
+                    {activeTab == "sending" && waitingComment ?
+                        waitingComment.length > 0 ?
+                            <SendingComment />
+                            : null : null
+                    }
 
                 </div>
             </div>

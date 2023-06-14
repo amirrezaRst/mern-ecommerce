@@ -7,5 +7,6 @@ exports.commentSchema = mongoose.Schema({
     positivePoint: [{ type: String }],
     negativePoint: [{ type: String }],
     Proposal: { type: Number, enum: [-1, 0, 1], require: true },
+    accepted: { type: Number, enum: [-1, 0, 1], default: 0 },
     time: { type: Date, default: Date.now }
 })
