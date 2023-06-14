@@ -13,7 +13,10 @@ exports.addComment = async (req, res) => {
     const newComment = {
         fullName: req.body.fullName,
         score: req.body.score,
-        text: req.boyd.text
+        text: req.boyd.text,
+        positivePoint: req.body.positivePoint,
+        negativePoint: req.body.negativePoint,
+        proposal: req.body.proposal
     }
 
     product.comment.push(newComment);
@@ -34,10 +37,10 @@ exports.deleteComment = async (req, res) => {
     if (!product) return res.status(422).json({ text: "product not found" });
 
     const comment = product.comment.id(req.params.productId);
-    if (!comment) return res.status(422).json({ text: "comment not found" })
+    if (!comment) return res.status(422).json({ text: "comment not found" });
     else if (comment) comment.remove();
 
     await product.save();
 
-    res.json({ text: "comment deleted successfully" })
+    res.json({ text: "comment deleted successfully" });
 }
