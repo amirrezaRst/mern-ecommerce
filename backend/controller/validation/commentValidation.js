@@ -7,7 +7,7 @@ exports.newComment = (data) => {
         text: joi.string().required(),
         positivePoint: joi.string(),
         negativePoint: joi.string(),
-        Proposal: joi.number().valid(-1, 0, 1).required()
+        proposal: joi.number().valid(-1, 0, 1).required()
     })
     return schema.validate(data);
 }

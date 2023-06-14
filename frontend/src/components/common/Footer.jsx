@@ -1,8 +1,19 @@
 import React from 'react';
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
+
+    const navigation = useNavigate();
+
+    const redirectToShop = (prop) => {
+        window.scrollTo({
+            top: 20,
+            behavior: "smooth"
+        })
+        navigation("/shop", { state: { prop } })
+    }
+
     return (
         <footer class="bg-dark" id="tempaltemo_footer">
             <div class="container">
@@ -30,13 +41,13 @@ const Footer = () => {
                     <div class="col-md-4 pt-5">
                         <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
                         <ul class="list-unstyled text-light footer-link-list">
-                            <li><a class="text-decoration-none" href="#">T Shirt</a></li>
-                            <li><a class="text-decoration-none" href="#">Shirt</a></li>
-                            <li><a class="text-decoration-none" href="#">Shoes</a></li>
-                            <li><a class="text-decoration-none" href="#">Sneakers</a></li>
-                            <li><a class="text-decoration-none" href="#">Sunglass</a></li>
-                            <li><a class="text-decoration-none" href="#">Watch</a></li>
-                            <li><a class="text-decoration-none" href="#">Jacket</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("t shirt")}>T Shirt</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("shirt")}>Shirt</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("shoes")}>Shoes</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("sneakers")}>Sneakers</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("sunglass")}>Sunglass</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("watch")}>Watch</a></li>
+                            <li><a class="text-decoration-none" style={{ cursor: "pointer" }} onClick={() => redirectToShop("jacket")}>Jacket</a></li>
                         </ul>
                     </div>
 

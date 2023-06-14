@@ -1,29 +1,32 @@
 const { isValidObjectId } = require("mongoose");
 
 const { productModel } = require('../model/productModel');
-
+const { newComment } = require('./validation/commentValidation');
 
 //! Post Request
 exports.addComment = async (req, res) => {
     if (!isValidObjectId(req.params.id)) return res.status(422).json({ text: "id is not valid" });
+    if (newComment(req.body).error) return res.status(422).json({ text: newComment(req.body).error.message });
 
     const product = await productModel.findById(req.params.id);
     if (!product) return res.status(422).json({ text: "product not found" });
 
-    const newComment = {
+    const comment = {
         fullName: req.body.fullName,
         score: req.body.score,
-        text: req.boyd.text,
+        text: req.body.text,
         positivePoint: req.body.positivePoint,
         negativePoint: req.body.negativePoint,
         proposal: req.body.proposal
     }
 
-    product.comment.push(newComment);
+    product.scoreCount += 1 
+
+    product.comment.push(comment);
 
     await product.save();
 
-    res.json({ text: "comment added", comment: newComment });
+    res.json({ text: "comment added", comment: comment });
 }
 
 

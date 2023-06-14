@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import SingleShopContent from '../SingleShopCart';
 
@@ -11,9 +11,8 @@ const ShopContent = ({ products }) => {
     const [categoryProduct, setCategoryProduct] = useState("all");
     const [categoryGender, setCategoryGender] = useState("all");
 
-
     const [filterProduct, setFilterProduct] = useState();
-
+    const params = useLocation();
 
     const handleFilter = (genderProp, productProp) => {
         // console.log("running handle filter function");
@@ -69,6 +68,11 @@ const ShopContent = ({ products }) => {
     useEffect(() => {
         handleFilter();
     }, [products])
+    useEffect(() => {
+        if (params.state != null) {
+            changeProductFooter()
+        }
+    }, [params])
 
     //! gender handler
     const changeGender = (gen) => {
@@ -118,14 +122,14 @@ const ShopContent = ({ products }) => {
     }
 
 
+    const changeProductFooter = () => {
+        changeProduct(params.state.prop);
+        params.state = null
+    }
+
+
     const result = () => {
-        // const filter = products.filter(item => {
-        //     return item.gender == "men"
-        // })
-        // console.log(filter);
-        console.log(filterProduct);
-        console.log(`gender : ${categoryGender}`);
-        console.log(`product : ${categoryProduct} `);
+        params.state = null
     }
 
     return (

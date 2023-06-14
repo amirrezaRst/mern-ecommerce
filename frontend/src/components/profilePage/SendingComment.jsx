@@ -5,7 +5,7 @@ import config from "../../services/config.json";
 const SendingComment = () => {
     return (
         // background: "#f7f7f7"
-        <div className="pt-2 pb-3 px-2" style={{ borderBottom:"1px solid #e0e0e6" }}>
+        <div className="pt-2 pb-3 px-2 mb-3" style={{ borderBottom: "1px solid #e0e0e6" }}>
 
             <div className="d-flex align-items-center">
 
@@ -13,7 +13,7 @@ const SendingComment = () => {
 
                 <div style={{ width: "18%" }}>
                     <img src={`${config.domain}/OJ5KrPNiS.png`} alt="" className='img-fluid sending-image' style={{ width: "100%" }} />
-                    <span className="badge badge-dark" style={{color:"#ffffff"}}>5</span>
+                    <span className="badge badge-dark" style={{ color: "#ffffff" }}>5</span>
                 </div>
 
                 <div className="w-100 px-3">
