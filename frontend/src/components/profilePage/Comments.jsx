@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Comment } from '../utils/ProfileSvg';
 
 const Comments = ({ userData }) => {
 
     const [activeTab, setActiveTab] = useState("waiting");
+    const [sendingComment, setSendingComment] = useState();
+    const [waitingComment, setWaitingComment] = useState();
+
 
     const changeTab = () => {
         if (activeTab == "waiting") {
@@ -15,8 +18,38 @@ const Comments = ({ userData }) => {
         }
     }
 
+    useEffect(() => {
+        const deliverItems = userData.order.filter(item => {
+            return item.status == "delivered";
+        })
+        const allProducts = deliverItems.map(item => {
+            return item.products
+        })
+
+        const waiting = allProducts.filter(item => {
+            return item[0].isViewPoint == false;
+        })
+        const waitingItems = waiting.map(item => {
+            for (let i = 0; i < item.length; i++) {
+                return item[i];
+            }
+        })
+
+        const sending = allProducts.filter(item => {
+            return item[0].isViewPoint == true;
+        })
+        const sendingItems = sending.map(item => {
+            for (let i = 0; i < item.length; i++) {
+                return item[i];
+            }
+        })
+
+        setSendingComment(sendingItems);
+        setWaitingComment(waitingItems);
+    }, [userData])
+
     const result = () => {
-        console.log(activeTab);
+        console.log(sendingComment);
     }
 
     return (
