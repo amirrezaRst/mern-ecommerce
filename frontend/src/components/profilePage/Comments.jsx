@@ -53,7 +53,7 @@ const Comments = ({ userData }) => {
     }, [userData])
 
     const result = () => {
-        console.log(userData);
+        console.log(waitingComment[0]);
     }
 
     return (
@@ -85,7 +85,7 @@ const Comments = ({ userData }) => {
                     }
                     {activeTab == "sending" && waitingComment ?
                         waitingComment.length > 0 ?
-                            <SendingComment />
+                            sendingComment.map(item => <SendingComment id={item._id} picture={item.picture} text={item.comment.text} accepted={item.comment.accepted} score={item.comment.score} proposal={item.comment.proposal} />)
                             : null : null
                     }
 
