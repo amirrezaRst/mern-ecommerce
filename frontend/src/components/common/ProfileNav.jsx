@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 
@@ -6,6 +6,7 @@ import ContextApi from '../../services/ContextApi';
 
 
 const ProfileNav = ({ userData }) => {
+    const [comments, setComments] = useState();
 
     const context = useContext(ContextApi);
     const navigation = useNavigate();
@@ -36,9 +37,29 @@ const ProfileNav = ({ userData }) => {
         })
     }
 
+    useEffect(() => {
+        if (userData.order) {
+            const deliverItems = userData.order.filter(item => {
+                return item.status == "delivered";
+            });
+            const allProducts = deliverItems.map(item => {
+                return item.products
+            });
+
+            const waiting = allProducts.filter(item => {
+                return item[0].isViewPoint == false;
+            });
+            const waitingItems = waiting.map(item => {
+                for (let i = 0; i < item.length; i++) {
+                    return item[i];
+                }
+            });
+            setComments(waitingItems);
+        }
+    }, [userData]);
+
     return (
         <div className='pb-3' >
-
             {/* Start Single Menu Item */}
             <div className="d-flex align-items-center justify-content-between">
                 <Link to="/profile" style={{ color: "#000000", textDecoration: "none" }}>
@@ -72,6 +93,8 @@ const ProfileNav = ({ userData }) => {
             <div className="dropdown-divider mx-2 my-3"></div>
             {/* End Single Menu Item */}
 
+            {/* <button className="btn btn-primary" onClick={result}>Result</button> */}
+
             {/* Start Single Menu Item */}
             <div className="d-flex align-items-center justify-content-between">
                 <Link to="/profile/comments" style={{ color: "#000000", textDecoration: "none" }}>
@@ -79,6 +102,7 @@ const ProfileNav = ({ userData }) => {
                     <i class={`${path == "/profile/comments" ? "fas" : "far"} fa-comment mx-2`}></i>
                     <span className='font-weight-normal'>Comments</span>
                 </Link>
+                <div className="badge badge-success badge-pill mr-3 py-1 px-2" ><span style={{ fontSize: "1rem" }}>{comments ? comments.length : null}</span></div>
             </div>
             <div className="dropdown-divider mx-2 my-3"></div>
             {/* End Single Menu Item */}

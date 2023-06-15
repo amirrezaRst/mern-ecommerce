@@ -6,7 +6,7 @@ const router = Router();
 
 
 
-router.post("/addComment/:id", addComment);
+router.post("/addComment/:productId/:userId/:orderId", addComment);
 
 // router.put("/updateComment/:productId/:commentId", editComment);
 

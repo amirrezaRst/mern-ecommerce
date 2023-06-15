@@ -10,6 +10,8 @@ const Comments = ({ userData }) => {
     const [sendingComment, setSendingComment] = useState();
     const [waitingComment, setWaitingComment] = useState();
 
+    const [orderIndex, setOrderIndex] = useState();
+    const [productIndex, setProductIndex] = useState();
 
     const changeTab = () => {
         if (activeTab == "waiting") {
@@ -51,14 +53,13 @@ const Comments = ({ userData }) => {
     }, [userData])
 
     const result = () => {
-        console.log(sendingComment);
+        console.log(userData);
     }
 
     return (
         <main>
             <div className="card shadow-sm" >
                 <div className="card-body pt-4 pb-5">
-
                     <div className="">
                         <h5 onClick={result}>Opinions</h5>
                     </div>
