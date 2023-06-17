@@ -53,7 +53,7 @@ const Comments = ({ userData }) => {
     }, [userData])
 
     const result = () => {
-        console.log(waitingComment[0]);
+        console.log(userData.order);
     }
 
     return (
@@ -79,13 +79,13 @@ const Comments = ({ userData }) => {
                     {activeTab == "waiting" && waitingComment ?
                         waitingComment.length > 0 ?
                             <div className='row'>
-                                {waitingComment.map(item => <WaitingComment id={item._id} name={item.name} picture={item.picture} />)}
+                                {waitingComment.map(item => <WaitingComment orders={userData.order} id={item._id} name={item.name} picture={item.picture} />)}
                             </div>
                             : null : null
                     }
                     {activeTab == "sending" && waitingComment ?
                         waitingComment.length > 0 ?
-                            sendingComment.map(item => <SendingComment id={item._id} picture={item.picture} text={item.comment.text} accepted={item.comment.accepted} score={item.comment.score} proposal={item.comment.proposal} />)
+                            sendingComment.map(item => <SendingComment orders={userData.order} id={item._id} picture={item.picture} text={item.comment.text} accepted={item.comment.accepted} score={item.comment.score} proposal={item.comment.proposal} />)
                             : null : null
                     }
 

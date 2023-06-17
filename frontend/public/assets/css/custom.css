@@ -143,3 +143,35 @@ Custom Css
         width: 25%;
     }
 }
+
+
+
+
+/*! add comment modal */
+.suggest-product-item {
+    background: transparent;
+    cursor: pointer;
+}
+
+.suggest-product-item span {
+    font-size: 1rem;
+}
+
+.suggest-product-item i {
+    font-size: 1.65rem;
+}
+
+
+.comment-positive {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-positive .fa-plus {
+    color: #24aa41;
+}
+
+.comment-positive span {
+    margin-left: 10px;
+}

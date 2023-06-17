@@ -1,12 +1,15 @@
 import axios from 'axios';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import config from "../../services/config.json";
 import ContextApi from '../../services/ContextApi';
 import { CheckboxSvg } from './ProfileSvg';
 
-
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 export const FullNameModal = () => {
 
     const [fullName, setFullName] = useState();
@@ -601,6 +604,180 @@ export const ChangeAddressModal = ({ userData, addressIndex, changeAddress }) =>
                             userData.address.map((item, index) => <AddressItem addressIndex={addressIndex} changeAddress={changeAddress} index={index} location={item.location} postalCode={item.postalCode} phone={item.transfereePhone} transferee={item.transferee} plaque={item.plaque} />) : null
                         }
 
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+
+const PositiveItem = ({ index, text, positive, setPositive }) => {
+
+    const deleteItem = async () => {
+        var items = positive;
+        await items.splice(index, 1);
+        setPositive(items);
+    }
+
+    return (
+        <span className='comment-positive px-1 mb-1'>
+            <div className='w-100 d-flex align-items-center'>
+                <i className="far fa-plus"></i>
+                <span className='w-100 pl-2 pr-3'>{text}</span>
+            </div>
+            <i class="fa-regular fa-trash-can" style={{ cursor: "pointer" }} onClick={deleteItem}></i>
+        </span>
+    )
+}
+
+export const CommentModal = () => {
+    const [scoreValue, setScoreValue] = useState(0);
+    const [suggest, setSuggest] = useState();
+    const [positiveValue, setPositiveValue] = useState();
+    const [positive, setPositive] = useState([]);
+
+
+    useEffect(() => {
+        setPositive(positive);
+    }, [positive])
+
+    //! handle score value
+    const changeValue = (value) => {
+        setScoreValue(value.target.value)
+    }
+    const valuetext = (value) => {
+        return `${value} point`;
+    }
+
+    //! handle suggest value
+    const changeSuggest = (value) => {
+        setSuggest(value)
+    }
+
+    //! handle positive value
+    const addPositive = () => {
+        if (positiveValue && positiveValue != "") {
+            console.log("running");
+            var items = positive
+            items.push(positiveValue)
+            setPositiveValue(undefined);
+            positiveValue(undefined);
+            setPositive(items);
+        }
+    }
+
+    const result = () => {
+        console.log(positive);
+        // console.log(positive.length);
+
+        var items = positive;
+        items.splice(0, 1)
+        setPositive(items);
+    }
+
+    return (
+        <div class="modal fade" id="add-comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body my-1 pb-4">
+
+                        <div className="d-flex justify-content-between">
+                            <div className="">
+                                <h5 className='font-weight-normal mb-0' style={{ fontSize: "1.15rem" }} onClick={result}>Your point of view</h5>
+                                <span className='font-weight-normal mb-1' style={{ fontSize: ".95rem", color: "#767790" }}>About Jordan Air</span>
+                            </div>
+                            <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>
+                        </div>
+                        <div className="dropdown-divider mt-3 mb-3"></div>
+
+                        <div className="">
+                            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Your rating for this product</span>
+
+                            <div className="d-flex align-items-center justify-content-center pt-2">
+                                <Box sx={{ width: 400 }}>
+                                    <Slider
+                                        aria-label="Temperature"
+                                        defaultValue={0}
+                                        getAriaValueText={valuetext}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        value={scoreValue}
+                                        onChange={changeValue}
+                                        marks
+                                        color="success"
+                                        min={0}
+                                        max={5}
+                                    />
+                                </Box>
+                            </div>
+                            <span className='d-block mx-auto text-center' style={{ fontWeight: "450", fontSize: "1.13rem" }}>
+                                {scoreValue == 0 ? null : scoreValue == 1 ? "Very bad" : scoreValue == 2 ? "Bad" : scoreValue == 3 ? "Medium" : scoreValue == 4 ? "Good" : scoreValue == 5 ? "Very good" : null}
+                            </span>
+
+                            <div className="dropdown-divider mt-3 mb-3"></div>
+
+                            <div className="">
+                                <span style={{ fontWeight: "normal", fontSize: "1rem" }}>You suggest buying this product</span>
+
+                                <div className="row pt-2">
+                                    <div className="col-4">
+                                        <div className="badge w-100 suggest-product-item py-4" onClick={() => changeSuggest(-1)}
+                                            style={suggest == -1 ? { border: "1px solid #2E7D32", color: "#2E7D32" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
+                                            <i class="fa-regular fa-thumbs-down"></i>
+                                            <span className='d-block mt-1'>I do not suggest</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-4">
+                                        <div className="badge w-100 suggest-product-item py-4" onClick={() => changeSuggest(0)}
+                                            style={suggest == 0 ? { border: "1px solid #2E7D32", color: "#2E7D32" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
+                                            <i class="fa-regular fa-question"></i><i class="fa-regular fa-exclamation"></i>
+                                            <span className='d-block mt-1'>I am not sure</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-4">
+                                        <div className="badge w-100 suggest-product-item py-4" onClick={() => changeSuggest(1)}
+                                            style={suggest == 1 ? { border: "1px solid #2E7D32", color: "#2E7D32" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
+                                            <i class="fa-regular fa-thumbs-up"></i>
+                                            <span className='d-block mt-1'>I suggest</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="dropdown-divider mt-4 mb-3"></div>
+
+                                <div class="form-group">
+                                    <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Comment text</span>
+                                    <textarea class="form-control mt-1" rows="3"></textarea>
+                                </div>
+
+                                <div>
+                                    <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Positive points</span>
+                                    <div class="input-group pt-1">
+                                        <input type="text" class="form-control" value={positiveValue} onChange={e => setPositiveValue(e.target.value)} />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-white" onClick={addPositive}><i className="far fa-plus"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-3">
+
+                                        {positive && positive.length > 0 ?
+                                            positive.map((item, index) => <PositiveItem index={index} text={item} positive={positive} setPositive={setPositive} />)
+                                            : null
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
