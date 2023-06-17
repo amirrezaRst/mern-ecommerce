@@ -175,3 +175,18 @@ Custom Css
 .comment-positive span {
     margin-left: 10px;
 }
+
+
+.comment-negative {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-negative .fa-minus {
+    color: #ef0000;
+}
+
+.comment-negative span {
+    margin-left: 10px;
+}

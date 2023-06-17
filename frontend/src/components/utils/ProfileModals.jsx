@@ -633,20 +633,52 @@ const PositiveItem = ({ index, text, positive, setPositive }) => {
     )
 }
 
-export const CommentModal = () => {
+const NegativeItem = ({ index, text, negative, setNegative }) => {
+
+    const deleteItem = async () => {
+        var items = negative;
+        await items.splice(index, 1);
+        setNegative(items);
+    }
+
+    return (
+        <span className='comment-negative px-1 mb-1'>
+            <div className='w-100 d-flex align-items-center'>
+                <i className="far fa-minus"></i>
+                <span className='w-100 pl-2 pr-3'>{text}</span>
+            </div>
+            <i class="fa-regular fa-trash-can" style={{ cursor: "pointer" }} onClick={deleteItem}></i>
+        </span>
+    )
+}
+
+export const CommentModal = ({ orderId, productId }) => {
     const [scoreValue, setScoreValue] = useState(0);
     const [suggest, setSuggest] = useState();
+
+    //! field states
+    const [text, setText] = useState();
     const [positiveValue, setPositiveValue] = useState();
     const [positive, setPositive] = useState([]);
 
+    const [negativeValue, setNegativeValue] = useState();
+    const [negative, setNegative] = useState([]);
 
-    useEffect(() => {
-        setPositive(positive);
-    }, [positive])
+    //! field classes
+    const [scoreClass, setScoreClass] = useState("d-none")
+    const [suggestClass, setSuggestClass] = useState("d-none")
+    const [textClass, setTextClass] = useState("d-none")
+
+    //! field ref
+    const scoreRef = useRef();
+    const textRef = useRef();
+
+    const context = useContext(ContextApi);
 
     //! handle score value
     const changeValue = (value) => {
-        setScoreValue(value.target.value)
+        setScoreValue(value.target.value);
+        setScoreClass("d-none");
     }
     const valuetext = (value) => {
         return `${value} point`;
@@ -660,7 +692,7 @@ export const CommentModal = () => {
     //! handle positive value
     const addPositive = () => {
         if (positiveValue && positiveValue != "") {
-            console.log("running");
+            // console.log("running");
             var items = positive
             items.push(positiveValue)
             setPositiveValue(undefined);
@@ -669,13 +701,66 @@ export const CommentModal = () => {
         }
     }
 
-    const result = () => {
-        console.log(positive);
-        // console.log(positive.length);
+    //! handle negative value
+    const addNegative = () => {
+        if (negativeValue && negativeValue != "") {
+            var items = negative;
+            items.push(negativeValue);
+            setNegativeValue(undefined);
+            negativeValue(undefined)
+            setPositive(items);
+        }
+    }
 
-        var items = positive;
-        items.splice(0, 1)
-        setPositive(items);
+
+    const addComment = async () => {
+        if (scoreValue == 0) {
+            scoreRef.current.focus();
+            return setScoreClass("d-block");
+        }
+        if (suggest == undefined) {
+            setScoreClass("d-none")
+            return setSuggestClass("d-block mt-1")
+        }
+        if (text == undefined || text == "" || text == " ") {
+            setSuggestClass("d-none")
+            textRef.current.focus();
+            return setTextClass("d-block")
+        }
+        else {
+            setTextClass("d-none")
+        }
+
+        const body = {
+            fullName: context.userData.fullName,
+            score: scoreValue,
+            text,
+            proposal: suggest
+        }
+
+        await axios.post(`${config.domain}/api/comment/addComment/${productId}/${context.userData._id}/${orderId}`, body).then(res => {
+            console.log(res.data);
+            context.setUserData(res.data.user);
+        }).catch(err => {
+            toast.error(`Something went wrong! please try again.`, {
+                position: "bottom-right",
+                theme: "light",
+                closeOnClick: true
+            })
+            console.log(err);
+        })
+
+        console.log(scoreValue);
+        console.log(suggest);
+        console.log(text);
+        console.log(positive);
+        console.log(negative);
+    }
+
+
+    const result = () => {
+        console.log(orderId);
+        console.log(productId);
     }
 
     return (
@@ -696,7 +781,7 @@ export const CommentModal = () => {
                         <div className="">
                             <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Your rating for this product</span>
 
-                            <div className="d-flex align-items-center justify-content-center pt-2">
+                            <div ref={scoreRef} className="d-flex align-items-center justify-content-center pt-2">
                                 <Box sx={{ width: 400 }}>
                                     <Slider
                                         aria-label="Temperature"
@@ -713,6 +798,7 @@ export const CommentModal = () => {
                                     />
                                 </Box>
                             </div>
+                            <span className={scoreClass} style={{ fontWeight: "normal", fontSize: "1rem", color: "#d80000" }}>Please enter a rating</span>
                             <span className='d-block mx-auto text-center' style={{ fontWeight: "450", fontSize: "1.13rem" }}>
                                 {scoreValue == 0 ? null : scoreValue == 1 ? "Very bad" : scoreValue == 2 ? "Bad" : scoreValue == 3 ? "Medium" : scoreValue == 4 ? "Good" : scoreValue == 5 ? "Very good" : null}
                             </span>
@@ -725,7 +811,7 @@ export const CommentModal = () => {
                                 <div className="row pt-2">
                                     <div className="col-4">
                                         <div className="badge w-100 suggest-product-item py-4" onClick={() => changeSuggest(-1)}
-                                            style={suggest == -1 ? { border: "1px solid #2E7D32", color: "#2E7D32" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
+                                            style={suggest == -1 ? { border: "1px solid #ef0000", color: "#ef0000" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
                                             <i class="fa-regular fa-thumbs-down"></i>
                                             <span className='d-block mt-1'>I do not suggest</span>
                                         </div>
@@ -733,7 +819,7 @@ export const CommentModal = () => {
 
                                     <div className="col-4">
                                         <div className="badge w-100 suggest-product-item py-4" onClick={() => changeSuggest(0)}
-                                            style={suggest == 0 ? { border: "1px solid #2E7D32", color: "#2E7D32" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
+                                            style={suggest == 0 ? { border: "1px solid #717177", color: "#717177" } : { border: "1px solid #f1f2f4", color: "#9e9fb1" }}>
                                             <i class="fa-regular fa-question"></i><i class="fa-regular fa-exclamation"></i>
                                             <span className='d-block mt-1'>I am not sure</span>
                                         </div>
@@ -747,12 +833,14 @@ export const CommentModal = () => {
                                         </div>
                                     </div>
                                 </div>
+                                <span className={suggestClass} style={{ fontWeight: "normal", fontSize: ".95rem", color: "#d80000" }}>Please select one of the options</span>
 
                                 <div className="dropdown-divider mt-4 mb-3"></div>
 
                                 <div class="form-group">
                                     <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Comment text</span>
-                                    <textarea class="form-control mt-1" rows="3"></textarea>
+                                    <textarea class="form-control mt-1" ref={textRef} rows="3" value={text} onChange={e => setText(e.target.value)}></textarea>
+                                    <span className={textClass} style={{ fontWeight: "normal", fontSize: ".95rem", color: "#d80000" }}>Please enter the desired text</span>
                                 </div>
 
                                 <div>
@@ -772,8 +860,29 @@ export const CommentModal = () => {
                                         }
 
                                     </div>
-
                                 </div>
+
+                                <div>
+                                    <span style={{ fontWeight: "normal", fontSize: "1rem" }}>Negative points</span>
+                                    <div class="input-group pt-1">
+                                        <input type="text" class="form-control" value={negativeValue} onChange={e => setNegativeValue(e.target.value)} />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-white" onClick={addNegative}><i className="far fa-plus"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-3">
+
+                                        {negative && negative.length > 0 ?
+                                            negative.map((item, index) => <NegativeItem index={index} text={item} negative={negative} setNegative={setNegative} />)
+                                            : null
+                                        }
+
+                                    </div>
+                                </div>
+
+                                <button className="btn btn-block py-2 mt-4" style={{ background: "#2E7D32", color: "#ffffff" }} onClick={addComment}>Send comment</button>
+
 
                             </div>
 

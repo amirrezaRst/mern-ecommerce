@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CommentMessage, SendingCommentMessage, WaitingCommentMessage } from '../utils/Messages';
 
 import { Comment } from '../utils/ProfileSvg';
 import SendingComment from './SendingComment';
@@ -53,7 +54,7 @@ const Comments = ({ userData }) => {
     }, [userData])
 
     const result = () => {
-        console.log(userData.order);
+        console.log(waitingComment);
     }
 
     return (
@@ -79,14 +80,14 @@ const Comments = ({ userData }) => {
                     {activeTab == "waiting" && waitingComment ?
                         waitingComment.length > 0 ?
                             <div className='row'>
-                                {waitingComment.map(item => <WaitingComment orders={userData.order} id={item._id} name={item.name} picture={item.picture} />)}
+                                {waitingComment.map(item => <WaitingComment orders={userData.order} id={item._id} name={item.name} picture={item.picture} productId={item.productId} />)}
                             </div>
-                            : null : null
+                            : <WaitingCommentMessage /> : null
                     }
                     {activeTab == "sending" && waitingComment ?
                         waitingComment.length > 0 ?
                             sendingComment.map(item => <SendingComment orders={userData.order} id={item._id} picture={item.picture} text={item.comment.text} accepted={item.comment.accepted} score={item.comment.score} proposal={item.comment.proposal} />)
-                            : null : null
+                            : <SendingCommentMessage /> : null
                     }
 
                 </div>

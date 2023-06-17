@@ -3,6 +3,7 @@ const { commentSchema } = require('./commentSchema');
 
 const productSchema = new mongoose.Schema({
     _id: { type: mongoose.Schema.Types.ObjectId, require: true },
+    productId: { type: String, require: true },
     name: { type: String, require: true },
     color: { type: String, require: true },
     price: { type: Number, required: true },
@@ -13,7 +14,7 @@ const productSchema = new mongoose.Schema({
     viewPointScore: { type: Number },
     isViewPoint: { type: Boolean, default: false },
     comment: commentSchema
-})
+});
 
 exports.orderSchema = new mongoose.Schema({
     products: [productSchema],
@@ -21,5 +22,4 @@ exports.orderSchema = new mongoose.Schema({
     refId: { type: String, required: true },
     scores: { type: Number, require: true },
     date: { type: Date, default: Date.now }
-})
-
+});

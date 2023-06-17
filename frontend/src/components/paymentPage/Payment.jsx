@@ -67,6 +67,10 @@ const Payment = ({ userData }) => {
     }
 
     const checkoutApi = async () => {
+        window.scrollTo({
+            top: "20",
+            behavior: "smooth"
+        })
         setLoading(true);
 
         const body = {

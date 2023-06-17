@@ -6,13 +6,12 @@ const { newComment } = require('./validation/commentValidation');
 
 //! Post Request
 exports.addComment = async (req, res) => {
-    if (!isValidObjectId(req.params.productId)) return res.status(422).json({ text: "id is not valid" });
     if (!isValidObjectId(req.params.userId)) return res.status(422).json({ text: "id is not valid" });
     if (!isValidObjectId(req.params.orderId)) return res.status(422).json({ text: "id is not valid" });
 
     if (newComment(req.body).error) return res.status(422).json({ text: newComment(req.body).error.message });
 
-    const product = await productModel.findById(req.params.productId);
+    const product = await productModel.findOne({ productId: req.params.productId });
     if (!product) return res.status(422).json({ text: "product not found" });
 
     const user = await userModel.findById(req.params.userId)

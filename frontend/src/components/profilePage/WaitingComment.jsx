@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import config from "../../services/config.json"
 import { CommentModal } from '../utils/ProfileModals';
 
-const WaitingComment = ({ orders, id, name, picture }) => {
+const WaitingComment = ({ orders, id, name, picture, productId }) => {
 
     const [orderId, setOrderId] = useState();
 
@@ -37,13 +37,13 @@ const WaitingComment = ({ orders, id, name, picture }) => {
                             {name}
                         </span>
 
+
                     </div>
-                    {/* {id} */}
                     <button className="btn btn-block mt-3 mb-1" style={{ fontSize: ".95rem", background: "transparent", border: "1px solid #169632", color: "#169632" }} data-toggle="modal" data-target="#add-comment-modal">
                         Register comments & points
                     </button>
 
-                    <CommentModal />
+                    <CommentModal orderId={id} productId={productId} />
 
                 </div>
             </div>
