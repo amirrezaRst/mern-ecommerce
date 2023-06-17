@@ -10,8 +10,8 @@ router.post("/checkoutCart", [Auth], checkoutCart);
 router.get("/verifyPayment/:authority/:status", verifyPayment)
 
 router.get("/cancelOrder/:userId/:orderId", cancelOrder);
-router.get("/returnOrder/:userId/:orderId", returnOrder);
-router.get("/deliverOrder/:userId/:orderId", deliverOrder);
+router.get("/returnOrder/:userId/:orderId", [Auth, AdminAuth], returnOrder);
+router.get("/deliverOrder/:userId/:orderId", [Auth, AdminAuth], deliverOrder);
 
 router.get("/totalPayment", [Auth, AdminAuth], totalPayment);
 

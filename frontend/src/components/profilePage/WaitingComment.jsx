@@ -43,7 +43,7 @@ const WaitingComment = ({ orders, id, name, picture, productId }) => {
                         Register comments & points
                     </button>
 
-                    <CommentModal orderId={id} productId={productId} />
+                    <CommentModal orderId={id} productId={productId} name={name} />
 
                 </div>
             </div>

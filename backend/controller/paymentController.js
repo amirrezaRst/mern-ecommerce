@@ -147,6 +147,14 @@ exports.deliverOrder = async (req, res) => {
     }
 
     user.order[orderIndex].status = "delivered";
+    user.zayScore += user.order[orderIndex].scores
+
+    const newMessage = {
+        icon: "score",
+        title: "Get Your Prize",
+        text: "Your shopping points are added to ZayClub points"
+    }
+    user.message.push(newMessage);
 
     await user.save();
 

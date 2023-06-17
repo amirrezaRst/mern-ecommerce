@@ -7,6 +7,7 @@ import ContextApi from '../../services/ContextApi';
 
 const ProfileNav = ({ userData }) => {
     const [comments, setComments] = useState();
+    const [unSeen, setUnSeen] = useState();
 
     const context = useContext(ContextApi);
     const navigation = useNavigate();
@@ -56,7 +57,17 @@ const ProfileNav = ({ userData }) => {
             });
             setComments(waitingItems);
         }
+        if (userData.message) {
+            const items = userData.message.filter(item => {
+                return item.isRead == false
+            });
+            setUnSeen(items);
+        }
     }, [userData]);
+
+    const result = () => {
+        console.log(unSeen);
+    }
 
     return (
         <div className='pb-3' >
@@ -93,8 +104,6 @@ const ProfileNav = ({ userData }) => {
             <div className="dropdown-divider mx-2 my-3"></div>
             {/* End Single Menu Item */}
 
-            {/* <button className="btn btn-primary" onClick={result}>Result</button> */}
-
             {/* Start Single Menu Item */}
             <div className="d-flex align-items-center justify-content-between">
                 <Link to="/profile/comments" style={{ color: "#000000", textDecoration: "none" }}>
@@ -102,7 +111,12 @@ const ProfileNav = ({ userData }) => {
                     <i class={`${path == "/profile/comments" ? "fas" : "far"} fa-comment mx-2`}></i>
                     <span className='font-weight-normal'>Comments</span>
                 </Link>
-                <div className="badge badge-success badge-pill mr-3 py-1 px-2" ><span style={{ fontSize: "1rem" }}>{comments ? comments.length : null}</span></div>
+                {comments && comments.length > 0 ?
+                    <div className="badge badge-success badge-pill mr-3 py-1 px-2" >
+                        <span style={{ fontSize: "1rem" }}>{comments.length}</span>
+                    </div>
+                    : null
+                }
             </div>
             <div className="dropdown-divider mx-2 my-3"></div>
             {/* End Single Menu Item */}
@@ -136,8 +150,8 @@ const ProfileNav = ({ userData }) => {
                     <i class={`${path == "/profile/messages" ? "fas" : "far"} fa-messages mx-2`}></i>
                     <span className='font-weight-normal'>Messages</span>
                 </Link>
-                {userData.message && userData.message.length > 0 ?
-                    <div className="badge badge-success badge-pill mr-3 py-1 px-2" ><span style={{ fontSize: "1rem" }}>{userData.message && userData.message.length > 0 ? userData.message.length : null}</span></div> : null
+                {unSeen && unSeen.length > 0 ?
+                    <div className="badge badge-success badge-pill mr-3 py-1 px-2" ><span style={{ fontSize: "1rem" }}>{unSeen.length}</span></div> : null
                 }
 
             </div>

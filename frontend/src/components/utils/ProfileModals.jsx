@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from "sweetalert2";
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 import config from "../../services/config.json";
 import ContextApi from '../../services/ContextApi';
 import { CheckboxSvg } from './ProfileSvg';
 
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
+
 export const FullNameModal = () => {
 
     const [fullName, setFullName] = useState();
@@ -652,7 +652,7 @@ const NegativeItem = ({ index, text, negative, setNegative }) => {
     )
 }
 
-export const CommentModal = ({ orderId, productId }) => {
+export const CommentModal = ({ orderId, productId, name }) => {
     const [scoreValue, setScoreValue] = useState(0);
     const [suggest, setSuggest] = useState();
 
@@ -735,12 +735,20 @@ export const CommentModal = ({ orderId, productId }) => {
             fullName: context.userData.fullName,
             score: scoreValue,
             text,
+            positivePoint: positive,
+            negativePoint: negative,
             proposal: suggest
         }
 
         await axios.post(`${config.domain}/api/comment/addComment/${productId}/${context.userData._id}/${orderId}`, body).then(res => {
             console.log(res.data);
             context.setUserData(res.data.user);
+            Swal.fire({
+                icon: "success",
+                html: `<span style="font-size:1.4rem;font-weight:normal">Your comment has been saved for ${name}</span>`,
+                confirmButtonColor: "#59AB6E",
+                confirmButtonText: "Ok"
+            })
         }).catch(err => {
             toast.error(`Something went wrong! please try again.`, {
                 position: "bottom-right",
@@ -749,12 +757,6 @@ export const CommentModal = ({ orderId, productId }) => {
             })
             console.log(err);
         })
-
-        console.log(scoreValue);
-        console.log(suggest);
-        console.log(text);
-        console.log(positive);
-        console.log(negative);
     }
 
 
@@ -772,7 +774,7 @@ export const CommentModal = ({ orderId, productId }) => {
                         <div className="d-flex justify-content-between">
                             <div className="">
                                 <h5 className='font-weight-normal mb-0' style={{ fontSize: "1.15rem" }} onClick={result}>Your point of view</h5>
-                                <span className='font-weight-normal mb-1' style={{ fontSize: ".95rem", color: "#767790" }}>About Jordan Air</span>
+                                <span className='font-weight-normal mb-1' style={{ fontSize: ".95rem", color: "#767790" }}>About <span className='text-capitalize'>{name}</span></span>
                             </div>
                             <span aria-hidden="true" className='close' data-dismiss="modal">&times;</span>
                         </div>

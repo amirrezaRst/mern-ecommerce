@@ -5,8 +5,8 @@ exports.newComment = (data) => {
         fullName: joi.string().required(),
         score: joi.number().required(),
         text: joi.string().required(),
-        positivePoint: joi.string(),
-        negativePoint: joi.string(),
+        positivePoint: joi.array(),
+        negativePoint: joi.array(),
         proposal: joi.number().valid(-1, 0, 1).required()
     })
     return schema.validate(data);

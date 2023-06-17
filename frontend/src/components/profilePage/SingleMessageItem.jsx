@@ -5,12 +5,13 @@ import { toast } from 'react-toastify';
 
 import config from "../../services/config.json";
 import ContextApi from "../../services/ContextApi";
+import { MessageClubSvg } from '../utils/ProfileSvg';
 
 const SingleMessageItem = ({ id, icon, title, text, read, time }) => {
 
     const context = useContext(ContextApi);
 
-    const seenMessage = async () => {
+    const seenMessage = async () =>
         // alert("test")
         await axios.get(`${config.domain}/api/user/seenMessage/${context.userData._id}/${id}`).then(res => {
             context.setUserData(res.data.user);
@@ -22,13 +23,22 @@ const SingleMessageItem = ({ id, icon, title, text, read, time }) => {
             })
             console.log(err);
         })
-    }
+
 
     return (
         <React.Fragment>
             <div className="message-item d-flex p-2">
                 <div className="">
-                    <div className="message-icon py-1 px-2 rounded-circle" style={{ background: "#F9A825" }}><i class={`far ${icon == "message" ? "fa-gift" : null} text-white`} style={{ fontSize: "1rem" }}></i></div>
+                    {icon != "score" ?
+                        <div className="message-icon rounded-circle" style={{ background: "#F9A825", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <i class={`far ${icon == "message" ? "fa-gift" : null} text-white`} style={{ fontSize: "1rem" }}></i>
+                        </div> :
+
+                        <div className="message-icon rounded-circle" style={{ background: "#F9A825", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <MessageClubSvg />
+                        </div>
+                    }
+
                 </div>
                 <div className="w-100 pl-4">
                     <div className="d-flex align-items-center justify-content-between mb-1">

@@ -49,7 +49,7 @@ const Messages = ({ userData }) => {
                                 <h5 className='font-weight-normal'>Messages</h5>
                                 <div style={{ background: "#169632", width: "75%", height: "3px" }}></div>
                             </div>
-                            <div className='badge' style={{ border: "1px solid #cc0000" }} onClick={deleteMessages}>
+                            <div className='badge py-2 px-2' style={{ border: "1px solid #cc0000" }} onClick={deleteMessages}>
                                 <span id="delete-message-btn" ><i className="far fa-trash"></i> Delete messages</span>
                             </div>
                         </div>

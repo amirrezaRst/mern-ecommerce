@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CommentMessage, SendingCommentMessage, WaitingCommentMessage } from '../utils/Messages';
 
-import { Comment } from '../utils/ProfileSvg';
+import { Comment, UserClubSvg } from '../utils/ProfileSvg';
 import SendingComment from './SendingComment';
 import WaitingComment from './WaitingComment';
 
@@ -76,6 +76,20 @@ const Comments = ({ userData }) => {
                         </div>
 
                     </div>
+                    {activeTab == "waiting" && waitingComment && waitingComment.length > 0 ?
+                        <div className="card mb-4" style={{background:"#fcfcfc"}}>
+                            <div className="py-3 px-2">
+                                <div className="d-flex align-items-center">
+                                    <UserClubSvg />
+                                    <div className="d-flex flex-column justify-content-between ml-3">
+                                        <span style={{ fontWeight: "normal", fontSize: ".95rem", color: "#080a38" }}>Are you satisfied with this product?</span>
+                                        <span style={{ fontWeight: "normal", fontSize: ".95rem", marginTop: "5px", color: "#494a5b" }}>Get 5 points from Digiclub by registering a comment for each product</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        : null
+                    }
 
                     {activeTab == "waiting" && waitingComment ?
                         waitingComment.length > 0 ?
