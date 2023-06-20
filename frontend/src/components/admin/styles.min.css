@@ -1,0 +1,51 @@
+/*! start dashboard aside styles  */
+#dashboard-aside {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    bottom: 0;
+    border-right: 2px solid #e8e8e8;
+}
+
+#dashboard-aside-logo {
+    /* text-align: center; */
+    position: sticky;
+    top: 0;
+    margin-bottom: 5vh;
+}
+
+.menu-navigation h5 {
+    font-size: 1.25rem;
+}
+
+.menu-item {
+    display: block;
+    font-weight: normal;
+    background: #59ab6e;
+    color: #fff;
+    border-radius: 7px;
+}
+
+/*! end dashboard aside styles  */
+
+
+/*! start dashboard main styles  */
+#dashboard-nav {
+    width: 100%;
+    padding: 7px;
+    padding-top: 2.5vh !important;
+    background: #e8e8e8;
+    position: sticky;
+    top: 0;
+}
+
+
+#dashboard-nav i {
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+
+.dashboard-profile{
+    width: 10%;
+}

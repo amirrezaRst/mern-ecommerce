@@ -32,6 +32,16 @@ const ProfileSidebar = ({ userData }) => {
                 <span className='font-weight-normal' style={{ fontSize: "1rem" }}>Score <span className='font-weight-bold'>{userData && userData.zayScore ? userData.zayScore : 0}</span></span>
             </div>
 
+
+            {userData && userData.role == "admin" ?
+                <Link to="/dashboard" className='d-flex justify-content-between mt-4 py-2 px-3' id='sidebar-dashboard-btn'>
+                    <div className="">
+                        <i class="fas fa-user-shield" style={{ fontSize: "1.15rem" }}></i>
+                        <span className='font-weight-normal ml-2' style={{ fontSize: "1.1rem" }}>Admin Panel</span>
+                    </div>
+                </Link> : null
+            }
+
             <div className="dropdown-divider mt-4 mb-3"></div>
 
         </React.Fragment>

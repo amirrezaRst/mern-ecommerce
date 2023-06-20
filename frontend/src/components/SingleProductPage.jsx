@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 
 import config from "../services/config.json";
 import ContextApi from '../services/ContextApi';
+import SingleShopCart from './SingleShopCart';
 
 
 const SingleProductPage = ({ products }) => {
 
     const [product, setProduct] = useState();
+    const [score, setScore] = useState();
     const [image, setImage] = useState();
     const [relatedProduct, setRelatedProduct] = useState();
 
@@ -32,20 +34,19 @@ const SingleProductPage = ({ products }) => {
         getProductApi();
     }, [])
 
-    useEffect(() => {
-        var filterProducts = products.filter(item => {
-            if (product) {
-                return item.category == product.category && item._id != product._id
-            }
-        })
-        setRelatedProduct(filterProducts);
-    }, [products])
-
-
     const getProductApi = async () => {
         await axios.get(`${config.domain}/api/product/singleProduct/${window.location.pathname.split("/")[2]}`).then(res => {
             console.log("single product fetched");
+
+            if (products) {
+                const items = products.filter(item => {
+                    return item.category == res.data.product.category && item._id != res.data.product._id
+                })
+                setRelatedProduct(items);
+            }
+
             setProduct(res.data.product);
+            setScore(Math.round((res.data.product.score / res.data.product.scoreCount) * 10) / 10)
             if (totalPrice == undefined) {
                 setTotalPrice(res.data.product.price * productCount)
             }
@@ -179,13 +180,7 @@ const SingleProductPage = ({ products }) => {
 
 
     const result = () => {
-        // Swal.fire({
-        //     icon: 'success',
-        //     title: 'Added to cart',
-        //     confirmButtonColor: "#59AB6E",
-        //     confirmButtonText: "Ok"
-        // })
-
+        console.log(relatedProduct);
     }
 
     return (
@@ -230,64 +225,65 @@ const SingleProductPage = ({ products }) => {
                                     <h1 class="h2" onClick={result}>{product ? product.name : null}</h1>
                                     <p class="py-2">
 
-                                        {product && product.score == 0 ? <div className='d-inline'>
+                                        {score && score == 0 ? <div className='d-inline'>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                         </div> : null}
-                                        {product && product.score <= 0.5 && product.score != 0 ? <div className='d-inline'>
+                                        {score && score <= 0.5 && score != 0 ? <div className='d-inline'>
                                             <i class="fa fa-star-half text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 1 && product.score > 0.5 ? <div className='d-inline'>
+                                        {score && score <= 1 && score > 0.5 ? <div className='d-inline'>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 1.5 && product.score > 1 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
-                                            <i class="fa fa-star-half text-warning"></i>
-                                        </div> : null}
-                                        {product && product.score <= 2 && product.score > 1.5 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
-                                            <i class="fa fa-star text-warning"></i>
-                                        </div> : null}
-                                        {product && product.score <= 2.5 && product.score > 2 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
+                                        {score && score <= 1.5 && score > 1 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star-half text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 3 && product.score > 2.5 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
+                                        {score && score <= 2 && score > 1.5 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 3.5 && product.score > 3 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
+                                        {score && score <= 2.5 && score > 2 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star-half text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 4 && product.score > 3.5 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
+                                        {score && score <= 3 && score > 2.5 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 4.5 && product.score > 4 ? <div className='d-inline'>
-                                            <i class="fa fa-star text-warning"></i>
+                                        {score && score <= 3.5 && score > 3 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star-half text-warning"></i>
                                         </div> : null}
-                                        {product && product.score <= 5 && product.score > 4.5 ? <div className='d-inline'>
+                                        {score && score <= 4 && score > 3.5 ? <div className='d-inline'>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div> : null}
+                                        {score && score <= 4.5 && score > 4 ? <div className='d-inline'>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star-half text-warning"></i>
+                                        </div> : null}
+                                        {score && score <= 5 && score > 4.5 ? <div className='d-inline'>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                             <i class="fa fa-star text-warning"></i>
                                         </div> : null}
+
 
                                         <span class="list-inline-item text-dark ml-3">{product ? `Rating ${product.score} | ${product.scoreCount} Comments` : null}</span>
                                     </p>
@@ -348,29 +344,7 @@ const SingleProductPage = ({ products }) => {
                                                 </ul>
                                             </div>
                                         </div>
-                                        {/* <div class="row">
-                                            <div class="col-6">
-                                                <ul class="list-inline mb-2">
-                                                    <li class="list-inline-item">Size :</li>
-                                                    {product && product.size[0] != "single" ?
-                                                        product.size.map(size => <li class="list-inline-item"><span class={productSize != size ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize(size)}>{size}</span></li>) :
-                                                        <li class="list-inline-item"><span class={productSize != "single" ? "btn btn-success btn-size" : "btn btn-secondary btn-size"} onClick={() => changeSize("single")}>One Size</span></li>
-                                                    }
-                                                </ul>
-                                                <span className={sizeClass} style={{ fontSize: "1.07rem" }}>Please select the color of the product</span>
 
-                                            </div>
-                                            <div class="col-6">
-                                                <ul class="list-inline pb-3">
-                                                    <li class="list-inline-item text-right">
-                                                        Quantity
-                                                    </li>
-                                                    <li class="list-inline-item"><span class={productCount == 1 ? "btn btn-secondary" : "btn btn-success"} id="btn-minus" onClick={minusCount}>-</span></li>
-                                                    <li class="list-inline-item"><span style={{ fontWeight: "bolder" }}>{productCount}</span></li>
-                                                    <li class="list-inline-item"><span class="btn btn-success" id="btn-plus" onClick={plusCount}>+</span></li>
-                                                </ul>
-                                            </div>
-                                        </div> */}
                                         <div class="row pb-3">
                                             <div class="col d-flex justify-content-between align-items-center">
                                                 {product && product.available == true ?
@@ -396,7 +370,7 @@ const SingleProductPage = ({ products }) => {
 
                 <div className="row">
 
-                    {relatedProduct && relatedProduct.length < 0 ? relatedProduct.map(item =>
+                    {relatedProduct && relatedProduct.length > 0 ? relatedProduct.map(item =>
                         <div id="carousel-related-product" className='col-4'>
                             <div class="p-2 pb-3">
                                 <div class="product-wap card rounded-0">
@@ -425,6 +399,7 @@ const SingleProductPage = ({ products }) => {
                                 </div>
                             </div>
                         </div>
+                        // <SingleShopCart id={item._id} name={item.name} color={item.color} picture={item.picture} price={item.price} size={item.size} />
                     ) : <h5 className='mx-auto my-4 text-black-50'>There is no related product</h5>}
 
                 </div>

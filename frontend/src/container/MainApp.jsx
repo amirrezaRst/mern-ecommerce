@@ -12,6 +12,8 @@ import ContextApi from '../services/ContextApi';
 import Loading from "../components/common/Loading";
 import ErrorBoundary from './ErrorBoundary';
 import PaymentValidation from '../components/paymentPage/PaymentValidation';
+import DashboardLayout from '../components/layout/DashboardLayout';
+import Dashboard from '../components/admin/Dashboard';
 
 
 const MainApp = () => {
@@ -85,6 +87,7 @@ const MainApp = () => {
     useEffect(() => {
         getProductApi();
         if (localStorage.getItem("userId")) userApi();
+        console.log(path);
     }, [])
 
 
@@ -115,6 +118,58 @@ const MainApp = () => {
                                     <ToastContainer />
 
                                 </ProfileLayout> :
+                                path == "/dashboard" ?
+                                    <DashboardLayout>
+
+                                        <Routes>
+                                            <Route path='/dashboard' element={userData && userLogin === true && userData.role === "admin" ? <Dashboard /> : <Home products={products} />} />
+                                        </Routes>
+                                        <ToastContainer />
+
+                                    </DashboardLayout>
+                                    :
+                                    <MainLayout userStatus={userLogin} userData={userData}>
+
+                                        <Routes>
+                                            <Route path="/" exact element={<Home products={products} />} />
+                                            <Route path="/about" element={<About />} />
+                                            <Route path="/shop" element={<Shop products={products} />} />
+                                            <Route path="/contact" element={<Contact />} />
+                                            <Route path="/product/*" element={<SingleProductPage products={products} />} />
+
+                                            <Route path="/signup" element={<Signup />} />
+                                            <Route path="/login" element={<Login />} />
+
+                                            <Route path="/shop-cart" element={userLogin === true ? <ShopCart userData={userData} /> : <Login />} />
+                                            <Route path="/payment" element={userData.cart && userData.cart.length > 0 ? <Payment userData={userData} /> : <ShopCart userData={userData} />} />
+                                            <Route path="/verifyPayment" element={<VerifyPayment />} />
+                                            <Route path="/paymentValidation" element={<PaymentValidation />} />
+
+
+                                        </Routes>
+                                        <ToastContainer />
+
+                                    </MainLayout>
+                            }
+
+
+
+                            {/* {path == "/profile" || path == "/profile/favorite" || path == "/profile/orders" || path == "/profile/comments" || path == "/profile/info" || path == "/profile/messages" || path == "/profile/address" ?
+                                <ProfileLayout userStatus={userLogin} userData={userData}>
+
+                                    <Routes>
+                                        <Route path="/profile" element={userLogin === true ? <Profile userData={userData} /> : <Login />} />
+                                        <Route path="/profile/favorite" element={userLogin === true ? <FavoriteProduct userData={userData} /> : <Login />} />
+                                        <Route path="/profile/messages" element={userLogin === true ? <Messages userData={userData} /> : <Login />} />
+                                        <Route path="/profile/info" element={userLogin === true ? <PersonalInfo userData={userData} /> : <Login />} />
+                                        <Route path="/profile/comments" element={userLogin === true ? <Comments userData={userData} /> : <Login />} />
+                                        <Route path="/profile/address" element={userLogin === true ? <Address userData={userData} /> : <Login />} />
+                                        <Route path="/profile/orders" element={userLogin === true ? <Orders userData={userData} /> : <Login />} />
+                                    </Routes>
+                                    <ToastContainer />
+
+                                </ProfileLayout>
+                                :
                                 <MainLayout userStatus={userLogin} userData={userData}>
 
 
@@ -138,7 +193,7 @@ const MainApp = () => {
                                     <ToastContainer />
 
                                 </MainLayout>
-                            }
+                            } */}
 
                         </ErrorBoundary>
                     </Suspense>

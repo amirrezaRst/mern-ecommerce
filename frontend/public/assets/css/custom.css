@@ -190,3 +190,24 @@ Custom Css
 .comment-negative span {
     margin-left: 10px;
 }
+
+
+
+
+/*! profile sidebar */
+#sidebar-dashboard-btn {
+    background: transparent;
+    border: 1px solid #169632;
+    border-radius: 5px;
+    color: #169632 !important;
+    text-decoration: none;
+    transition: all .3s;
+}
+
+#sidebar-dashboard-btn:hover {
+    background: #169632;
+    border: 1px solid #169632;
+    border-radius: 5px;
+    color: #ffffff !important;
+    text-decoration: none;
+}

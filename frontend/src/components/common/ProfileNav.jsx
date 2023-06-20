@@ -71,6 +71,14 @@ const ProfileNav = ({ userData }) => {
 
     return (
         <div className='pb-3' >
+            {/* <div className="d-flex align-items-center justify-content-between">
+                <Link to="/dashboard" style={{ color: "#000000", textDecoration: "none" }}>
+                    <div className="bg-success d-inline py-2 mr-2" style={{ borderRadius: "0 20px 20px 0", visibility: "hidden" }}><span style={{ visibility: "hidden" }}>.</span></div>
+                    <i class="fas fa-user-shield mx-2"></i>
+                    <span className='font-weight-normal'>Admin Panel</span>
+                </Link>
+            </div>
+            <div className="dropdown-divider mx-2 my-3"></div> */}
             {/* Start Single Menu Item */}
             <div className="d-flex align-items-center justify-content-between">
                 <Link to="/profile" style={{ color: "#000000", textDecoration: "none" }}>

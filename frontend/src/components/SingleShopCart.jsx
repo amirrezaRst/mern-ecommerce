@@ -132,26 +132,6 @@ const SingleShopCart = ({ path, id, name, picture, color, size, price, count }) 
 
             localStorage.setItem("history", JSON.stringify(existingEntries));
         }
-
-        // console.log(item);
-        // if (item.length >= 5) {
-        //     const newItem = item
-        //     // item.slice(4, 1);
-        //     // console.log(item);
-        //     return setHistoryProduct(newItem);
-        // };
-        // if (existingEntries.length > 5) {
-        //     const array = [
-        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 },
-        //         { id: "645b8ca977b756a0daa60077", name: "jordan air", "picture": "OJ5KrPNiS.png", color: ["black", "white", "gray", "green", "blue", "red", "purple"], size: ["38", "39", "40", "41", "42", "43", "44"], price: 450 },
-        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 },
-        //         { id: "644bd6060949a63c9046a3b0", name: "iphone 11", "picture": "jqixybibln.png", color: ["white", "red", "green", "purple"], size: ["single"], price: 999 },
-        //         { id: "645a47e4ca84289c4e7efe27", name: "Hublot gear watch", "picture": "Uj8mGr3pn.png", color: ["black", "gray", "gold"], size: ["38", "40", "42"], price: 600 }
-        //     ]
-        //     const newArray = array.splice(3, 1);
-        //     console.log(newArray);
-        //     // return localStorage.setItem("history", JSON.stringify(newArray));
-        // }
     }
 
 

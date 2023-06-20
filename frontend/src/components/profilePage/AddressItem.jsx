@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 import config from "../../services/config.json";
 import ContextApi from "../../services/ContextApi"
+import { EditAddressModal } from '../utils/ProfileModals';
 
 const AddressItem = ({ index, location, city, postalCode, unit, plaque, transferee, transfereePhone, transfereeEmail }) => {
 
@@ -34,7 +35,14 @@ const AddressItem = ({ index, location, city, postalCode, unit, plaque, transfer
                 })
             }
         })
+    }
 
+    const editAddress = () => {
+        console.log(location);
+        console.log(city);
+        console.log(unit);
+        console.log(plaque);
+        EditAddressModal()
     }
 
     return (
@@ -44,7 +52,8 @@ const AddressItem = ({ index, location, city, postalCode, unit, plaque, transfer
                     <p className='text-capitalize font-weight-normal text-dark' onClick={deleteAddress}>{location}</p>
                     <div className="">
                         <i class="fa-regular fa-trash mr-3" style={{ cursor: "pointer", color: "#ef4056", fontSize: "1.2rem" }} onClick={deleteAddress}></i>
-                        <i class="fa-regular fa-pen-line mr-2" style={{ cursor: "pointer", color: "#818284", fontSize: "1.2rem" }}></i>
+                        <i class="fa-regular fa-pen-line mr-2" style={{ cursor: "pointer", color: "#818284", fontSize: "1.2rem" }} data-toggle="modal" data-target="#edit-address-modal"></i>
+                        {/* <i class="fa-regular fa-pen-line mr-2" style={{ cursor: "pointer", color: "#818284", fontSize: "1.2rem" }} onClick={editAddress}></i> */}
                     </div>
                 </div>
                 <div className="pl-3" style={{ color: '#767790' }}>
@@ -55,6 +64,8 @@ const AddressItem = ({ index, location, city, postalCode, unit, plaque, transfer
                     <div><i class="far fa-at mr-2" style={{ fontSize: "1.1rem" }}></i> <span className='font-weight-normal' style={{ fontSize: "1rem" }}>{transfereeEmail}</span></div>
                 </div>
             </div>
+
+            <EditAddressModal location={location} city={city} plaque={plaque} postalCode={postalCode} unit={unit} transferee={transferee} transfereePhone={transfereePhone} transfereeEmail={transfereeEmail} />
         </div>
     );
 }
