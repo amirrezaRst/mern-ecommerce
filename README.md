@@ -1,4 +1,4 @@
-# Mern Stack Food Project
+# Mern Stack Ecommerce
 
 #### Demo
 Hello! I am Amirreza Rostami. This project is an online store site with a payment gateway.
