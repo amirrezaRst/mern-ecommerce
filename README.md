@@ -1,10 +1,13 @@
 # Mern Stack Food Project
-Hi! I am Amirreza Rostami. This project is a food ordering site with a payment gateway, this project is in the form of RESTfull API
+
+#### Demo
+Hello! I am Amirreza Rostami. This project is an online store site with a payment gateway.
+Its backend is based on Rest Full API
 
 My email : amirreza.rostami.0073@gmail.com
 
 
-## Technology and frameworks
+## Technology and frameworks 
 
  
 
@@ -12,13 +15,13 @@ My email : amirreza.rostami.0073@gmail.com
  1. Node Js
  2. Express Js
  3. JWT
+ 4. zarinpal
 
 **Frontend**
  1. Html Css
  2. Bootstrap
  3. React Js
  4. jQuery
- 5. AOS
  
 **Database**
  1. MongoDB
